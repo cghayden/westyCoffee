@@ -1,3 +1,14 @@
-node_modules/
+public
+# dotenv environment variable files
+.env*
+
+# gatsby files
 .cache/
 public
+
+# Mac files
+.DS_Store
+
+# Dependency directories
+node_modules/
+.vscode

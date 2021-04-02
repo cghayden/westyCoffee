@@ -1,27 +1,37 @@
-module.exports = {
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '.env' });
+
+export default {
   siteMetadata: {
-    title: "neighborlyCoffee",
+    title: 'Neighborly Coffee',
+    // siteUrl: 'https://www.neighborlycoffee.com',
+    // description: 'Love your neighbor's micro roastery',
+    // twitter: '@handleHere',
+    // instagram: '@handleHere',
   },
   plugins: [
     {
-      resolve: "gatsby-source-sanity",
+      resolve: 'gatsby-source-sanity',
       options: {
-        projectId: "cmq6fsgc",
-        dataset: "",
+        projectId: 'yi1dikna',
+        dataset: 'production',
+        watchMode: true,
+        token: process.env.SANITY_TOKEN,
       },
     },
-    "gatsby-plugin-styled-components",
-    "gatsby-plugin-image",
-    "gatsby-plugin-react-helmet",
-    "gatsby-plugin-sharp",
-    "gatsby-transformer-sharp",
-    {
-      resolve: "gatsby-source-filesystem",
-      options: {
-        name: "images",
-        path: "./src/images/",
-      },
-      __key: "images",
-    },
+    'gatsby-plugin-styled-components',
+    'gatsby-plugin-react-helmet',
+    // 'gatsby-plugin-image',
+    // 'gatsby-plugin-sharp',
+    // 'gatsby-transformer-sharp',
+    // {
+    //   resolve: 'gatsby-source-filesystem',
+    //   options: {
+    //     name: 'images',
+    //     path: './src/images/',
+    //   },
+    //   __key: 'images',
+    // },
   ],
 };
