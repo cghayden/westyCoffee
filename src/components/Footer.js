@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import '@fontsource/raleway';
-import InstagramSvg from './Icons/instagramSvg';
+import InstagramSvg from './Icons/InstagramSvg';
 const FooterStyle = styled.footer`
   font-family: 'Raleway';
   /* position: fixed;
