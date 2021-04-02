@@ -14,8 +14,7 @@
     "start": "npm run develop",
     "serve": "cross-env NODE_OPTIONS=\"-r esm\" gatsby serve",
     "clean": "gatsby clean",
-    "netlify": "netlify dev",
-    "prebuild": "netlify-lambda install"
+    "netlify": "netlify dev"
   },
   "dependencies": {
     "@fontsource/nunito": "^4.2.2",
