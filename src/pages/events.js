@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default function aboutPage() {
+export default function eventsPage() {
   return (
     <main>
-      <h1>About Us</h1>
+      <h1>Events Page</h1>
       <p>Stay Tuned!</p>
     </main>
   );

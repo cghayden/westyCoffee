@@ -20,6 +20,13 @@ const GlobalStyles = createGlobalStyle`
   main{
       text-align: center;
       font-family: 'Raleway', sans-serif;
+      min-height: calc(100vh - 200px);
+      max-width: 800px;
+  margin: 0 auto;
+  padding-bottom: 2rem;
+  }
+  footer{
+      height: 
   }
 // --- Default ---
   a, button {

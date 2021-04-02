@@ -4,11 +4,11 @@ import '@fontsource/raleway';
 import InstagramSvg from './Icons/instagramSvg';
 const FooterStyle = styled.footer`
   font-family: 'Raleway';
-  position: fixed;
-  height: 100px;
+  /* position: fixed;
+  height: 80px;
   bottom: 0;
   right: 0;
-  left: 0;
+  left: 0; */
   width: 100%;
   display: flex;
   align-items: center;

@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default function aboutPage() {
+export default function blogPage() {
   return (
     <main>
-      <h1>About Us</h1>
+      <h1>Blog Page</h1>
       <p>Stay Tuned!</p>
     </main>
   );
