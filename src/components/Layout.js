@@ -2,6 +2,7 @@ import React from 'react';
 import 'normalize.css';
 import GlobalStyles from '../styles/GlobalStyles';
 import Header from './Header';
+import Footer from './Footer';
 // import styled from 'styled-components';
 // import Footer from './Footer';
 // import Typography from '../styles/Typography';
@@ -37,7 +38,7 @@ export default function Layout({ children }) {
       {/* <ContentStyles> */}
       <Header />
       {children}
-      {/* <Footer /> */}
+      <Footer />
       {/* </ContentStyles> */}
       {/* </SiteBorderStyles> */}
     </>

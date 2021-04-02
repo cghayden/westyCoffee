@@ -9,15 +9,18 @@ const GlobalStyles = createGlobalStyle`
     --red: #FF4949;
     --black: #2E2E2E;
     --yellow: #ffc600;
-    --white: #fff;
+    --white: #f7fbf8;
     --grey: #efefef;
 
     --dropShadow3: -6px 12px 14px 10px rgba(0, 0, 0, 0.3);
     --desktopBreakPoint: 768px;
   }
-    body{background-color: lightblue;}
+    body{background-color: var(--white);}
     //-------BUTTON AND ANCHOR STYLES ----------------//
-
+  main{
+      text-align: center;
+      font-family: 'Raleway', sans-serif;
+  }
 // --- Default ---
   a, button {
     appearance: none;
