@@ -10,7 +10,7 @@
   "scripts": {
     "//": "⁉️ Hey! This might look confusing but allow me to explain. The command we want to run is called gatsby build. But because we want to use es modules with gatsby, we use a package called esm. One way to require it is to set the NODE_OPTIONS environmental variable to -r esm. Finally to make this work for windows users, we use the cross-env package. Hopefully once Node es modules are stable, we can bring this back to simple gatsby build",
     "build": "cross-env NODE_OPTIONS=\"-r esm\" gatsby build",
-    "develop": "cross-env NODE_OPTIONS=\"-r esm\" gatsby develop -p 7000",
+    "dev": "cross-env NODE_OPTIONS=\"-r esm\" gatsby develop -p 7000",
     "start": "npm run develop",
     "serve": "cross-env NODE_OPTIONS=\"-r esm\" gatsby serve",
     "clean": "gatsby clean",
@@ -18,6 +18,8 @@
     "prebuild": "netlify-lambda install"
   },
   "dependencies": {
+    "@fontsource/nunito": "^4.2.2",
+    "@fontsource/raleway": "^4.2.2",
     "babel-plugin-styled-components": "^1.12.0",
     "dotenv": "^8.2.0",
     "gatsby": "^3.1.2",

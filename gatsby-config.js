@@ -5,8 +5,8 @@ dotenv.config({ path: '.env' });
 export default {
   siteMetadata: {
     title: 'Neighborly Coffee',
-    // siteUrl: 'https://www.neighborlycoffee.com',
-    // description: 'Love your neighbor's micro roastery',
+    siteUrl: 'https://www.neighborlycoffee.com',
+    description: `Love your neighbor's micro coffee roastery`,
     // twitter: '@handleHere',
     // instagram: '@handleHere',
   },
