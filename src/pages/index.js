@@ -25,12 +25,12 @@ export default function homePage({ data }) {
   // const coffees = data.coffees;
   return (
     <>
-      <SEO title={'Coffee'} />
+      <SEO title={'Neighborly Coffee'} />
       <HomeMainStyles>
-        <h2>Our Weekly Roasts</h2>
+        <h2>Our Roasts of the Week</h2>
         <HomePageText>
           <p>
-            Contact Richie @ <a href='tel:617-894-5656'>617-894-5656</a> to
+            text or call Rich @ <a href='tel:617-894-5656'>617-894-5656</a> to
             order
           </p>
           <p>venmo: @juliedaniels</p>
