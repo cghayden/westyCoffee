@@ -12,22 +12,45 @@ const GlobalStyles = createGlobalStyle`
     --white: #f7fbf8;
     --grey: #efefef;
 
+    --dropShadow1: 1px 1px 0px 0px rgba(0, 0, 0, 0.3);
     --dropShadow3: -6px 12px 14px 10px rgba(0, 0, 0, 0.3);
     --desktopBreakPoint: 768px;
   }
-    body{background-color: var(--white);}
-    //-------BUTTON AND ANCHOR STYLES ----------------//
-  main{
+  html{
+      height: 100%;
+  }
+  #gatsby-focus-wrapper{
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+  }
+  #___gatsby{
+      height:100%
+  }
+    body {
+        background-color: var(--white);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    main{
       text-align: center;
       font-family: 'Raleway', sans-serif;
-      min-height: calc(100vh - 200px);
-      max-width: 800px;
+      /* min-height: calc(100vh - 200px); */
+      max-width: 900px;
   margin: 0 auto;
   padding-bottom: 2rem;
   }
   footer{
-      height: 
+      margin-top: auto;
   }
+
+  .content {
+      flex: 1 0 auto
+  }
+    //-------BUTTON AND ANCHOR STYLES ----------------//
+  
 // --- Default ---
   a, button {
     appearance: none;

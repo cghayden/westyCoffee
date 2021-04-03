@@ -32,15 +32,17 @@ import Footer from './Footer';
 export default function Layout({ children }) {
   return (
     <>
-      {/* <Typography /> */}
-      <GlobalStyles />
-      {/* <SiteBorderStyles> */}
-      {/* <ContentStyles> */}
       <Header />
-      {children}
+      <div className='content'>
+        {/* <Typography /> */}
+        <GlobalStyles />
+        {/* <SiteBorderStyles> */}
+        {/* <ContentStyles> */}
+        {children}
+        {/* </ContentStyles> */}
+        {/* </SiteBorderStyles> */}
+      </div>
       <Footer />
-      {/* </ContentStyles> */}
-      {/* </SiteBorderStyles> */}
     </>
   );
 }

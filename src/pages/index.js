@@ -3,6 +3,7 @@ import { graphql } from 'gatsby';
 import SEO from '../components/SEO';
 import styled from 'styled-components';
 import CoffeeCard from '../components/CoffeeCard';
+import HomePageText from '../components/HomePageText';
 
 const HomeMainStyles = styled.main``;
 const CoffeeDisplay = styled.div`
@@ -13,7 +14,7 @@ const CoffeeDisplay = styled.div`
   place-items: center;
 `;
 
-const HomePageText = styled.div`
+const HomePageTextStyles = styled.div`
   a {
     padding: 0;
     color: green;
@@ -21,20 +22,20 @@ const HomePageText = styled.div`
 `;
 
 export default function homePage({ data }) {
-  console.log('coffees', data);
-  // const coffees = data.coffees;
+  // const content = data.textQuery.nodes[0];
+  const text = data.textQuery.nodes[0].content;
+  console.log('text', text);
   return (
     <>
       <SEO title={'Neighborly Coffee'} />
       <HomeMainStyles>
         <h2>Our Roasts of the Week</h2>
-        <HomePageText>
-          <p>
-            text or call Rich @ <a href='tel:617-894-5656'>617-894-5656</a> to
-            order
-          </p>
-          <p>venmo: @juliedaniels</p>
-        </HomePageText>
+        {/* <HomePageText /> */}
+        <HomePageTextStyles>
+          {text.map((entry, i) => (
+            <p key={i}>{entry._rawChildren[0].text}</p>
+          ))}
+        </HomePageTextStyles>
         <CoffeeDisplay>
           {data.coffees.nodes.map((coffee) => (
             <CoffeeCard key={coffee.id} coffee={coffee} />
@@ -56,6 +57,15 @@ export const query = graphql`
         roastLevel
         description
         grade
+      }
+    }
+    textQuery: allSanityTextBlock(filter: { name: { eq: "Home Page Lead" } }) {
+      nodes {
+        name
+        heading
+        content {
+          _rawChildren
+        }
       }
     }
   }

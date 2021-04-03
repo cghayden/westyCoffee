@@ -11,15 +11,17 @@ const HeaderStyles = styled.header`
   font-family: 'Nunito', open-sans;
   display: flex;
   align-items: center;
-  padding: 10px;
-
+  padding: 1rem;
+  /* width: 100%; */
   p {
     margin: 0;
   }
-  padding: 1rem;
 `;
 const LogoStyle = styled.p`
   font-size: 1.5rem;
+  a {
+    padding: 0;
+  }
 `;
 const ButtonsDiv = styled.div`
   margin-left: auto;
@@ -48,7 +50,7 @@ function Header() {
         showMobileNav={showMobileNav}
         toggleShowMobileNav={toggleShowMobileNav}
       />
-      <button type='button' title='Your Cart'>
+      <button type='button' className='btn-icon' title='Your Cart'>
         <CoffeeSvg />
       </button>
     </HeaderStyles>

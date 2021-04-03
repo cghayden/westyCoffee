@@ -4,11 +4,12 @@ import '@fontsource/raleway';
 import InstagramSvg from './Icons/InstagramSvg';
 const FooterStyle = styled.footer`
   font-family: 'Raleway';
+  margin-top: auto;
   /* position: fixed;
   height: 80px;
   bottom: 0;
-  right: 0;
-  left: 0; */
+  right: 0;*/
+  padding-left: 1rem;
   width: 100%;
   display: flex;
   align-items: center;
@@ -38,8 +39,12 @@ function Footer() {
       </Address>
       <Contact>
         <a href='tel:617-894-5656'>617-894-5656</a>
-        <a href='https://www.instagram.com/neighborlycoffee'>
-          <InstagramSvg />
+        <a
+          href='https://www.instagram.com/neighborlycoffee'
+          rel='noopener noreferrer'
+          target='_blank'
+        >
+          <InstagramSvg w={24} h={24} />
         </a>
       </Contact>
     </FooterStyle>
