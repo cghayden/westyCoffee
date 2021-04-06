@@ -9,11 +9,8 @@ const AboutContentStyles = styled.div`
 `;
 
 export default function aboutPage({ data }) {
-  console.log('data', data.contentQuery.nodes[0]);
   const content = data.contentQuery.nodes[0];
   const text = data.contentQuery.nodes[0].content;
-  console.log('text', text);
-  // console.log('text', text);
   return (
     <>
       <SEO title={'Our Story'} />

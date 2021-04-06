@@ -1,9 +1,10 @@
 import React from 'react';
-import { graphql } from 'gatsby';
+// import { graphql } from 'gatsby';
 import SEO from '../components/SEO';
 import styled from 'styled-components';
 import CoffeeCard from '../components/CoffeeCard';
 import useLatestHomePageData from '../utils/useLatestHomePageData';
+import { useCart } from '../components/CartContext';
 // import HomePageText from '../components/HomePageText';
 
 const HomeMainStyles = styled.main``;
@@ -24,6 +25,7 @@ const HomePageTextStyles = styled.div`
 
 export default function HomePage() {
   const { featuredCoffee, homePageLead } = useLatestHomePageData();
+  const { addToCart } = useCart();
   // const content = data.textQuery.nodes[0];
   // const text = data.textQuery.nodes[0].content;
   return (
@@ -38,7 +40,20 @@ export default function HomePage() {
         </HomePageTextStyles>
         <CoffeeDisplay>
           {featuredCoffee?.map((coffee) => (
-            <CoffeeCard key={coffee._id} coffee={coffee} />
+            <div>
+              <CoffeeCard key={coffee._id} coffee={coffee} />
+              <button
+                onClick={() =>
+                  addToCart({
+                    quantity: 1,
+                    coffee: coffee.name,
+                    grind: 'whole',
+                  })
+                }
+              >
+                Order Now!
+              </button>
+            </div>
           ))}
         </CoffeeDisplay>
       </HomeMainStyles>
