@@ -7,6 +7,12 @@ import formatMoney from '../utils/formatMoney';
 function Cart() {
   const { cartOpen, closeCart, cartContents } = useCart();
 
+  function calcTotalPrice(cartContents) {
+    return cartContents.reduce((tally, cartItem) => {
+      //   if (!cartItem.) return tally; // products can be deleted, but they could still be in your cart
+      return tally + cartItem.quantity * cartItem.unitPrice;
+    }, 0);
+  }
   return (
     <CartStyles open={cartOpen}>
       <header>
@@ -25,6 +31,7 @@ function Cart() {
         ))}
       </ul>
       <footer>
+        <h3>Total: $ {formatMoney(calcTotalPrice(cartContents))}</h3>
         <p>Checkout</p>
         {/* <p>{formatMoney(calcTotalPrice(me.cart))}</p>
             <Checkout /> */}
@@ -37,7 +44,7 @@ const CartItemLi = styled.li`
   width: 100%;
   /* display: grid; */
   /* grid-template-columns: auto 12ch 2rem auto; */
-  border-bottom: 1px solid black;
+  /* border-bottom: 1px solid black; */
   h3 {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;

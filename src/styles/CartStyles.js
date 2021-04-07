@@ -15,8 +15,10 @@ const CartStyles = styled.div`
   transition: all 0.3s;
   box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.2);
   z-index: 5;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
+  /* display: grid;
+  grid-template-rows: auto 1fr auto; */
+  display: flex;
+  flex-direction: column;
   ${(props) => props.open && `transform: translateX(0);`};
   header {
     border-bottom: 3px solid var(--black);
@@ -25,9 +27,12 @@ const CartStyles = styled.div`
     display: flex;
   }
   footer {
-    border-top: 10px double var(--black);
-    margin-top: 2rem;
-    padding-top: 2rem;
+    border-top: solid 3px var(--black);
+    text-align: right;
+    margin-top: 1rem;
+    /* padding-top: 2rem; */
+    padding-right: 2rem;
+    color: green;
     /* display: flex;
     grid-template-columns: auto auto; */
     align-items: center;
@@ -42,6 +47,10 @@ const CartStyles = styled.div`
     padding: 0;
     list-style: none;
     overflow: scroll;
+    li ~ li {
+      border-top: 1px solid black;
+      padding-top: 1rem;
+    }
   }
 `;
 

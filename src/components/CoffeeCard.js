@@ -30,7 +30,7 @@ const CardStyle = styled.div`
 `;
 
 function CoffeeCard({ coffee }) {
-  console.log('coffee', coffee);
+  // console.log('coffee', coffee);
   const cost = coffee.price / 100;
   return (
     <CardStyle>
