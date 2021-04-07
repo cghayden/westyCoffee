@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'gatsby';
 import styled from 'styled-components';
-import CoffeeSvg from './Icons/coffeeSvg';
+import CoffeeSvg from './Icons/CoffeeSvg';
 // import Logo from './Logo';
 
 const NavStyles = styled.nav`

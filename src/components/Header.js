@@ -5,7 +5,7 @@ import DesktopNav from './DesktopNav';
 import '@fontsource/nunito';
 import MenuSvg from './Icons/MenuSvg';
 import MobileNav from './MobileNav';
-import CoffeeSvg from './Icons/coffeeSvg';
+import CartButton from './CartButton';
 
 const HeaderStyles = styled.header`
   font-family: 'Nunito', open-sans;
@@ -50,9 +50,7 @@ function Header() {
         showMobileNav={showMobileNav}
         toggleShowMobileNav={toggleShowMobileNav}
       />
-      <button type='button' className='btn-icon' title='Your Cart'>
-        <CoffeeSvg />
-      </button>
+      <CartButton />
     </HeaderStyles>
   );
 }

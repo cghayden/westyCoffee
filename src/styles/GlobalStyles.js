@@ -11,6 +11,7 @@ const GlobalStyles = createGlobalStyle`
     --yellow: #ffc600;
     --white: #f7fbf8;
     --grey: #efefef;
+    --green: green;
 
     --dropShadow1: 1px 1px 0px 0px rgba(0, 0, 0, 0.3);
     --dropShadow3: -6px 12px 14px 10px rgba(0, 0, 0, 0.3);
