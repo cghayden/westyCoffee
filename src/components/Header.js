@@ -6,6 +6,7 @@ import '@fontsource/nunito';
 import MenuSvg from './Icons/MenuSvg';
 import MobileNav from './MobileNav';
 import CartButton from './CartButton';
+import Cart from './Cart';
 
 const HeaderStyles = styled.header`
   font-family: 'Nunito', open-sans;
@@ -51,6 +52,7 @@ function Header() {
         toggleShowMobileNav={toggleShowMobileNav}
       />
       <CartButton />
+      <Cart />
     </HeaderStyles>
   );
 }

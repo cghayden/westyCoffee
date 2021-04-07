@@ -75,20 +75,21 @@ export default function homePage({ data }) {
         </HomePageTextStyles>
         <CoffeeDisplay>
           {data.coffees.nodes.map((coffee) => (
-            <>
+            <div key={coffee.id}>
               <CoffeeCard key={coffee.id} coffee={coffee} />
               <button
                 onClick={() =>
                   addToCart({
                     quantity: 1,
                     coffee: coffee.name,
-                    grind: 'whole',
+                    grind: 'Whole Bean',
+                    unitPrice: coffee.price,
                   })
                 }
               >
                 Order Now!
               </button>
-            </>
+            </div>
           ))}
         </CoffeeDisplay>
       </HomeMainStyles>

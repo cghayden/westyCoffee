@@ -2,13 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import CartCount from './CartCount';
 import CoffeeSvg from './Icons/CoffeeSvg';
+import { useCart } from './CartContext';
 
 const CartButtonStyle = styled.button`
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
   place-items: center;
-  padding: 0 0.25rem 0.5rem;
+  padding: 0 0.25rem 0.25rem;
   min-width: initial;
   text-align: center;
   svg {
@@ -22,8 +23,9 @@ const CartButtonStyle = styled.button`
 `;
 
 function CartButton() {
+  const { openCart } = useCart();
   return (
-    <CartButtonStyle type='button' title='Your Cart'>
+    <CartButtonStyle type='button' title='Your Cart' onClick={openCart}>
       <CoffeeSvg w={32} h={32} />
       <CartCount />
     </CartButtonStyle>

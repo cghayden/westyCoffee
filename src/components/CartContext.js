@@ -20,12 +20,13 @@ function CartStateProvider({ children }) {
     setCartOpen(true);
   }
 
-  function addToCart({ quantity, coffee, grind }) {
+  function addToCart({ quantity, coffee, grind, unitPrice }) {
+    console.log('unitPrice', unitPrice);
     // quantity will be -1 or +1
     if (!cartContents.length) {
       setCartContents((cartContents) => [
         ...cartContents,
-        { quantity, coffee, grind },
+        { quantity, coffee, grind, unitPrice },
       ]);
       return;
     }
@@ -39,7 +40,7 @@ function CartStateProvider({ children }) {
       console.log('no match');
       setCartContents((cartContents) => [
         ...cartContents,
-        { quantity, coffee, grind },
+        { quantity, coffee, grind, unitPrice },
       ]);
       return;
     }
