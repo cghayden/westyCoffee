@@ -19,9 +19,17 @@ const Dot = styled.div`
 function CartCount() {
   const { cartContents } = useCart();
   console.log('cartContents', cartContents);
-  //   const totalQuantity = cartContents.reduce();
 
-  return <Dot>{2}</Dot>;
+  function calcTotalQuantity(cartContents) {
+    return cartContents.reduce((tally, cartItem) => {
+      //   if (!cartItem.) return tally; // products can be deleted, but they could still be in your cart
+      return tally + cartItem.quantity;
+    }, 0);
+  }
+  if (calcTotalQuantity(cartContents) === 0) {
+    return null;
+  }
+  return <Dot>{calcTotalQuantity(cartContents)}</Dot>;
 }
 
 export default CartCount;
