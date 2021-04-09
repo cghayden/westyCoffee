@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import CartCount from './CartCount';
-import CoffeeSvg from './Icons/CoffeeSvg';
+import CoffeeCupIcon from './Icons/CoffeeCupIcon';
 import { useCart } from './CartContext';
 
 const CartButtonStyle = styled.button`
@@ -26,7 +26,7 @@ function CartButton() {
   const { openCart } = useCart();
   return (
     <CartButtonStyle type='button' title='Your Cart' onClick={openCart}>
-      <CoffeeSvg w={32} h={32} />
+      <CoffeeCupIcon w={32} h={32} />
       <CartCount />
     </CartButtonStyle>
   );
