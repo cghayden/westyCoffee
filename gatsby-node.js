@@ -1,7 +1,4 @@
-import path, { resolve } from 'path';
-import fetch from 'isomorphic-fetch';
-
-import useLatestHomePageData from './src/utils/useLatestHomePageData';
+import path from 'path';
 
 async function fetchCoffeeAndTurnIntoPages({ graphql, actions }) {
   const coffeeTemplate = path.resolve('./src/templates/SingleCoffee.js');
