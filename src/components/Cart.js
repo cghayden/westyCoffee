@@ -59,7 +59,7 @@ const CartItemLi = styled.li`
     place-items: center;
     display: grid;
     /* text-align: right; */
-    grid-template-columns: 2ch 2ch max-content 2ch max-content;
+    grid-template-columns: 1fr 2ch max-content 2ch max-content;
     justify-content: end;
     grid-gap: 0.5rem;
     margin: 0.5rem;
@@ -74,7 +74,8 @@ function CartItem({ cartItem }) {
       <h3>{cartItem.coffee}</h3>
       <p className='grind'>{cartItem.grind}</p>
       <p className='price'>
-        <span>{cartItem.quantity} </span>
+        <span>{`${cartItem.quantity} ${cartItem.size} bag`} </span>
+        {/* <span>{``}</span> */}
         <span>&times; </span>
         <span>${formatMoney(cartItem.unitPrice)} </span>
         <span>= </span>

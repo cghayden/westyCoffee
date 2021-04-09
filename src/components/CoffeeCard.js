@@ -74,6 +74,19 @@ const OrderForm = styled.form`
       }
     }
   }
+  p.errorMessage {
+    font-size: 13px;
+    color: red;
+  }
+  button {
+    width: 80%;
+    place-self: center;
+    padding: 4px 8px;
+  }
+  .errorDisplay {
+    height: 16px;
+    width: 100%;
+  }
 `;
 
 const QuantitySelector = styled.div`
@@ -90,13 +103,29 @@ const QuantitySelector = styled.div`
     padding-bottom: 4px;
   }
 `;
-const initialInputValues = { quantity: 1, size: '8' };
+const initialInputValues = { size: 'half pound' };
 function CoffeeCard({ coffee, showOrderForm }) {
   const { addToCart } = useCart();
   const { inputs, handleChange, resetForm, clearForm } = useForm(
     initialInputValues
   );
   const [quantity, setQuantity] = useState(1);
+  const [error, setError] = useState();
+
+  function submitToCart(e) {
+    e.preventDefault();
+    if (!inputs.grind) {
+      setError('Please Choose A Grind');
+      return;
+    }
+    addToCart({
+      quantity: quantity,
+      coffee: coffee.name,
+      grind: inputs.grind,
+      unitPrice: inputs.size === 'half pound' ? coffee.price / 2 : coffee.price,
+      size: inputs.size,
+    });
+  }
 
   const cost = coffee.price / 100;
   return (
@@ -106,19 +135,7 @@ function CoffeeCard({ coffee, showOrderForm }) {
         <p>{coffee.roastLevel} roast</p>
         <p>{coffee.description}</p>
         <p>{coffee.region}</p>
-        <OrderForm
-          action='POST'
-          onSubmit={(e) => {
-            e.preventDefault(e);
-            addToCart({
-              quantity: 1,
-              coffee: coffee.name,
-              grind: 'Whole Bean',
-              unitPrice: coffee.price,
-            });
-          }}
-          open={showOrderForm}
-        >
+        <OrderForm action='POST' onSubmit={submitToCart} open={showOrderForm}>
           <fieldset>
             <div className='input-item'>
               <label htmlFor='grind'>Grind:</label>
@@ -127,15 +144,19 @@ function CoffeeCard({ coffee, showOrderForm }) {
                 id='grind'
                 name='grind'
                 value={inputs.grind}
-                onChange={handleChange}
+                onChange={(e) => {
+                  setError();
+                  handleChange(e);
+                }}
+                defaultValue='Select ...'
               >
-                <option default value={''} disabled>
-                  Choose Grind...
+                <option value='Select ...' default disabled>
+                  Select ...
                 </option>
-                <option value='whole'>Whole Bean</option>
-                <option value='coarse'>Coarse</option>
-                <option value='medium'>Medium</option>
-                <option value='fine'>fine</option>
+                <option value='whole bean'>Whole Bean</option>
+                <option value='coarse ground'>Coarse</option>
+                <option value='medium ground'>Medium</option>
+                <option value='fine ground'>Fine</option>
               </select>
             </div>
             <div className='input-item'>
@@ -146,8 +167,8 @@ function CoffeeCard({ coffee, showOrderForm }) {
                     id='size8'
                     type='radio'
                     name='size'
-                    value='8'
-                    checked={inputs.size === '8'}
+                    value='half pound'
+                    checked={inputs.size === 'half pound'}
                     onChange={handleChange}
                   />
                   8 oz.
@@ -157,8 +178,8 @@ function CoffeeCard({ coffee, showOrderForm }) {
                     id='size16'
                     type='radio'
                     name='size'
-                    value='16'
-                    checked={inputs.size === '16'}
+                    value='one pound'
+                    checked={inputs.size === 'one pound'}
                     onChange={handleChange}
                   />
                   16 oz.
@@ -189,11 +210,16 @@ function CoffeeCard({ coffee, showOrderForm }) {
                 </button>
               </QuantitySelector>
             </div>
-            <button type='submit'>Add to Cart</button>
+            <div className='errorDisplay'>
+              {error && <p className='errorMessage'>{error}</p>}
+            </div>
+            <button className='action-primary' type='submit'>
+              Add to Cart
+            </button>
           </fieldset>
         </OrderForm>
       </CoffeeDetails>
-      <p className='price'>$ {cost}</p>
+      <p className='price'>$ {cost} / lb.</p>
     </CardStyle>
   );
 }

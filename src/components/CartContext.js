@@ -20,27 +20,30 @@ function CartStateProvider({ children }) {
     setCartOpen(true);
   }
 
-  function addToCart({ quantity, coffee, grind, unitPrice }) {
+  function addToCart({ quantity, coffee, grind, unitPrice, size }) {
     console.log('unitPrice', unitPrice);
     // quantity will be -1 or +1
     if (!cartContents.length) {
       setCartContents((cartContents) => [
         ...cartContents,
-        { quantity, coffee, grind, unitPrice },
+        { quantity, coffee, grind, unitPrice, size },
       ]);
       return;
     }
 
-    //is there a match of type and grind?
+    //is there a match of type and grind amd size?
 
     const matchingCartItemIndex = cartContents.findIndex(
-      (cartItem) => cartItem.coffee === coffee && cartItem.grind === grind
+      (cartItem) =>
+        cartItem.coffee === coffee &&
+        cartItem.grind === grind &&
+        cartItem.size == size
     );
     if (matchingCartItemIndex === -1) {
       console.log('no match');
       setCartContents((cartContents) => [
         ...cartContents,
-        { quantity, coffee, grind, unitPrice },
+        { quantity, coffee, grind, unitPrice, size },
       ]);
       return;
     }
