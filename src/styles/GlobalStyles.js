@@ -11,7 +11,9 @@ const GlobalStyles = createGlobalStyle`
     --yellow: #ffc600;
     --white: #f7fbf8;
     --grey: #efefef;
+    --green: green;
 
+    --dropShadow0: 1px 1px 0px 0px rgba(0, 0, 0, 0);
     --dropShadow1: 1px 1px 0px 0px rgba(0, 0, 0, 0.3);
     --dropShadow3: -6px 12px 14px 10px rgba(0, 0, 0, 0.3);
     --desktopBreakPoint: 768px;
@@ -54,7 +56,7 @@ const GlobalStyles = createGlobalStyle`
 // --- Default ---
   a, button {
     appearance: none;
-    border: 0;
+    /* border: 0; */
     border-radius: 5px;
     background: transparent;
     color: inherit;
@@ -71,7 +73,7 @@ const GlobalStyles = createGlobalStyle`
     align-items: center;
     justify-content: center;
     // for tansitions to outlined:
-    border: 2px solid transparent;
+    border: 1px solid transparent;
 
   :disabled {
       cursor: not-allowed;
@@ -80,7 +82,26 @@ const GlobalStyles = createGlobalStyle`
   min-width:initial;
   text-align:center;
   padding: .25rem .5rem;
-}}
+}
+&.action-primary{
+  background: hsl(200, 50%, 70%);
+  box-shadow: var(--dropShadow1);
+
+  &:active{
+    background: hsl(200, 50%, 90%);
+    box-shadow: var(--dropShadow0);
+    outline: none;
+
+  }
+  &:focus {
+      border: 1px solid hsl(200, 50%, 50%);
+      outline: none;
+      border-radius: 5px;
+    }
+}
+}
+
+
     ul{
         list-style: none;
         padding:0;

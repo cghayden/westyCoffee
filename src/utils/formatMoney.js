@@ -1,8 +1,16 @@
-const formatter = Intl.NumberFormat('en-CA', {
-  style: 'currency',
-  currency: 'USD',
-});
+export default function formatMoney(amount = 0) {
+  const options = {
+    style: 'decimal',
+    // currency: 'USD',
+    minimumFractionDigits: 2,
+  };
 
-export default function formatMoney(cents) {
-  return formatter.format(cents / 100);
+  // check if its a clean dollar amount
+  // if (amount % 100 === 0) {
+  //   options.minimumFractionDigits = 0;
+  // }
+
+  const formatter = Intl.NumberFormat('en-US', options);
+
+  return formatter.format(amount / 100);
 }
