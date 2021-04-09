@@ -1,3 +1,4 @@
+import { Link } from 'gatsby';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import useForm from '../utils/useForm';
@@ -7,8 +8,8 @@ import PlusSvg from './Icons/PlusSvg';
 // import formatMoney from '../utils/formatMoney';
 
 const CardStyle = styled.div`
-  width: 220px;
-  height: 220px;
+  width: 240px;
+  height: 240px;
   background: hsla(120, 73%, 75%, 0.56);
   padding: 10px;
   display: grid;
@@ -18,6 +19,9 @@ const CardStyle = styled.div`
     width: 100%;
     /* grid-column: 1/-1; */
     font-size: 1.5rem;
+    a {
+      padding: 0;
+    }
   }
   p {
     font-size: 1.1rem;
@@ -55,13 +59,13 @@ const OrderForm = styled.form`
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-evenly;
   }
   .input-item {
     display: flex;
     justify-content: space-around;
     align-items: center;
-
+    margin: 6px 0;
     label {
       /* margin-right: auto; */
     }
@@ -130,11 +134,14 @@ function CoffeeCard({ coffee, showOrderForm }) {
   const cost = coffee.price / 100;
   return (
     <CardStyle>
-      <header>{coffee.name}</header>
+      <header>
+        <Link to={`/coffee/${coffee.slug.current}`}>{coffee.name}</Link>
+      </header>
       <CoffeeDetails>
         <p>{coffee.roastLevel} roast</p>
         <p>{coffee.description}</p>
         <p>{coffee.region}</p>
+        <p>{coffee.grade}</p>
         <OrderForm action='POST' onSubmit={submitToCart} open={showOrderForm}>
           <fieldset>
             <div className='input-item'>

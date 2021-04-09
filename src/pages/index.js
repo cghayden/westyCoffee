@@ -45,6 +45,10 @@ export const query = graphql`
         roastLevel
         description
         grade
+        blend
+        slug {
+          current
+        }
       }
     }
     textQuery: allSanityTextBlock(filter: { name: { eq: "Home Page Lead" } }) {
