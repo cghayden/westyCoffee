@@ -45,6 +45,7 @@ export const query = graphql`
         roastLevel
         description
         grade
+        stock
         blend
         slug {
           current

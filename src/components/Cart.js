@@ -4,6 +4,8 @@ import CartStyles from '../styles/CartStyles';
 import { useCart } from './CartContext';
 import CloseButton from './CloseButton';
 import formatMoney from '../utils/formatMoney';
+import TrashIcon from './Icons/TrashIcon';
+
 function Cart() {
   const { cartOpen, closeCart, cartContents } = useCart();
 
@@ -42,9 +44,16 @@ function Cart() {
 
 const CartItemLi = styled.li`
   width: 100%;
+  position: relative;
   /* display: grid; */
   /* grid-template-columns: auto 12ch 2rem auto; */
   /* border-bottom: 1px solid black; */
+  .trashButton {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: red;
+  }
   h3 {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
@@ -67,11 +76,26 @@ const CartItemLi = styled.li`
 `;
 
 function CartItem({ cartItem }) {
+  const { removeFromCart } = useCart();
   if (!cartItem) return null;
   const totalCost = formatMoney(cartItem.quantity * cartItem.unitPrice);
   return (
     <CartItemLi>
       <h3>{cartItem.coffee}</h3>
+      <button
+        type='button'
+        className='btn-icon trashButton'
+        onClick={() => {
+          if (
+            confirm(
+              `Would you like to remove all ${cartItem.size}, ${cartItem.grind}, ${cartItem.coffee} form your cart?`
+            )
+          )
+            removeFromCart(cartItem);
+        }}
+      >
+        <TrashIcon />
+      </button>
       <p className='grind'>{cartItem.grind}</p>
       <p className='price'>
         <span>{`${cartItem.quantity} ${cartItem.size} bag`} </span>

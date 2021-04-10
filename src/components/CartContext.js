@@ -63,6 +63,23 @@ function CartStateProvider({ children }) {
     }
   }
 
+  function removeFromCart(cartItem) {
+    console.log('cartItem', cartItem);
+    const cartCopy = [...cartContents];
+    const newCart = cartCopy.filter((item) => {
+      console.log('filter item', item);
+      if (
+        item.coffee === cartItem.coffee &&
+        item.grind === cartItem.grind &&
+        item.size === cartItem.size
+      ) {
+        return false;
+      } else return true;
+    });
+    console.log('newCart', newCart);
+    setCartContents(newCart);
+  }
+
   return (
     <CartProvider
       value={{
@@ -74,6 +91,7 @@ function CartStateProvider({ children }) {
         cartContents,
         setCartContents,
         addToCart,
+        removeFromCart,
       }}
     >
       {children}
