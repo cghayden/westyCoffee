@@ -1,19 +1,48 @@
-const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer')
+// const formatMoney = require('../../src/utils/formatMoney');
+// const axios = require('axios');
+// const gql = String.raw;
+function formatMoney(amount = 0) {
+  const options = {
+    style: 'decimal',
+    // currency: 'USD',
+    minimumFractionDigits: 2,
+  }
 
-function generateOrderEmail() {
+  // check if its a clean dollar amount
+  // if (amount % 100 === 0) {
+  //   options.minimumFractionDigits = 0;
+  // }
+
+  const formatter = Intl.NumberFormat('en-US', options)
+
+  return formatter.format(amount / 100)
+}
+function generateOrderEmail({ order, total }) {
   return `<div>
       <h2>Your Recent Order from Neightborly Coffee</h2>
-      <li>1lb. bag of medium grind Richie's Blend, 1 @ 15.00: $15.00</li>
-      <li>1lb. bag of fine grind Columbian, 1 @ 14.00: $14.00</li>
+      <ul>
+      ${order
+        .map((item) => {
+          const unitPrice = formatMoney(item.unitPrice)
+          const itemTotal = formatMoney(item.quantity * item.unitPrice)
+          return `<li>
+          <p><strong>${item.size} bag of ${item.grind} ${item.coffee}</strong></p>
+            <p>${item.quantity} @ ${unitPrice} ea. = ${itemTotal}</p></li>`
+        })
+        .join('')}
       </ul>
-      <p>Your total is <strong>$29.00</strong> due at pickup</p>
+      <p>Your total is <strong>${total}</strong> due at pickup</p>
+      <p>Thank You for your business!</p>
       <style>
           ul {
             list-style: none;
           }
       </style>
-    </div>`;
+    </div>`
 }
+//TODO = add payment receipt in email html,
+// TODO = add pick/delivery details in email html
 
 const transporter = nodemailer.createTransport({
   host: process.env.ETHEREAL_MAIL_HOST,
@@ -22,33 +51,33 @@ const transporter = nodemailer.createTransport({
     user: process.env.ETHEREAL_MAIL_USER,
     pass: process.env.ETHEREAL_MAIL_PASS,
   },
-});
+})
 
 exports.handler = async (event, context) => {
   // wait(5000)
-  const body = JSON.parse(event.body);
-  console.log(body);
+  const body = JSON.parse(event.body)
+  console.log(body)
 
   // Check if honeypot field is filled out
   if (body.mapleSyrup) {
     return {
       statusCode: 400,
       body: JSON.stringify({ message: 'robot detected, goodbye' }),
-    };
+    }
   }
 
   //Validation
   // make sure all fields are filled out and correct
-  const requiredFields = ['email', 'name', 'order'];
+  const requiredFields = ['email', 'name', 'order']
   for (const field of requiredFields) {
-    console.log(`Checking that ${field} is good`);
+    console.log(`Checking that ${field} is good`)
     if (!body[field]) {
       return {
         statusCode: 400,
         body: JSON.stringify({
           message: `Oops! You are missing the ${field} field`,
         }),
-      };
+      }
     }
   }
   // make sure customer actually has items in that order
@@ -58,7 +87,7 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({
         message: `The cart is empty!`,
       }),
-    };
+    }
   }
   //make sure items are in stock and of sufficient stock
 
@@ -76,14 +105,13 @@ exports.handler = async (event, context) => {
   // send the email
   const mailRes = await transporter.sendMail({
     from: ' Neighborly Coffee <neighborly@example.com>',
-    to: `Corey ... <cghayden@gmail>, orders@example.com`,
-    // to: `${body.name} <${body.email}>, orders@example.com`,
-    subject: 'New order!',
-    html: generateOrderEmail(),
-  });
-  console.log('mailRes', mailRes);
+    to: `${body.name} <${body.email}>, orders@neighborlycoffee.com`,
+    subject: 'Your Order!',
+    html: generateOrderEmail({ order: body.order, total: body.total }),
+  })
+  console.log('mailRes', mailRes)
   return {
     statusCode: 200,
     body: JSON.stringify({ message: 'Success' }),
-  };
-};
+  }
+}

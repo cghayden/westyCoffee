@@ -22,7 +22,6 @@ function CartStateProvider({ children }) {
   }
 
   function addToCart({ quantity, coffee, grind, unitPrice, size }) {
-    console.log('unitPrice', unitPrice);
     // quantity will be -1 or +1
     if (!cartContents.length) {
       setCartContents((cartContents) => [
@@ -31,30 +30,28 @@ function CartStateProvider({ children }) {
       ]);
       return;
     }
-
     //is there a match of type and grind amd size?
-
     const matchingCartItemIndex = cartContents.findIndex(
       (cartItem) =>
         cartItem.coffee === coffee &&
         cartItem.grind === grind &&
         cartItem.size == size
     );
+    //item of same size, grind and type IS NOT in the cart already
     if (matchingCartItemIndex === -1) {
-      console.log('no match');
       setCartContents((cartContents) => [
         ...cartContents,
         { quantity, coffee, grind, unitPrice, size },
       ]);
       return;
     }
+    //item of same size, grind and type IS in the cart already
     if (matchingCartItemIndex > -1) {
-      console.log('match');
       //make a copy of cart,
       const cartCopy = [...cartContents];
-      //take out,
+      //take out matching item,
       const existingCartItem = cartCopy.splice(matchingCartItemIndex, 1);
-      //add to it,
+      //add / (TODO : subtract) to it,
       existingCartItem[0].quantity = existingCartItem[0].quantity + quantity;
       // put back in
       cartCopy.push(existingCartItem[0]);
@@ -65,7 +62,6 @@ function CartStateProvider({ children }) {
   }
 
   function removeFromCart(cartItem) {
-    console.log('cartItem', cartItem);
     const cartCopy = [...cartContents];
     const newCart = cartCopy.filter((item) => {
       console.log('filter item', item);
@@ -77,15 +73,28 @@ function CartStateProvider({ children }) {
         return false;
       } else return true;
     });
-    console.log('newCart', newCart);
     setCartContents(newCart);
   }
 
-  async function submitOrder(inputs) {
-    // gather all the data
+  async function submitOrder(inputs, coffeePrices) {
+    //coffeePrices is from the checkout page dynamic query of the all coffees and their prices, to guard against client changing the prices in the browser state before submitting order.
+    //extract coffee name and price into array of sets of arrays [...[name, price]]
+    const coffee_price = coffeePrices.map((coffee) => [
+      coffee.name,
+      coffee.price,
+    ]);
+    //create object of coffeename:price
+    const coffeePriceObj = Object.fromEntries(coffee_price);
+    // set prices on the cart contents wiht the price obtained from sanity(db)
+    const cartCopy = cartContents.map((cartItem) => {
+      const price = coffeePriceObj[cartItem.coffee];
+      const validatedUnitPrice =
+        cartItem.size === 'half pound' ? price / 2 : price;
+      return { ...cartItem, price, unitPrice: validatedUnitPrice };
+    });
     const body = {
-      order: cartContents,
-      total: formatMoney(calcOrderTotal(cartContents)),
+      order: cartCopy,
+      total: formatMoney(calcOrderTotal(cartCopy)),
       name: inputs.name,
       email: inputs.email,
       mapleSyrup: inputs.mapleSyrup,
@@ -100,7 +109,7 @@ function CartStateProvider({ children }) {
         body: JSON.stringify(body),
       }
     );
-    console.log('res.body', res.body.json());
+    return res;
   }
 
   return (

@@ -1,44 +1,64 @@
-import styled from 'styled-components';
-import SEO from '../components/SEO';
-import useForm from '../utils/useForm';
-import React, { useState } from 'react';
-import { useCart } from '../components/CartContext';
-import CartPageContents from '../components/CartPage_CartContents';
-
+import styled from 'styled-components'
+import SEO from '../components/SEO'
+import useForm from '../utils/useForm'
+import React, { useState } from 'react'
+import { useCart } from '../components/CartContext'
+import CartPageContents from '../components/CartPage_CartContents'
+import useCoffeePrices from '../utils/useCoffeePrices'
+const CartPageWrapper = styled.div`
+  font-family: monospace;
+`
 const FormStyles = styled.div`
   fieldset {
     border: none;
     max-height: 600px;
     overflow: auto;
-    display: grid;
-    gap: 1rem;
+    display: flex;
+    flex-direction: column;
     align-content: start;
+    input {
+      margin: 5px;
+    }
+    button {
+      background: green;
+      color: white;
+    }
   }
   .mapleSyrup {
     display: none;
   }
-`;
+`
 
-const initialInputs = { name: '', email: '', mapleSyrup: '' };
+const initialInputs = { name: '', email: '', mapleSyrup: '' }
 function checkoutPage() {
-  const [error, setError] = useState();
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
-  const { cartContents, addToCart, removeFromCart, submitOrder } = useCart();
+  const [error, setError] = useState()
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState('')
+  const { cartContents, addToCart, removeFromCart, submitOrder } = useCart()
   const { inputs, handleChange, resetForm, clearForm } = useForm({
     initialInputs,
-  });
+  })
+  const { coffeePrices } = useCoffeePrices()
 
   async function placeOrder(e) {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    await submitOrder(inputs);
-    setLoading(false);
+    e.preventDefault()
+    setLoading(true)
+    setError(null)
+    const orderRes = await submitOrder(inputs, coffeePrices)
+    console.log('orderRes', orderRes)
+    setLoading(false)
+    // TODO - error handling, or redirect
   }
 
+  if (!cartContents.length) {
+    return (
+      <div>
+        <p>Your cart is empty!</p>
+      </div>
+    )
+  }
   return (
-    <div>
+    <CartPageWrapper>
       <SEO title='Checkout' />
       <CartPageContents />
       <FormStyles action='POST'>
@@ -71,11 +91,11 @@ function checkoutPage() {
           />
         </fieldset>
         <button type='submit' onClick={placeOrder}>
-          Submit Order
+          Submit{loading ? 'ting' : null} Order
         </button>
       </FormStyles>
-    </div>
-  );
+    </CartPageWrapper>
+  )
 }
 
-export default checkoutPage;
+export default checkoutPage
