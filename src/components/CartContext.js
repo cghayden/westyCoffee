@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
-
-const CartContext = React.createContext();
+import formatMoney from '../utils/formatMoney';
+import calcOrderTotal from '../utils/calcOrderTotal';
+const CartContext = createContext();
 const CartProvider = CartContext.Provider;
 
 function CartStateProvider({ children }) {
@@ -80,6 +81,28 @@ function CartStateProvider({ children }) {
     setCartContents(newCart);
   }
 
+  async function submitOrder(inputs) {
+    // gather all the data
+    const body = {
+      order: cartContents,
+      total: formatMoney(calcOrderTotal(cartContents)),
+      name: inputs.name,
+      email: inputs.email,
+      mapleSyrup: inputs.mapleSyrup,
+    };
+    const res = await fetch(
+      `${process.env.GATSBY_SERVERLESS_BASE}/placeOrder`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      }
+    );
+    console.log('res.body', res.body.json());
+  }
+
   return (
     <CartProvider
       value={{
@@ -92,6 +115,7 @@ function CartStateProvider({ children }) {
         setCartContents,
         addToCart,
         removeFromCart,
+        submitOrder,
       }}
     >
       {children}

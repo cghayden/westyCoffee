@@ -17,8 +17,6 @@ export default function useForm(initial = {}) {
   // }
 
   function handleChange(e) {
-    console.log('e', e.target.name);
-    console.log('e', e.target.value);
     let { value, name, type } = e.target;
     if (type === 'number') {
       value = parseInt(value);
@@ -37,7 +35,7 @@ export default function useForm(initial = {}) {
     setInputs(initial);
   }
 
-  // https://courses.wesbos.com/account/access/5bc08946d9a7d7279eef2f62/view/507222373 ::
+  // source: https://courses.wesbos.com/account/access/5bc08946d9a7d7279eef2f62/view/507222373 ::
 
   function clearForm() {
     const blankState = Object.fromEntries(

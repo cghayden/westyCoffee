@@ -1,38 +1,32 @@
 import React from 'react';
 import styled from 'styled-components';
-import CartStyles from '../styles/CartStyles';
 import { useCart } from './CartContext';
-import CloseButton from './CloseButton';
 import TrashIcon from './Icons/TrashIcon';
 import formatMoney from '../utils/formatMoney';
 import calcOrderTotal from '../utils/calcOrderTotal';
-import { Link } from 'gatsby';
+import CartPageStyles from '../styles/CartPageStyles';
 
-function Cart() {
-  const { cartOpen, closeCart, cartContents } = useCart();
+function CartPageContents() {
+  const { cartContents, removeFromCart } = useCart();
 
   return (
-    <CartStyles open={cartOpen}>
+    <CartPageStyles>
       <header>
         <h3>Your Cart</h3>
-        <CloseButton
-          title='Close Cart'
-          aria-label='Close Your Cart Modal'
-          onClick={closeCart}
-        >
-          &times;
-        </CloseButton>
       </header>
       <ul>
         {cartContents.map((cartItem, i) => (
-          <CartItem cartItem={cartItem} key={`${i}-${cartItem.coffee}`} />
+          <CartItem
+            cartItem={cartItem}
+            removeFromCart={removeFromCart}
+            key={`${i}-${cartItem.coffee}`}
+          />
         ))}
       </ul>
       <footer>
         <h3>Total: $ {formatMoney(calcOrderTotal(cartContents))}</h3>
-        <Link to='/checkout'>Checkout</Link>
       </footer>
-    </CartStyles>
+    </CartPageStyles>
   );
 }
 
@@ -65,8 +59,7 @@ const CartItemLi = styled.li`
   }
 `;
 
-function CartItem({ cartItem }) {
-  const { removeFromCart } = useCart();
+function CartItem({ cartItem, removeFromCart }) {
   if (!cartItem) return null;
   const totalCost = formatMoney(cartItem.quantity * cartItem.unitPrice);
   return (
@@ -98,4 +91,4 @@ function CartItem({ cartItem }) {
   );
 }
 
-export default Cart;
+export default CartPageContents;
