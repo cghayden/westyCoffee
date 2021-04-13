@@ -5,7 +5,6 @@ import useForm from '../utils/useForm'
 import { useCart } from './CartContext'
 import MinusSvg from './Icons/MinusSvg'
 import PlusSvg from './Icons/PlusSvg'
-// import formatMoney from '../utils/formatMoney';
 
 const CardStyle = styled.div`
   width: 260px;
@@ -110,7 +109,6 @@ const QuantitySelector = styled.div`
 const initialInputValues = { size: 'half pound' }
 function CoffeeCard({ coffee, showOrderForm }) {
   const { addToCart, totalCartPounds } = useCart()
-  console.log('totalCartPounds', totalCartPounds)
   const { inputs, handleChange, resetForm, clearForm } = useForm(
     initialInputValues
   )
