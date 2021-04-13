@@ -1,13 +1,12 @@
-import React from 'react';
-import styled from 'styled-components';
-import { useCart } from './CartContext';
-import TrashIcon from './Icons/TrashIcon';
-import formatMoney from '../utils/formatMoney';
-import calcOrderTotal from '../utils/calcOrderTotal';
-import CartPageStyles from '../styles/CartPageStyles';
+import React from 'react'
+import styled from 'styled-components'
+import { useCart } from './CartContext'
+import TrashIcon from './Icons/TrashIcon'
+import formatMoney from '../utils/formatMoney'
+import CartPageStyles from '../styles/CartPageStyles'
 
 function CartPageContents() {
-  const { cartContents, removeFromCart } = useCart();
+  const { cartContents, removeFromCart, orderTotal } = useCart()
 
   return (
     <CartPageStyles>
@@ -24,10 +23,10 @@ function CartPageContents() {
         ))}
       </ul>
       <footer>
-        <h3>Total: $ {formatMoney(calcOrderTotal(cartContents))}</h3>
+        <h3>Total: $ {orderTotal}</h3>
       </footer>
     </CartPageStyles>
-  );
+  )
 }
 
 const CartItemLi = styled.li`
@@ -57,11 +56,11 @@ const CartItemLi = styled.li`
     grid-gap: 0.5rem;
     margin: 0.5rem;
   }
-`;
+`
 
 function CartItem({ cartItem, removeFromCart }) {
-  if (!cartItem) return null;
-  const totalCost = formatMoney(cartItem.quantity * cartItem.unitPrice);
+  if (!cartItem) return null
+  const totalCost = formatMoney(cartItem.quantity * cartItem.unitPrice)
   return (
     <CartItemLi>
       <h3>{cartItem.coffee}</h3>
@@ -74,7 +73,7 @@ function CartItem({ cartItem, removeFromCart }) {
               `Would you like to remove all ${cartItem.size}, ${cartItem.grind}, ${cartItem.coffee} form your cart?`
             )
           )
-            removeFromCart(cartItem);
+            removeFromCart(cartItem)
         }}
       >
         <TrashIcon />
@@ -88,7 +87,7 @@ function CartItem({ cartItem, removeFromCart }) {
         <span>${totalCost}</span>
       </p>
     </CartItemLi>
-  );
+  )
 }
 
-export default CartPageContents;
+export default CartPageContents

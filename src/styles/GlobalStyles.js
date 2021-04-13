@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from 'styled-components'
 
 // see video 7 for more on importing svgs
 // import bg from '../assets/images/bg.svg';
@@ -12,11 +12,15 @@ const GlobalStyles = createGlobalStyle`
     --white: #f7fbf8;
     --grey: #efefef;
     --green: green;
+    --stripeBlue: #829fff;
 
     --dropShadow0: 1px 1px 0px 0px rgba(0, 0, 0, 0);
     --dropShadow1: 1px 1px 0px 0px rgba(0, 0, 0, 0.3);
     --dropShadow3: -6px 12px 14px 10px rgba(0, 0, 0, 0.3);
     --desktopBreakPoint: 768px;
+  }
+  * {
+    box-sizing: border-box;
   }
   html{
       height: 100%;
@@ -140,6 +144,6 @@ const GlobalStyles = createGlobalStyle`
           display:none;
       }
   }
-`;
+`
 
-export default GlobalStyles;
+export default GlobalStyles

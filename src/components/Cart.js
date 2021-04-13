@@ -31,7 +31,7 @@ function Cart() {
       {!!cartContents.length ? (
         <footer>
           <h3>Total: $ {formatMoney(calcOrderTotal(cartContents))}</h3>
-          <Link onClick={closeCart} to='/checkout'>
+          <Link onClick={closeCart} to='/stripecheckout'>
             Checkout
           </Link>
         </footer>

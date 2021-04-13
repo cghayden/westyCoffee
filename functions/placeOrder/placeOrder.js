@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer')
+const { default: Stripe } = require('stripe')
 // const formatMoney = require('../../src/utils/formatMoney');
 // const axios = require('axios');
 // const gql = String.raw;
@@ -19,8 +20,8 @@ function formatMoney(amount = 0) {
   return formatter.format(amount / 100)
 }
 function generateOrderEmail({ order, total }) {
-  return `<div>
-      <h2>Your Recent Order from Neightborly Coffee</h2>
+  return `<div
+      <h2>Your Recent Order from Neighborly Coffee</h2>
       <ul>
       ${order
         .map((item) => {
@@ -41,6 +42,7 @@ function generateOrderEmail({ order, total }) {
       </style>
     </div>`
 }
+
 //TODO = add payment receipt in email html,
 // TODO = add pick/delivery details in email html
 
@@ -53,6 +55,10 @@ const transporter = nodemailer.createTransport({
   },
 })
 
+const stripeConfig = new Stripe(process.env.GATSBY_STRIPE_SECRET_KEY, {
+  apiVersion: '2020-08-27',
+})
+console.log('stripeConfig', stripeConfig)
 exports.handler = async (event, context) => {
   // wait(5000)
   const body = JSON.parse(event.body)
@@ -80,7 +86,7 @@ exports.handler = async (event, context) => {
       }
     }
   }
-  // make sure customer actually has items in that order
+  // make sure customer actually has items in that order - do this in context func?
   if (!body.order.length) {
     return {
       statusCode: 400,
@@ -89,20 +95,32 @@ exports.handler = async (event, context) => {
       }),
     }
   }
-  //make sure items are in stock and of sufficient stock
+  // TODO make sure items are in stock and of sufficient stock
 
-  //calculate and verify total price
+  // x calculate and verify total price - INCOMING FROM CONTEXT processOrder
 
   //create payment with stripe
+  const charge = await stripeConfig.paymentIntents
+    .create({
+      amount: body.total,
+      currency: 'USD',
+      confirm: true,
+      payment_method: body.paymentMethod,
+    })
+    .catch((err) => {
+      console.error(err)
+      throw new Error(err.message)
+    })
+  console.log('charge', charge)
+
   //receive confirmation from stripe
 
   // ? write order to sanity
 
-  // email confirmations:
+  // semnd email confirmations:
   // to rich / order intake
   // to customer
 
-  // send the email
   const mailRes = await transporter.sendMail({
     from: ' Neighborly Coffee <neighborly@example.com>',
     to: `${body.name} <${body.email}>, orders@neighborlycoffee.com`,
