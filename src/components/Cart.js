@@ -5,11 +5,10 @@ import { useCart } from './CartContext'
 import CloseButton from './CloseButton'
 import TrashIcon from './Icons/TrashIcon'
 import formatMoney from '../utils/formatMoney'
-import calcOrderTotal from '../utils/calcOrderTotal'
 import { Link } from 'gatsby'
 
 function Cart() {
-  const { cartOpen, closeCart, cartContents } = useCart()
+  const { cartOpen, closeCart, cartContents, orderTotal } = useCart()
 
   return (
     <CartStyles open={cartOpen}>
@@ -30,8 +29,8 @@ function Cart() {
       </ul>
       {!!cartContents.length ? (
         <footer>
-          <h3>Total: $ {formatMoney(calcOrderTotal(cartContents))}</h3>
-          <Link onClick={closeCart} to='/stripecheckout'>
+          <h3>Total: $ {orderTotal}</h3>
+          <Link onClick={closeCart} to='/pay'>
             Checkout
           </Link>
         </footer>
@@ -50,9 +49,6 @@ const CartItemLi = styled.li`
     align-items: center;
     justify-content: space-between;
     .trashButton {
-      /* position: absolute; */
-      /* top: 0; */
-      /* right: 0; */
       color: red;
       margin-left: auto;
     }

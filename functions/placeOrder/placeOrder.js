@@ -44,7 +44,6 @@ function generateOrderEmail({ order, total }) {
 }
 
 //TODO = add payment receipt in email html,
-// TODO = add pick/delivery details in email html
 
 const transporter = nodemailer.createTransport({
   host: process.env.ETHEREAL_MAIL_HOST,
@@ -55,10 +54,9 @@ const transporter = nodemailer.createTransport({
   },
 })
 
-const stripeConfig = new Stripe(process.env.GATSBY_STRIPE_SECRET_KEY, {
+const stripe = new Stripe(process.env.GATSBY_STRIPE_SECRET_KEY, {
   apiVersion: '2020-08-27',
 })
-console.log('stripeConfig', stripeConfig)
 exports.handler = async (event, context) => {
   // wait(5000)
   const body = JSON.parse(event.body)
@@ -76,7 +74,6 @@ exports.handler = async (event, context) => {
   // make sure all fields are filled out and correct
   const requiredFields = ['email', 'name', 'order']
   for (const field of requiredFields) {
-    console.log(`Checking that ${field} is good`)
     if (!body[field]) {
       return {
         statusCode: 400,
@@ -100,7 +97,9 @@ exports.handler = async (event, context) => {
   // x calculate and verify total price - INCOMING FROM CONTEXT processOrder
 
   //create payment with stripe
-  const charge = await stripeConfig.paymentIntents
+  // charge(confirm) here
+  // OPTION - create an intent, and attach intent.client_secret to the response to the client so it can be used on the frontend when ready to finalize payment.  client secret can be kept in the shopping cart.
+  const charge = await stripe.paymentIntents
     .create({
       amount: body.total,
       currency: 'USD',
@@ -127,7 +126,6 @@ exports.handler = async (event, context) => {
     subject: 'Your Order!',
     html: generateOrderEmail({ order: body.order, total: body.total }),
   })
-  console.log('mailRes', mailRes)
   return {
     statusCode: 200,
     body: JSON.stringify({ message: 'Success' }),

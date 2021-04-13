@@ -109,7 +109,8 @@ const QuantitySelector = styled.div`
 `
 const initialInputValues = { size: 'half pound' }
 function CoffeeCard({ coffee, showOrderForm }) {
-  const { addToCart } = useCart()
+  const { addToCart, totalCartPounds } = useCart()
+  console.log('totalCartPounds', totalCartPounds)
   const { inputs, handleChange, resetForm, clearForm } = useForm(
     initialInputValues
   )
@@ -117,9 +118,14 @@ function CoffeeCard({ coffee, showOrderForm }) {
   const [error, setError] = useState()
 
   function submitToCart(e) {
+    const poundsToAdd = inputs.size === 'half pound' ? quantity * 0.5 : quantity
     e.preventDefault()
     if (!inputs.grind) {
       setError('Please Choose A Grind')
+      return
+    }
+    if (totalCartPounds[coffee.name] + poundsToAdd > coffee.stock) {
+      setError('There is not sufficient quantity available in stock')
       return
     }
     addToCart({
@@ -221,7 +227,8 @@ function CoffeeCard({ coffee, showOrderForm }) {
               {error && <p className='errorMessage'>{error}</p>}
             </div>
             <button className='action-primary' type='submit'>
-              Add to Cart
+              Add {quantity} {inputs.size} bag{quantity > 1 ? `s` : null} to
+              Cart
             </button>
           </fieldset>
         </OrderForm>

@@ -4,14 +4,16 @@ import { useCart } from './CartContext'
 import TrashIcon from './Icons/TrashIcon'
 import formatMoney from '../utils/formatMoney'
 import CartPageStyles from '../styles/CartPageStyles'
+import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee'
 
-function CartPageContents() {
+function CheckoutPage_CartContents() {
   const { cartContents, removeFromCart, orderTotal } = useCart()
-
+  const { availableCoffee } = useCurrentAvailableCoffee()
+  console.log('availableCoffee', availableCoffee)
   return (
     <CartPageStyles>
       <header>
-        <h3>Your Cart</h3>
+        <h3>Review Your Cart</h3>
       </header>
       <ul>
         {cartContents.map((cartItem, i) => (
@@ -90,4 +92,4 @@ function CartItem({ cartItem, removeFromCart }) {
   )
 }
 
-export default CartPageContents
+export default CheckoutPage_CartContents

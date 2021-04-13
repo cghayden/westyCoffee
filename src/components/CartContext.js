@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState } from 'react'
 import formatMoney from '../utils/formatMoney'
 import calcOrderTotal from '../utils/calcOrderTotal'
+import calcTotalPoundsInCart from '../utils/calcTotalPoundsInCart'
 const CartContext = createContext()
 const CartProvider = CartContext.Provider
 
@@ -117,7 +118,7 @@ function CartStateProvider({ children }) {
     return res
   }
   const orderTotal = formatMoney(calcOrderTotal(cartContents))
-
+  const totalCartPounds = calcTotalPoundsInCart(cartContents)
   return (
     <CartProvider
       value={{
@@ -132,6 +133,7 @@ function CartStateProvider({ children }) {
         removeFromCart,
         processOrder,
         orderTotal,
+        totalCartPounds,
       }}
     >
       {children}

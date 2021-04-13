@@ -212,7 +212,11 @@ const StripeCheckoutStyles = styled.div`
   .ResetButton {
     border: 0;
     cursor: pointer;
-    background: transparent;
+    background: black;
+    color: white;
+  }
+  .mapleSyrup {
+    display: none;
   }
 `
 

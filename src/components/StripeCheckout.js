@@ -122,6 +122,7 @@ const CheckoutForm = () => {
     email: '',
     phone: '',
     name: '',
+    mapleSyrup: '',
   })
   const { orderTotal, processOrder } = useCart()
   const { coffeePrices } = useCoffeePrices()
@@ -175,6 +176,7 @@ const CheckoutForm = () => {
       name: '',
       email: '',
       phone: '',
+      mapleSyrup: '',
     })
   }
 
@@ -227,6 +229,16 @@ const CheckoutForm = () => {
           onChange={(e) => {
             setBillingDetails({ ...billingDetails, phone: e.target.value })
           }}
+        />
+        <input
+          type='mapleSyrup'
+          name='mapleSyrup'
+          id='mapleSyrup'
+          value={billingDetails.mapleSyrup}
+          onChange={(e) => {
+            setBillingDetails({ ...billingDetails, mapleSyrup: e.target.value })
+          }}
+          className='mapleSyrup'
         />
       </fieldset>
       <fieldset className='FormGroup'>
