@@ -1,15 +1,14 @@
-import { Link } from 'gatsby';
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import useForm from '../utils/useForm';
-import { useCart } from './CartContext';
-import MinusSvg from './Icons/MinusSvg';
-import PlusSvg from './Icons/PlusSvg';
-// import formatMoney from '../utils/formatMoney';
+import { Link } from 'gatsby'
+import React, { useState } from 'react'
+import styled from 'styled-components'
+import useForm from '../utils/useForm'
+import { useCart } from './CartContext'
+import MinusSvg from './Icons/MinusSvg'
+import PlusSvg from './Icons/PlusSvg'
 
 const CardStyle = styled.div`
-  width: 240px;
-  height: 240px;
+  width: 260px;
+  height: 260px;
   background: hsla(120, 73%, 75%, 0.56);
   padding: 10px;
   display: grid;
@@ -31,14 +30,14 @@ const CardStyle = styled.div`
       align-self: flex-end;
     }
   }
-`;
+`
 const CoffeeDetails = styled.div`
   position: relative;
   height: 100%;
   display: grid;
   flex-direction: column;
   place-items: center;
-`;
+`
 const OrderForm = styled.form`
   background: var(--white);
   height: ${(props) => (props.open ? '100%' : 0)};
@@ -91,7 +90,7 @@ const OrderForm = styled.form`
     height: 16px;
     width: 100%;
   }
-`;
+`
 
 const QuantitySelector = styled.div`
   display: flex;
@@ -106,21 +105,26 @@ const QuantitySelector = styled.div`
     font-size: 1.5rem;
     padding-bottom: 4px;
   }
-`;
-const initialInputValues = { size: 'half pound' };
+`
+const initialInputValues = { size: 'half pound' }
 function CoffeeCard({ coffee, showOrderForm }) {
-  const { addToCart } = useCart();
+  const { addToCart, totalCartPounds } = useCart()
   const { inputs, handleChange, resetForm, clearForm } = useForm(
     initialInputValues
-  );
-  const [quantity, setQuantity] = useState(1);
-  const [error, setError] = useState();
+  )
+  const [quantity, setQuantity] = useState(1)
+  const [error, setError] = useState()
 
   function submitToCart(e) {
-    e.preventDefault();
+    const poundsToAdd = inputs.size === 'half pound' ? quantity * 0.5 : quantity
+    e.preventDefault()
     if (!inputs.grind) {
-      setError('Please Choose A Grind');
-      return;
+      setError('Please Choose A Grind')
+      return
+    }
+    if (totalCartPounds[coffee.name] + poundsToAdd > coffee.stock) {
+      setError('There is not sufficient quantity available in stock')
+      return
     }
     addToCart({
       quantity: quantity,
@@ -128,10 +132,10 @@ function CoffeeCard({ coffee, showOrderForm }) {
       grind: inputs.grind,
       unitPrice: inputs.size === 'half pound' ? coffee.price / 2 : coffee.price,
       size: inputs.size,
-    });
+    })
   }
 
-  const cost = coffee.price / 100;
+  const cost = coffee.price / 100
   return (
     <CardStyle>
       <header>
@@ -152,8 +156,8 @@ function CoffeeCard({ coffee, showOrderForm }) {
                 name='grind'
                 value={inputs.grind}
                 onChange={(e) => {
-                  setError();
-                  handleChange(e);
+                  setError()
+                  handleChange(e)
                 }}
                 defaultValue='Select ...'
               >
@@ -209,7 +213,7 @@ function CoffeeCard({ coffee, showOrderForm }) {
                   onClick={() =>
                     setQuantity((q) => {
                       //if q <= in stock, add 1
-                      return (q += 1);
+                      return (q += 1)
                     })
                   }
                 >
@@ -221,14 +225,15 @@ function CoffeeCard({ coffee, showOrderForm }) {
               {error && <p className='errorMessage'>{error}</p>}
             </div>
             <button className='action-primary' type='submit'>
-              Add to Cart
+              Add {quantity} {inputs.size} bag{quantity > 1 ? `s` : null} to
+              Cart
             </button>
           </fieldset>
         </OrderForm>
       </CoffeeDetails>
       <p className='price'>$ {cost} / lb.</p>
     </CardStyle>
-  );
+  )
 }
 
-export default CoffeeCard;
+export default CoffeeCard

@@ -1,18 +1,15 @@
-import React from 'react';
-import styled from 'styled-components';
-import CartStyles from '../styles/CartStyles';
-import { useCart } from './CartContext';
-import CloseButton from './CloseButton';
-import formatMoney from '../utils/formatMoney';
-function Cart() {
-  const { cartOpen, closeCart, cartContents } = useCart();
+import React from 'react'
+import styled from 'styled-components'
+import CartStyles from '../styles/CartStyles'
+import { useCart } from './CartContext'
+import CloseButton from './CloseButton'
+import TrashIcon from './Icons/TrashIcon'
+import formatMoney from '../utils/formatMoney'
+import { Link } from 'gatsby'
 
-  function calcTotalPrice(cartContents) {
-    return cartContents.reduce((tally, cartItem) => {
-      //   if (!cartItem.) return tally; // products can be deleted, but they could still be in your cart
-      return tally + cartItem.quantity * cartItem.unitPrice;
-    }, 0);
-  }
+function Cart() {
+  const { cartOpen, closeCart, cartContents, orderTotal } = useCart()
+
   return (
     <CartStyles open={cartOpen}>
       <header>
@@ -30,21 +27,32 @@ function Cart() {
           <CartItem cartItem={cartItem} key={`${i}-${cartItem.coffee}`} />
         ))}
       </ul>
-      <footer>
-        <h3>Total: $ {formatMoney(calcTotalPrice(cartContents))}</h3>
-        <p>Checkout</p>
-        {/* <p>{formatMoney(calcTotalPrice(me.cart))}</p>
-            <Checkout /> */}
-      </footer>
+      {!!cartContents.length ? (
+        <footer>
+          <h3>Total: $ {orderTotal}</h3>
+          <Link onClick={closeCart} to='/pay'>
+            Checkout
+          </Link>
+        </footer>
+      ) : (
+        <p>Your cart is empty!</p>
+      )}
     </CartStyles>
-  );
+  )
 }
 
 const CartItemLi = styled.li`
   width: 100%;
-  /* display: grid; */
-  /* grid-template-columns: auto 12ch 2rem auto; */
-  /* border-bottom: 1px solid black; */
+  position: relative;
+  .cartItem-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .trashButton {
+      color: red;
+      margin-left: auto;
+    }
+  }
   h3 {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
@@ -58,31 +66,46 @@ const CartItemLi = styled.li`
   .price {
     place-items: center;
     display: grid;
-    /* text-align: right; */
     grid-template-columns: 1fr 2ch max-content 2ch max-content;
     justify-content: end;
     grid-gap: 0.5rem;
     margin: 0.5rem;
   }
-`;
+`
 
 function CartItem({ cartItem }) {
-  if (!cartItem) return null;
-  const totalCost = formatMoney(cartItem.quantity * cartItem.unitPrice);
+  const { removeFromCart } = useCart()
+  if (!cartItem) return null
+  const totalCost = formatMoney(cartItem.quantity * cartItem.unitPrice)
   return (
     <CartItemLi>
-      <h3>{cartItem.coffee}</h3>
+      <div className='cartItem-heading'>
+        <h3>{cartItem.coffee}</h3>
+        <button
+          type='button'
+          className='btn-icon trashButton'
+          onClick={() => {
+            if (
+              confirm(
+                `Would you like to remove all ${cartItem.size}, ${cartItem.grind}, ${cartItem.coffee} form your cart?`
+              )
+            )
+              removeFromCart(cartItem)
+          }}
+        >
+          <TrashIcon />
+        </button>
+      </div>
       <p className='grind'>{cartItem.grind}</p>
       <p className='price'>
         <span>{`${cartItem.quantity} ${cartItem.size} bag`} </span>
-        {/* <span>{``}</span> */}
         <span>&times; </span>
         <span>${formatMoney(cartItem.unitPrice)} </span>
         <span>= </span>
         <span>${totalCost}</span>
       </p>
     </CartItemLi>
-  );
+  )
 }
 
-export default Cart;
+export default Cart
