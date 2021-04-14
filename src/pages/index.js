@@ -1,24 +1,21 @@
-import React from 'react';
-import { graphql } from 'gatsby';
-import SEO from '../components/SEO';
-import styled from 'styled-components';
-import CoffeeDisplay from '../components/CoffeeDisplay';
-// import CoffeeCard from '../components/CoffeeCard';
-// import useLatestHomePageData from '../utils/useLatestHomePageData';
-// import HomePageText from '../components/HomePageText';
+import React from 'react'
+import { graphql } from 'gatsby'
+import SEO from '../components/SEO'
+import styled from 'styled-components'
+import CoffeeDisplay from '../components/CoffeeDisplay'
 
-const HomeMainStyles = styled.main``;
+const HomeMainStyles = styled.main``
 
 const HomePageTextStyles = styled.div`
   a {
     padding: 0;
     color: green;
   }
-`;
+`
 
 // *** STATICALLY BUILT PAGE
 export default function homePage({ data }) {
-  const text = data.textQuery.nodes[0].content;
+  const text = data.textQuery.nodes[0].content
   return (
     <>
       <SEO title={'Neighborly Coffee'} />
@@ -32,7 +29,7 @@ export default function homePage({ data }) {
         <CoffeeDisplay allCoffee={data.coffees.nodes} />
       </HomeMainStyles>
     </>
-  );
+  )
 }
 export const query = graphql`
   query {
@@ -62,7 +59,7 @@ export const query = graphql`
       }
     }
   }
-`;
+`
 
 // *** DYNAMIC DATA PAGE QUERIED FROM SANITY
 // export default function HomePage() {

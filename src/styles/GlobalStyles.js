@@ -11,8 +11,12 @@ const GlobalStyles = createGlobalStyle`
     --yellow: #ffc600;
     --white: #f7fbf8;
     --grey: #efefef;
-    --green: green;
+    --green: hsla(138, 75%, 75%,1);
     --stripeBlue: #829fff;
+    --redFlame: hsla(15, 61%, 51%,1);
+    --redFlameFade: hsla(15, 61%, 51%,.7);
+    --blueYonder: hsla(217, 34%, 48%, 1);
+    --blueYonderFade: hsla(217, 34%, 48%, .7);
 
     --dropShadow0: 1px 1px 0px 0px rgba(0, 0, 0, 0);
     --dropShadow1: 1px 1px 0px 0px rgba(0, 0, 0, 0.3);
@@ -88,11 +92,29 @@ const GlobalStyles = createGlobalStyle`
   padding: .25rem .5rem;
 }
 &.action-primary{
-  background: hsl(200, 50%, 70%);
+  background: var(--redFlame);
+  color: white;
   box-shadow: var(--dropShadow1);
 
   &:active{
-    background: hsl(200, 50%, 90%);
+    background: var(--redFlameFade);
+    box-shadow: var(--dropShadow0);
+    outline: none;
+
+  }
+  &:focus {
+      border: 1px solid hsl(200, 50%, 50%);
+      outline: none;
+      border-radius: 5px;
+    }
+}
+&.action-secondary{
+  background: var(--blueYonder);
+  color: white;
+  box-shadow: var(--dropShadow1);
+
+  &:active{
+    background: var(----blueYonderFade);
     box-shadow: var(--dropShadow0);
     outline: none;
 
@@ -105,13 +127,9 @@ const GlobalStyles = createGlobalStyle`
 }
 }
 
-
     ul{
         list-style: none;
         padding:0;
-    }
-    a {
-        text-decoration: none;
     }
   
   body::-webkit-scrollbar {

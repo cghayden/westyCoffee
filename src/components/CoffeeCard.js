@@ -9,10 +9,11 @@ import PlusSvg from './Icons/PlusSvg'
 const CardStyle = styled.div`
   width: 260px;
   height: 260px;
-  background: hsla(120, 73%, 75%, 0.56);
-  padding: 10px;
+  background: var(--green);
+  padding: 8px;
+  margin-bottom: 4px;
   display: grid;
-  grid-template-rows: 40px 1fr 30px;
+  grid-template-rows: 32px 1fr 26px;
 
   header {
     width: 100%;
@@ -107,7 +108,7 @@ const QuantitySelector = styled.div`
   }
 `
 const initialInputValues = { size: 'half pound' }
-function CoffeeCard({ coffee, showOrderForm }) {
+function CoffeeCard({ coffee, showOrderForm, toggleOrderForm }) {
   const { addToCart, totalCartPounds } = useCart()
   const { inputs, handleChange, resetForm, clearForm } = useForm(
     initialInputValues
@@ -116,8 +117,8 @@ function CoffeeCard({ coffee, showOrderForm }) {
   const [error, setError] = useState()
 
   function submitToCart(e) {
-    const poundsToAdd = inputs.size === 'half pound' ? quantity * 0.5 : quantity
     e.preventDefault()
+    const poundsToAdd = inputs.size === 'half pound' ? quantity * 0.5 : quantity
     if (!inputs.grind) {
       setError('Please Choose A Grind')
       return
@@ -133,6 +134,7 @@ function CoffeeCard({ coffee, showOrderForm }) {
       unitPrice: inputs.size === 'half pound' ? coffee.price / 2 : coffee.price,
       size: inputs.size,
     })
+    toggleOrderForm(false)
   }
 
   const cost = coffee.price / 100
@@ -224,7 +226,7 @@ function CoffeeCard({ coffee, showOrderForm }) {
             <div className='errorDisplay'>
               {error && <p className='errorMessage'>{error}</p>}
             </div>
-            <button className='action-primary' type='submit'>
+            <button className='action-secondary' type='submit'>
               Add {quantity} {inputs.size} bag{quantity > 1 ? `s` : null} to
               Cart
             </button>

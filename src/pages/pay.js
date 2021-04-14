@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import CheckoutPage_CartContents from '../components/CheckoutPage_CartContents'
 import SEO from '../components/SEO'
 import { useCart } from '../components/CartContext'
+import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee'
 
 const CheckoutPageWrapper = styled.div`
   font-family: monospace;
@@ -11,6 +12,10 @@ const CheckoutPageWrapper = styled.div`
 
 function CheckoutPage() {
   const { cartContents } = useCart()
+  const { availableCoffee } = useCurrentAvailableCoffee()
+  if (!availableCoffee) {
+    return <p>Loading...</p>
+  }
   if (!cartContents.length) {
     return (
       <div>
@@ -22,8 +27,7 @@ function CheckoutPage() {
   return (
     <CheckoutPageWrapper>
       <SEO title='Checkout' />
-      <CheckoutPage_CartContents />
-      <StripeCheckout />
+      <CheckoutPage_CartContents availableCoffee={availableCoffee} />
     </CheckoutPageWrapper>
   )
 }

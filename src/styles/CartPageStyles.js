@@ -1,13 +1,15 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 const CartPageStyles = styled.div`
   padding: 0 20px;
   display: flex;
   flex-direction: column;
+  font-size: 1rem;
+  p {
+    margin: 5px 0;
+  }
   header {
     border-bottom: 3px solid var(--black);
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
     display: flex;
   }
   footer {
@@ -17,9 +19,6 @@ const CartPageStyles = styled.div`
     padding-right: 2rem;
     color: green;
     align-items: center;
-    p {
-      margin: 0;
-    }
   }
   ul {
     margin: 0;
@@ -31,6 +30,6 @@ const CartPageStyles = styled.div`
       padding-top: 1rem;
     }
   }
-`;
+`
 
-export default CartPageStyles;
+export default CartPageStyles
