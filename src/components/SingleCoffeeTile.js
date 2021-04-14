@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-import { useCart } from './CartContext';
-import styled from 'styled-components';
-import CoffeeCard from './CoffeeCard';
+import React, { useState } from 'react'
+import { useCart } from './CartContext'
+import styled from 'styled-components'
+import CoffeeCard from './CoffeeCard'
 
 function SingleCoffeeTile({ coffee }) {
-  console.log('coffee', coffee);
-  const [showOrderForm, toggleOrderForm] = useState(false);
+  const [showOrderForm, toggleOrderForm] = useState(false)
   return (
     <div>
       <CoffeeCard coffee={coffee} showOrderForm={showOrderForm} />
@@ -19,7 +18,7 @@ function SingleCoffeeTile({ coffee }) {
         <p>Out of Stock</p>
       )}
     </div>
-  );
+  )
 }
 
-export default SingleCoffeeTile;
+export default SingleCoffeeTile

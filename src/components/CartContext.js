@@ -21,9 +21,18 @@ function CartStateProvider({ children }) {
   function openCart() {
     setCartOpen(true)
   }
-
+  function sortCart(a, b) {
+    const itemA = a.coffee.toUpperCase()
+    const itemB = b.coffee.toUpperCase()
+    let comparison = 0
+    if (itemA > itemB) {
+      comparison = 1
+    } else if (itemA < itemB) {
+      comparison = -1
+    }
+    return comparison
+  }
   function addToCart({ quantity, coffee, grind, unitPrice, size }) {
-    // quantity will be -1 or +1
     if (!cartContents.length) {
       setCartContents((cartContents) => [
         ...cartContents,
@@ -40,10 +49,12 @@ function CartStateProvider({ children }) {
     )
     //item of same size, grind and type IS NOT in the cart already
     if (matchingCartItemIndex === -1) {
-      setCartContents((cartContents) => [
-        ...cartContents,
-        { quantity, coffee, grind, unitPrice, size },
-      ])
+      // const cartCopy=[...cartContents]
+      setCartContents((cartContents) =>
+        [...cartContents, { quantity, coffee, grind, unitPrice, size }].sort(
+          sortCart
+        )
+      )
       return
     }
     //item of same size, grind and type IS in the cart already
@@ -56,6 +67,7 @@ function CartStateProvider({ children }) {
       existingCartItem[0].quantity = existingCartItem[0].quantity + quantity
       // put back in
       cartCopy.push(existingCartItem[0])
+      cartCopy.sort(sortCart)
       //set To State
       setCartContents(cartCopy)
       return
@@ -77,12 +89,17 @@ function CartStateProvider({ children }) {
     setCartContents(newCart)
   }
 
-  async function processOrder(inputs, coffeePrices, paymentMethod) {
+  async function processOrder(
+    billingDetails,
+    availableCoffee,
+    paymentMethod,
+    botBait
+  ) {
     //1. set prices on each order item and calculate order total
     //(coffeePrices is from the checkout page dynamic query of all coffees and their prices, to guard against client changing the prices in the browser state before submitting order.)
 
     //extract coffee name and price into array of sets of arrays [...[name, price]]
-    const coffee_price = coffeePrices.map((coffee) => [
+    const coffee_price = availableCoffee.map((coffee) => [
       coffee.name,
       coffee.price,
     ])
@@ -99,10 +116,10 @@ function CartStateProvider({ children }) {
     const body = {
       order: cartCopy,
       total: calcOrderTotal(cartCopy),
-      name: inputs.name,
-      email: inputs.email,
-      phone: inputs.phone,
-      mapleSyrup: inputs.mapleSyrup,
+      name: billingDetails.name,
+      email: billingDetails.email,
+      phone: billingDetails.phone,
+      mapleSyrup: botBait,
       paymentMethod: paymentMethod.id,
     }
     const res = await fetch(

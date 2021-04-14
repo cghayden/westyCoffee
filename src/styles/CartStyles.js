@@ -2,6 +2,7 @@ import styled from 'styled-components'
 
 const CartStyles = styled.div`
   font-family: monospace;
+  font-size: 1.2rem;
   padding: 20px;
   position: relative;
   background: white;
@@ -9,7 +10,8 @@ const CartStyles = styled.div`
   height: 100%;
   top: 0;
   right: 0;
-  width: 40%;
+  width: 90%;
+  max-width: 650px;
   min-width: 310px;
   bottom: 0;
   transform: translateX(105%);

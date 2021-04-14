@@ -116,8 +116,8 @@ function CoffeeCard({ coffee, showOrderForm }) {
   const [error, setError] = useState()
 
   function submitToCart(e) {
-    const poundsToAdd = inputs.size === 'half pound' ? quantity * 0.5 : quantity
     e.preventDefault()
+    const poundsToAdd = inputs.size === 'half pound' ? quantity * 0.5 : quantity
     if (!inputs.grind) {
       setError('Please Choose A Grind')
       return

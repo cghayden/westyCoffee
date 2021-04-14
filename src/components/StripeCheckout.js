@@ -12,7 +12,7 @@ import {
 } from '@stripe/react-stripe-js'
 import { StripeCheckoutStyles } from '../styles/StripeCheckoutStyles'
 import { useCart } from './CartContext'
-import useCoffeePrices from '../utils/useCoffeePrices'
+import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee'
 
 const CARD_OPTIONS = {
   iconStyle: 'solid',
@@ -122,10 +122,10 @@ const CheckoutForm = () => {
     email: '',
     phone: '',
     name: '',
-    mapleSyrup: '',
   })
+  const [botBait, setBotBait] = useState('')
   const { orderTotal, processOrder } = useCart()
-  const { coffeePrices } = useCoffeePrices()
+  const { availableCoffee } = useCurrentAvailableCoffee()
 
   async function handleSubmit(event) {
     event.preventDefault()
@@ -157,12 +157,12 @@ const CheckoutForm = () => {
       console.log('error', error)
       setError(error)
     } else {
-      console.log('paymentMethod', paymentMethod)
       setPaymentMethod(paymentMethod)
       const orderRes = await processOrder(
         billingDetails,
-        coffeePrices,
-        paymentMethod
+        availableCoffee,
+        paymentMethod,
+        botBait
       )
       console.log('orderRes', orderRes)
     }
@@ -176,7 +176,6 @@ const CheckoutForm = () => {
       name: '',
       email: '',
       phone: '',
-      mapleSyrup: '',
     })
   }
 
@@ -236,7 +235,7 @@ const CheckoutForm = () => {
           id='mapleSyrup'
           value={billingDetails.mapleSyrup}
           onChange={(e) => {
-            setBillingDetails({ ...billingDetails, mapleSyrup: e.target.value })
+            setBotBait(e.target.value)
           }}
           className='mapleSyrup'
         />
@@ -267,7 +266,7 @@ const ELEMENTS_OPTIONS = {
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
-const stripePromise = loadStripe('pk_test_CkfBPTwVc1IMB6BXSDsSytR8')
+const stripePromise = loadStripe(process.env.GATSBY_STRIPE_PUBLISHABLE_KEY)
 
 export default function StripeCheckout() {
   return (

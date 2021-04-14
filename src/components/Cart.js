@@ -6,9 +6,25 @@ import CloseButton from './CloseButton'
 import TrashIcon from './Icons/TrashIcon'
 import formatMoney from '../utils/formatMoney'
 import { Link } from 'gatsby'
+import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee'
+import checkStock from '../utils/checkStock'
+import CartAlerts from './CartAlerts'
+import MinusSvg from './Icons/MinusSvg'
+import PlusSvg from './Icons/PlusSvg'
+import compileCurrentStockAndPrice from '../utils/compileCurrentStockAndPriceListing'
 
 function Cart() {
-  const { cartOpen, closeCart, cartContents, orderTotal } = useCart()
+  const {
+    cartOpen,
+    closeCart,
+    cartContents,
+    orderTotal,
+    totalCartPounds,
+  } = useCart()
+
+  const { availableCoffee } = useCurrentAvailableCoffee()
+  const currentStockAndPrice = compileCurrentStockAndPrice(availableCoffee)
+  const stockAlerts = checkStock(currentStockAndPrice, totalCartPounds)
 
   return (
     <CartStyles open={cartOpen}>
@@ -27,15 +43,14 @@ function Cart() {
           <CartItem cartItem={cartItem} key={`${i}-${cartItem.coffee}`} />
         ))}
       </ul>
-      {!!cartContents.length ? (
+      {stockAlerts.length > 0 && <CartAlerts alerts={stockAlerts} />}
+      {!!cartContents.length && !stockAlerts.length && (
         <footer>
           <h3>Total: $ {orderTotal}</h3>
-          <Link onClick={closeCart} to='/pay'>
+          <Link role='link' onClick={closeCart} to='/pay'>
             Checkout
           </Link>
         </footer>
-      ) : (
-        <p>Your cart is empty!</p>
       )}
     </CartStyles>
   )
@@ -50,7 +65,6 @@ const CartItemLi = styled.li`
     justify-content: space-between;
     .trashButton {
       color: red;
-      margin-left: auto;
     }
   }
   h3 {
@@ -61,26 +75,77 @@ const CartItemLi = styled.li`
     justify-self: left;
   }
   .grind {
-    margin: 0.5rem;
+    /* margin: 0.5rem; */
   }
   .price {
     place-items: center;
     display: grid;
     grid-template-columns: 1fr 2ch max-content 2ch max-content;
     justify-content: end;
+    justify-items: end;
     grid-gap: 0.5rem;
     margin: 0.5rem;
   }
 `
-
+const QuantitySelector = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 15ch;
+  margin-left: auto;
+  color: green;
+  button {
+    padding: 0;
+    font-size: 1.5rem;
+  }
+  p {
+    font-size: 1.2rem;
+    padding-bottom: 4px;
+  }
+`
 function CartItem({ cartItem }) {
-  const { removeFromCart } = useCart()
+  //TODO - move the useCart call up to Cart
+  const { removeFromCart, addToCart } = useCart()
   if (!cartItem) return null
   const totalCost = formatMoney(cartItem.quantity * cartItem.unitPrice)
   return (
     <CartItemLi>
       <div className='cartItem-heading'>
         <h3>{cartItem.coffee}</h3>
+        <QuantitySelector>
+          <button
+            type='button'
+            title='Remove One From Cart'
+            disabled={cartItem.quantity === 1}
+            onClick={() => {
+              addToCart({
+                quantity: -1,
+                coffee: cartItem.coffee,
+                grind: cartItem.grind,
+                unitPrice: cartItem.unitPrice,
+                size: cartItem.size,
+              })
+            }}
+          >
+            <MinusSvg w={'18'} h={'18'} />
+          </button>
+          <p>{cartItem.quantity}</p>
+          <button
+            type='button'
+            title='Add One To Cart'
+            onClick={() => {
+              addToCart({
+                quantity: 1,
+                coffee: cartItem.coffee,
+                grind: cartItem.grind,
+                unitPrice: cartItem.unitPrice,
+                size: cartItem.size,
+              })
+            }}
+          >
+            <PlusSvg w={'18'} h={'18'} />
+          </button>
+        </QuantitySelector>
         <button
           type='button'
           className='btn-icon trashButton'

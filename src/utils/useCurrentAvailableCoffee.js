@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 const gql = String.raw
 
 export default function useCurrentAvailableCoffee() {
-  const [availableCoffee, setAvailableCoffee] = useState()
+  const [availableCoffee, setAvailableCoffee] = useState([])
 
   useEffect(function () {
     console.log('FETCHING CURRENT COFFEE AVAILABILITY ')
