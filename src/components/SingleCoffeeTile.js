@@ -7,9 +7,14 @@ function SingleCoffeeTile({ coffee }) {
   const [showOrderForm, toggleOrderForm] = useState(false)
   return (
     <div>
-      <CoffeeCard coffee={coffee} showOrderForm={showOrderForm} />
+      <CoffeeCard
+        coffee={coffee}
+        showOrderForm={showOrderForm}
+        toggleOrderForm={toggleOrderForm}
+      />
       {coffee.stock > 0 ? (
         <button
+          className='action-primary'
           onClick={() => toggleOrderForm((showOrderForm) => !showOrderForm)}
         >
           Order Now!

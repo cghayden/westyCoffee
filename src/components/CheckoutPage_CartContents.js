@@ -23,9 +23,7 @@ function CheckoutPage_CartContents({ availableCoffee }) {
   } = useCart()
 
   const currentStockAndPrice = compileCurrentStockAndPrice(availableCoffee)
-  console.log('currentStockAndPrice', currentStockAndPrice)
   const stockAlerts = checkStock(currentStockAndPrice, totalCartPounds)
-  // const stockAlerts = []
 
   return (
     <CartPageStyles>

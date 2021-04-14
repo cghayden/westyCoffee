@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from 'react'
 import formatMoney from '../utils/formatMoney'
 import calcOrderTotal from '../utils/calcOrderTotal'
 import calcTotalPoundsInCart from '../utils/calcTotalPoundsInCart'
+import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee'
 const CartContext = createContext()
 const CartProvider = CartContext.Provider
 
@@ -88,7 +89,7 @@ function CartStateProvider({ children }) {
     })
     setCartContents(newCart)
   }
-
+  const gql = String.raw
   async function processOrder(
     billingDetails,
     availableCoffee,
@@ -99,7 +100,34 @@ function CartStateProvider({ children }) {
     //(coffeePrices is from the checkout page dynamic query of all coffees and their prices, to guard against client changing the prices in the browser state before submitting order.)
 
     //extract coffee name and price into array of sets of arrays [...[name, price]]
-    const coffee_price = availableCoffee.map((coffee) => [
+    const sanityQuery = await fetch(
+      process.env.GATSBY_SANITY_GRAPHQL_ENDPOINT,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: gql`
+            query {
+              allCoffee {
+                _id
+                name
+                price
+                stock
+              }
+            }
+          `,
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .catch((err) => {
+        console.log('SHOOOOOT')
+        console.log(err)
+      })
+
+    const coffee_price = sanityQuery.data.allCoffee.map((coffee) => [
       coffee.name,
       coffee.price,
     ])

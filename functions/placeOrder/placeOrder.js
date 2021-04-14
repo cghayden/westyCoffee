@@ -3,22 +3,21 @@ const { default: Stripe } = require('stripe')
 // const formatMoney = require('../../src/utils/formatMoney');
 // const axios = require('axios');
 // const gql = String.raw;
+
 function formatMoney(amount = 0) {
   const options = {
     style: 'decimal',
     // currency: 'USD',
     minimumFractionDigits: 2,
   }
-
   // check if its a clean dollar amount
   // if (amount % 100 === 0) {
   //   options.minimumFractionDigits = 0;
   // }
-
   const formatter = Intl.NumberFormat('en-US', options)
-
   return formatter.format(amount / 100)
 }
+
 function generateOrderEmail({ order, total }) {
   return `<div
       <h2>Your Recent Order from Neighborly Coffee</h2>
@@ -33,7 +32,7 @@ function generateOrderEmail({ order, total }) {
         })
         .join('')}
       </ul>
-      <p>Your total is <strong>${total}</strong> due at pickup</p>
+      <p>Your total is <strong>${formatMoney(total)}</strong> due at pickup</p>
       <p>Thank You for your business!</p>
       <style>
           ul {
@@ -128,6 +127,6 @@ exports.handler = async (event, context) => {
   })
   return {
     statusCode: 200,
-    body: JSON.stringify({ message: 'Success' }),
+    body: JSON.stringify({ message: 'Success', order: body.order, charge }),
   }
 }

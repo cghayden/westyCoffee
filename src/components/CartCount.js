@@ -5,7 +5,7 @@ import { useCart } from './CartContext'
 const Dot = styled.div`
   font-feature-settings: 'tnum';
   font-variant-numeric: tabular-nums;
-  background: var(--green);
+  background: var(--redFlame);
   color: white;
   border-radius: 50%;
   padding: 1px;
