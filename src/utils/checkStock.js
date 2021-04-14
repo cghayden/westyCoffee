@@ -1,5 +1,4 @@
 export default function checkStock(currentStockAndPrice, totalCartPounds) {
-  console.log('currentStockAndPrice', currentStockAndPrice)
   const alerts = []
   const coffeeInCart = Object.keys(totalCartPounds)
   coffeeInCart.forEach((coffee) => {

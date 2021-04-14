@@ -158,8 +158,8 @@ const CheckoutForm = () => {
           setError(err)
           console.log('error processing payment mathod', err)
         })
-      console.log('orderRes', orderRes)
-      navigate('/order/', {
+      // console.log('orderRes', orderRes)
+      navigate('/order', {
         state: { orderRes },
       })
     }
