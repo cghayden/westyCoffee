@@ -7,7 +7,7 @@ const CheckoutPageWrapper = styled.div`
   font-family: monospace;
 `
 export default function orderPage({ location }) {
-  const [order, setOrder] = useState()
+  const [order, setOrder] = useState([])
   useEffect(() => {
     setOrder(location.state.orderRes.order)
   }, [])
