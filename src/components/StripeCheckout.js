@@ -159,11 +159,9 @@ const CheckoutForm = () => {
           console.log('error processing payment mathod', err)
         })
       // console.log('orderRes', orderRes)
-      if (typeof window !== undefined) {
-        navigate('/order', {
-          state: { orderRes },
-        })
-      }
+      navigate('/order', {
+        state: { orderRes },
+      })
     }
     if (!error) {
       reset()

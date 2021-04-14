@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import OrderListItem from '../components/OrderListItem'
 import SEO from '../components/SEO'
@@ -7,7 +7,10 @@ const CheckoutPageWrapper = styled.div`
   font-family: monospace;
 `
 export default function orderPage({ location }) {
-  const order = location.state.orderRes.order
+  const [order, setOrder] = useState()
+  useEffect(() => {
+    setOrder(location.state.orderRes.order)
+  }, [])
   // const payment = location.state.orderRes.charge
 
   return (
