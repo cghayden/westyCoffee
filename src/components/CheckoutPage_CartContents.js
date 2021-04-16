@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import { useCart } from './CartContext'
-import TrashIcon from './Icons/TrashIcon'
-import formatMoney from '../utils/formatMoney'
-import CartPageStyles from '../styles/CartPageStyles'
-import calcPoundsAvailable from '../utils/calcPoundsAvailable'
-import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee'
-import StripeCheckout from './StripeCheckout'
-import CartAlerts from './CartAlerts'
-import MinusSvg from './Icons/MinusSvg'
-import PlusSvg from './Icons/PlusSvg'
-import compileCurrentStockAndPrice from '../utils/compileCurrentStockAndPriceListing'
-import checkStock from '../utils/checkStock'
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { useCart } from './CartContext';
+import TrashIcon from './Icons/TrashIcon';
+import formatMoney from '../utils/formatMoney';
+import CartPageStyles from '../styles/CartPageStyles';
+import calcPoundsAvailable from '../utils/calcPoundsAvailable';
+import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee';
+import StripeCheckout from './StripeCheckout';
+import CartAlerts from './CartAlerts';
+import MinusSvg from './Icons/MinusSvg';
+import PlusSvg from './Icons/PlusSvg';
+import compileCurrentStockAndPrice from '../utils/compileCurrentStockAndPriceListing';
+import checkStock from '../utils/checkStock';
 
 function CheckoutPage_CartContents({ availableCoffee }) {
   const {
@@ -20,10 +20,10 @@ function CheckoutPage_CartContents({ availableCoffee }) {
     orderTotal,
     addToCart,
     totalCartPounds,
-  } = useCart()
+  } = useCart();
 
-  const currentStockAndPrice = compileCurrentStockAndPrice(availableCoffee)
-  const stockAlerts = checkStock(currentStockAndPrice, totalCartPounds)
+  const currentStockAndPrice = compileCurrentStockAndPrice(availableCoffee);
+  const stockAlerts = checkStock(currentStockAndPrice, totalCartPounds);
 
   return (
     <CartPageStyles>
@@ -46,7 +46,7 @@ function CheckoutPage_CartContents({ availableCoffee }) {
       {stockAlerts.length > 0 && <CartAlerts alerts={stockAlerts} />}
       {!!cartContents.length && !stockAlerts.length && <StripeCheckout />}
     </CartPageStyles>
-  )
+  );
 }
 
 const CartItemLi = styled.li`
@@ -68,7 +68,7 @@ const CartItemLi = styled.li`
     justify-self: left;
   }
   .grind {
-    /* margin: 0.5rem; */
+    text-align: left;
   }
   .price {
     place-items: center;
@@ -79,7 +79,7 @@ const CartItemLi = styled.li`
     grid-gap: 0.5rem;
     margin: 0.5rem;
   }
-`
+`;
 const QuantitySelector = styled.div`
   display: flex;
   justify-content: space-evenly;
@@ -95,10 +95,10 @@ const QuantitySelector = styled.div`
     font-size: 1.2rem;
     padding-bottom: 4px;
   }
-`
+`;
 function CartItem({ cartItem, removeFromCart, addToCart }) {
-  if (!cartItem) return null
-  const totalCost = formatMoney(cartItem.quantity * cartItem.unitPrice)
+  if (!cartItem) return null;
+  const totalCost = formatMoney(cartItem.quantity * cartItem.unitPrice);
   return (
     <CartItemLi>
       <div className='cartItem-heading'>
@@ -115,7 +115,7 @@ function CartItem({ cartItem, removeFromCart, addToCart }) {
                 grind: cartItem.grind,
                 unitPrice: cartItem.unitPrice,
                 size: cartItem.size,
-              })
+              });
             }}
           >
             <MinusSvg w={'18'} h={'18'} />
@@ -131,7 +131,7 @@ function CartItem({ cartItem, removeFromCart, addToCart }) {
                 grind: cartItem.grind,
                 unitPrice: cartItem.unitPrice,
                 size: cartItem.size,
-              })
+              });
             }}
           >
             <PlusSvg w={'18'} h={'18'} />
@@ -146,7 +146,7 @@ function CartItem({ cartItem, removeFromCart, addToCart }) {
                 `Would you like to remove all ${cartItem.size}, ${cartItem.grind}, ${cartItem.coffee} form your cart?`
               )
             )
-              removeFromCart(cartItem)
+              removeFromCart(cartItem);
           }}
         >
           <TrashIcon />
@@ -154,14 +154,18 @@ function CartItem({ cartItem, removeFromCart, addToCart }) {
       </div>
       <p className='grind'>{cartItem.grind}</p>
       <p className='price'>
-        <span>{`${cartItem.quantity} ${cartItem.size} bag`} </span>
+        <span>
+          {`${cartItem.quantity} ${cartItem.size} bag${
+            cartItem.quantity > 1 ? 's' : ''
+          }`}{' '}
+        </span>
         <span>&times; </span>
         <span>${formatMoney(cartItem.unitPrice)} </span>
         <span>= </span>
         <span>${totalCost}</span>
       </p>
     </CartItemLi>
-  )
+  );
 }
 
-export default CheckoutPage_CartContents
+export default CheckoutPage_CartContents;

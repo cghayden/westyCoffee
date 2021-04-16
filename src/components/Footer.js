@@ -3,18 +3,19 @@ import styled from 'styled-components';
 import '@fontsource/raleway';
 import InstagramSvg from './Icons/InstagramSvg';
 const FooterStyle = styled.footer`
+  background: linear-gradient(
+    to top,
+    white 60%,
+    hsla(0, 100%, 100%, 0.6) 95%,
+    transparent
+  );
   font-family: 'Raleway';
   margin-top: auto;
-  /* position: fixed;
-  height: 80px;
-  bottom: 0;
-  right: 0;*/
-  padding-left: 1rem;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding-bottom: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  place-items: center;
+  padding: 1rem 0;
   a {
     color: green;
   }

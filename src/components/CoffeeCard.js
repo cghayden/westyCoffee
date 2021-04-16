@@ -1,19 +1,21 @@
-import { Link } from 'gatsby'
-import React, { useState } from 'react'
-import styled from 'styled-components'
-import useForm from '../utils/useForm'
-import { useCart } from './CartContext'
-import MinusSvg from './Icons/MinusSvg'
-import PlusSvg from './Icons/PlusSvg'
+import { Link } from 'gatsby';
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import useForm from '../utils/useForm';
+import { useCart } from './CartContext';
+import MinusSvg from './Icons/MinusSvg';
+import PlusSvg from './Icons/PlusSvg';
 
 const CardStyle = styled.div`
+  background: var(--green);
+  border-radius: 4px;
   width: 260px;
   height: 260px;
-  background: var(--green);
   padding: 8px;
   margin-bottom: 4px;
   display: grid;
   grid-template-rows: 32px 1fr 26px;
+  /* box-shadow: 1px 1px 3px 1px var(--green); */
 
   header {
     width: 100%;
@@ -31,14 +33,14 @@ const CardStyle = styled.div`
       align-self: flex-end;
     }
   }
-`
+`;
 const CoffeeDetails = styled.div`
   position: relative;
   height: 100%;
   display: grid;
   flex-direction: column;
   place-items: center;
-`
+`;
 const OrderForm = styled.form`
   background: var(--white);
   height: ${(props) => (props.open ? '100%' : 0)};
@@ -91,7 +93,7 @@ const OrderForm = styled.form`
     height: 16px;
     width: 100%;
   }
-`
+`;
 
 const QuantitySelector = styled.div`
   display: flex;
@@ -106,26 +108,27 @@ const QuantitySelector = styled.div`
     font-size: 1.5rem;
     padding-bottom: 4px;
   }
-`
-const initialInputValues = { size: 'half pound' }
+`;
+const initialInputValues = { size: 'half pound' };
 function CoffeeCard({ coffee, showOrderForm, toggleOrderForm }) {
-  const { addToCart, totalCartPounds } = useCart()
+  const { addToCart, totalCartPounds } = useCart();
   const { inputs, handleChange, resetForm, clearForm } = useForm(
     initialInputValues
-  )
-  const [quantity, setQuantity] = useState(1)
-  const [error, setError] = useState()
+  );
+  const [quantity, setQuantity] = useState(1);
+  const [error, setError] = useState();
 
   function submitToCart(e) {
-    e.preventDefault()
-    const poundsToAdd = inputs.size === 'half pound' ? quantity * 0.5 : quantity
+    e.preventDefault();
+    const poundsToAdd =
+      inputs.size === 'half pound' ? quantity * 0.5 : quantity;
     if (!inputs.grind) {
-      setError('Please Choose A Grind')
-      return
+      setError('Please Choose A Grind');
+      return;
     }
     if (totalCartPounds[coffee.name] + poundsToAdd > coffee.stock) {
-      setError('There is not sufficient quantity available in stock')
-      return
+      setError('There is not sufficient quantity available in stock');
+      return;
     }
     addToCart({
       quantity: quantity,
@@ -133,11 +136,11 @@ function CoffeeCard({ coffee, showOrderForm, toggleOrderForm }) {
       grind: inputs.grind,
       unitPrice: inputs.size === 'half pound' ? coffee.price / 2 : coffee.price,
       size: inputs.size,
-    })
-    toggleOrderForm(false)
+    });
+    toggleOrderForm(false);
   }
 
-  const cost = coffee.price / 100
+  const cost = coffee.price / 100;
   return (
     <CardStyle>
       <header>
@@ -158,8 +161,8 @@ function CoffeeCard({ coffee, showOrderForm, toggleOrderForm }) {
                 name='grind'
                 value={inputs.grind}
                 onChange={(e) => {
-                  setError()
-                  handleChange(e)
+                  setError();
+                  handleChange(e);
                 }}
                 defaultValue='Select ...'
               >
@@ -215,7 +218,7 @@ function CoffeeCard({ coffee, showOrderForm, toggleOrderForm }) {
                   onClick={() =>
                     setQuantity((q) => {
                       //if q <= in stock, add 1
-                      return (q += 1)
+                      return (q += 1);
                     })
                   }
                 >
@@ -235,7 +238,7 @@ function CoffeeCard({ coffee, showOrderForm, toggleOrderForm }) {
       </CoffeeDetails>
       <p className='price'>$ {cost} / lb.</p>
     </CardStyle>
-  )
+  );
 }
 
-export default CoffeeCard
+export default CoffeeCard;

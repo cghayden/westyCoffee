@@ -1,8 +1,8 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 const CartStyles = styled.div`
   font-family: monospace;
-  font-size: 1.2rem;
+  font-size: 1rem;
   padding: 20px;
   position: relative;
   background: white;
@@ -53,6 +53,6 @@ const CartStyles = styled.div`
       padding-top: 1rem;
     }
   }
-`
+`;
 
-export default CartStyles
+export default CartStyles;

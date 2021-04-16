@@ -1,15 +1,15 @@
-import React from 'react'
-import styled from 'styled-components'
-import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee'
-import SingleCoffeeTile from './SingleCoffeeTile'
+import React from 'react';
+import styled from 'styled-components';
+import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee';
+import SingleCoffeeTile from './SingleCoffeeTile';
 
 const CoffeeDisplayStyles = styled.div`
   display: grid;
-  grid-gap: 20px;
+  grid-gap: 3rem;
   grid-template-columns: repeat(auto-fill, 275px);
   place-content: center;
   place-items: center;
-`
+`;
 
 function CoffeeDisplay({ allCoffee }) {
   return (
@@ -18,7 +18,7 @@ function CoffeeDisplay({ allCoffee }) {
         <SingleCoffeeTile key={coffee.id} coffee={coffee} />
       ))}
     </CoffeeDisplayStyles>
-  )
+  );
 }
 
-export default CoffeeDisplay
+export default CoffeeDisplay;

@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle } from 'styled-components';
 
 // see video 7 for more on importing svgs
 // import bg from '../assets/images/bg.svg';
@@ -11,7 +11,7 @@ const GlobalStyles = createGlobalStyle`
     --yellow: #ffc600;
     --white: #f7fbf8;
     --grey: #efefef;
-    --green: hsla(138, 75%, 75%,1);
+    --green: hsla(132, 33%, 53%,1);
     --stripeBlue: #829fff;
     --redFlame: hsla(15, 61%, 51%,1);
     --redFlameFade: hsla(15, 61%, 51%,.7);
@@ -30,34 +30,34 @@ const GlobalStyles = createGlobalStyle`
       height: 100%;
   }
   #gatsby-focus-wrapper{
+    /* background-color: var(--white); */
       height: 100%;
       display: flex;
       flex-direction: column;
+      width:100%;
+      margin: 0 auto;
+      
   }
   #___gatsby{
       height:100%
   }
     body {
-        background-color: var(--white);
         display: flex;
         flex-direction: column;
         height: 100%;
+        background: var(--white);
     }
 
     main{
-      text-align: center;
       font-family: 'Raleway', sans-serif;
-      /* min-height: calc(100vh - 200px); */
-      max-width: 900px;
-  margin: 0 auto;
-  padding-bottom: 2rem;
-  }
-  footer{
-      margin-top: auto;
-  }
-
-  .content {
-      flex: 1 0 auto
+      text-align: center;
+      max-width: 1000px;
+      width:95%;
+  margin: 1rem auto;
+  padding: 1rem 1rem 2rem 1rem;
+  background: var(--white);
+  border-radius: 4px
+  ;
   }
     //-------BUTTON AND ANCHOR STYLES ----------------//
   
@@ -94,7 +94,7 @@ const GlobalStyles = createGlobalStyle`
 &.action-primary{
   background: var(--redFlame);
   color: white;
-  box-shadow: var(--dropShadow1);
+  /* box-shadow: var(--dropShadow1); */
 
   &:active{
     background: var(--redFlameFade);
@@ -132,20 +132,9 @@ const GlobalStyles = createGlobalStyle`
         padding:0;
     }
   
-  body::-webkit-scrollbar {
-    width: 12px;
-  }
   html {
     scrollbar-width: thin;
     /* scrollbar-color: var(--red) var(--white); */
-  }
-  body::-webkit-scrollbar-track {
-    /* background: var(--white); */
-  }
-  body::-webkit-scrollbar-thumb {
-    /* background-color: var(--red) ; */
-    border-radius: 6px;
-    /* border: 3px solid var(--white); */
   }
 
   img {
@@ -162,6 +151,6 @@ const GlobalStyles = createGlobalStyle`
           display:none;
       }
   }
-`
+`;
 
-export default GlobalStyles
+export default GlobalStyles;

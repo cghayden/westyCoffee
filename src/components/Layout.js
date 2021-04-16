@@ -3,46 +3,48 @@ import 'normalize.css';
 import GlobalStyles from '../styles/GlobalStyles';
 import Header from './Header';
 import Footer from './Footer';
-// import styled from 'styled-components';
-// import Footer from './Footer';
+import styled from 'styled-components';
+// import bblock1 from '../assets/images/bblock1.jpeg';
+import pine1 from '../assets/images/pine1.jpg';
+// import woodWhite from '../assets/images/woodWhite.jpg';
 // import Typography from '../styles/Typography';
-// import stripes from '../assets/images/stripes.svg';
 
-// const SiteBorderStyles = styled.div`
-//   max-width: 1000px;
-//   margin: 12rem auto 4rem auto;
-//   margin-top: clamp(2rem, 10vw, 12rem);
-//   background: white url(${stripes});
-//   background-size: 1500px;
-//   padding: 5px;
-//   padding: clamp(5px, 1vw, 25px);
-//   box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.044);
-//   border: 5px solid white;
-//   @media (max-width: 1100px) {
-//     margin-left: 1.5rem;
-//     margin-right: 1.5rem;
-//   }
-// `;
+// woodWhite : Photo by <a href="https://unsplash.com/@timmossholder?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Tim Mossholder</a> on <a href="https://unsplash.com/s/photos/wood-grain?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
 
-// const ContentStyles = styled.div`
-//   background: white;
-//   padding: 2rem;
-// `;
-
+const LayoutWrapper = styled.div`
+  flex: 1 0 auto;
+  position: relative;
+  &:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    /* opacity: 0.7; */
+    /* background-image: url(${woodWhite}); */
+    background-image: url(${pine1});
+    background-attachment: fixed;
+  }
+  .content {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+`;
 export default function Layout({ children }) {
   return (
     <>
-      <Header />
-      <div className='content'>
-        {/* <Typography /> */}
-        <GlobalStyles />
-        {/* <SiteBorderStyles> */}
-        {/* <ContentStyles> */}
-        {children}
-        {/* </ContentStyles> */}
-        {/* </SiteBorderStyles> */}
-      </div>
-      <Footer />
+      <GlobalStyles />
+      <LayoutWrapper>
+        <div className='content'>
+          <Header />
+          {children}
+          <Footer />
+        </div>
+      </LayoutWrapper>
     </>
   );
 }
