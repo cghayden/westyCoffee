@@ -1,7 +1,8 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 const CartPageStyles = styled.div`
-  padding: 0 20px;
+  font-family: monospace;
+  /* padding: 0 20px; */
   display: flex;
   flex-direction: column;
   font-size: 1rem;
@@ -30,6 +31,6 @@ const CartPageStyles = styled.div`
       padding-top: 1rem;
     }
   }
-`
+`;
 
-export default CartPageStyles
+export default CartPageStyles;

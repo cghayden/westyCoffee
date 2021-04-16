@@ -1,11 +1,12 @@
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 const StripeCheckoutStyles = styled.div`
-  width: 95%;
+  width: 100%;
   max-width: 500px;
   height: 400px;
   position: relative;
   margin: 0 auto;
+  font-size: 14px;
 
   input,
   button {
@@ -54,7 +55,7 @@ const StripeCheckoutStyles = styled.div`
   }
 
   .FormGroup {
-    margin: 0 15px 20px;
+    margin: 10px 0px;
     padding: 0;
     border-style: none;
     background-color: #f0f1f6;
@@ -218,6 +219,6 @@ const StripeCheckoutStyles = styled.div`
   .mapleSyrup {
     display: none;
   }
-`
+`;
 
-export { StripeCheckoutStyles }
+export { StripeCheckoutStyles };

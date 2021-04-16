@@ -1,25 +1,23 @@
-import React from 'react'
-import { graphql } from 'gatsby'
-import SEO from '../components/SEO'
-import styled from 'styled-components'
-import CoffeeDisplay from '../components/CoffeeDisplay'
-
-const HomeMainStyles = styled.main``
+import React from 'react';
+import { graphql } from 'gatsby';
+import SEO from '../components/SEO';
+import styled from 'styled-components';
+import CoffeeDisplay from '../components/CoffeeDisplay';
 
 const HomePageTextStyles = styled.div`
   a {
     padding: 0;
     color: green;
   }
-`
+`;
 
 // *** STATICALLY BUILT PAGE
 export default function homePage({ data }) {
-  const text = data.textQuery.nodes[0].content
+  const text = data.textQuery.nodes[0].content;
   return (
     <>
       <SEO title={'Neighborly Coffee'} />
-      <HomeMainStyles>
+      <main>
         <h2>Our Roasts of the Week</h2>
         <HomePageTextStyles>
           {text.map((entry, i) => (
@@ -27,9 +25,9 @@ export default function homePage({ data }) {
           ))}
         </HomePageTextStyles>
         <CoffeeDisplay allCoffee={data.coffees.nodes} />
-      </HomeMainStyles>
+      </main>
     </>
-  )
+  );
 }
 export const query = graphql`
   query {
@@ -59,7 +57,7 @@ export const query = graphql`
       }
     }
   }
-`
+`;
 
 // *** DYNAMIC DATA PAGE QUERIED FROM SANITY
 // export default function HomePage() {
