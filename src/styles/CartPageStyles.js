@@ -26,9 +26,9 @@ const CartPageStyles = styled.div`
     padding: 0;
     list-style: none;
     overflow: scroll;
+
     li ~ li {
       border-top: 1px solid black;
-      padding-top: 1rem;
     }
   }
 `;

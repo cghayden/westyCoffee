@@ -59,6 +59,9 @@ const GlobalStyles = createGlobalStyle`
   border-radius: 4px
   ;
   }
+  p{
+    margin:2px;
+  }
     //-------BUTTON AND ANCHOR STYLES ----------------//
   
 // --- Default ---
