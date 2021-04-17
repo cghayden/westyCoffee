@@ -14,21 +14,21 @@ const CardStyle = styled.div`
   padding: 8px;
   margin-bottom: 4px;
   display: grid;
-  grid-template-rows: 32px 1fr 26px;
+  grid-template-rows: auto 1fr 26px;
   /* box-shadow: 1px 1px 3px 1px var(--green); */
 
   header {
     width: 100%;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     a {
       padding: 0;
     }
   }
   p {
-    font-size: 1.1rem;
+    font-size: 1rem;
     margin: 0;
     &.price {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       align-self: flex-end;
     }
   }
@@ -36,9 +36,9 @@ const CardStyle = styled.div`
 const CoffeeDetails = styled.div`
   position: relative;
   height: 100%;
-  display: grid;
+  display: flex;
   flex-direction: column;
-  place-items: center;
+  justify-content: space-evenly;
 `;
 const OrderForm = styled.form`
   background: var(--white);
@@ -82,11 +82,13 @@ const OrderForm = styled.form`
   p.errorMessage {
     font-size: 13px;
     color: red;
+    margin-bottom: 2px;
   }
   button {
     width: 80%;
     place-self: center;
     padding: 4px 8px;
+    font-size: 14px;
   }
   .errorDisplay {
     height: 16px;
