@@ -11,7 +11,7 @@ const GlobalStyles = createGlobalStyle`
     --yellow: #ffc600;
     --white: #f7fbf8;
     --grey: #efefef;
-    --green: hsla(132, 33%, 53%,1);
+    --green: hsla(132, 32%, 60%,.8);
     --stripeBlue: #829fff;
     --redFlame: hsla(15, 61%, 51%,1);
     --redFlameFade: hsla(15, 61%, 51%,.7);

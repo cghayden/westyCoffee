@@ -1,7 +1,7 @@
-const nodemailer = require('nodemailer')
-const { default: Stripe } = require('stripe')
+const nodemailer = require('nodemailer');
+const { default: Stripe } = require('stripe');
 // const formatMoney = require('../../src/utils/formatMoney');
-// const axios = require('axios');
+const axios = require('axios');
 // const gql = String.raw;
 
 function formatMoney(amount = 0) {
@@ -9,13 +9,13 @@ function formatMoney(amount = 0) {
     style: 'decimal',
     // currency: 'USD',
     minimumFractionDigits: 2,
-  }
+  };
   // check if its a clean dollar amount
   // if (amount % 100 === 0) {
   //   options.minimumFractionDigits = 0;
   // }
-  const formatter = Intl.NumberFormat('en-US', options)
-  return formatter.format(amount / 100)
+  const formatter = Intl.NumberFormat('en-US', options);
+  return formatter.format(amount / 100);
 }
 
 function generateOrderEmail({ order, total }) {
@@ -24,11 +24,11 @@ function generateOrderEmail({ order, total }) {
       <ul>
       ${order
         .map((item) => {
-          const unitPrice = formatMoney(item.unitPrice)
-          const itemTotal = formatMoney(item.quantity * item.unitPrice)
+          const unitPrice = formatMoney(item.unitPrice);
+          const itemTotal = formatMoney(item.quantity * item.unitPrice);
           return `<li>
           <p><strong>${item.size} bag of ${item.grind} ${item.coffee}</strong></p>
-            <p>${item.quantity} @ ${unitPrice} ea. = ${itemTotal}</p></li>`
+            <p>${item.quantity} @ ${unitPrice} ea. = ${itemTotal}</p></li>`;
         })
         .join('')}
       </ul>
@@ -39,7 +39,35 @@ function generateOrderEmail({ order, total }) {
             list-style: none;
           }
       </style>
-    </div>`
+    </div>`;
+}
+
+function writeOrderToSanity({ name, email, phone, total, number }) {
+  const mutations = [
+    {
+      createOrReplace: {
+        _type: 'order',
+        customerName: name,
+        customerEmail: email,
+        customerPhone: phone,
+        total: total,
+        number: 1,
+        date: Date.now(),
+      },
+    },
+  ];
+  axios
+    .post(`https://yi1dikna.api.sanity.io/v1/data/mutate/production`, {
+      method: 'post',
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${process.env.GATSBY_SANITY_MUTATION_API}`,
+      },
+      body: JSON.stringify({ mutations }),
+    })
+    .then((response) => response.json())
+    .then((result) => console.log('mutation result', result))
+    .catch((error) => console.error('MUTATION ERROR', error));
 }
 
 //TODO = add payment receipt in email html,
@@ -51,27 +79,27 @@ const transporter = nodemailer.createTransport({
     user: process.env.ETHEREAL_MAIL_USER,
     pass: process.env.ETHEREAL_MAIL_PASS,
   },
-})
+});
 
 const stripe = new Stripe(process.env.GATSBY_STRIPE_SECRET_KEY, {
   apiVersion: '2020-08-27',
-})
+});
 exports.handler = async (event, context) => {
   // wait(5000)
-  const body = JSON.parse(event.body)
-  console.log(body)
+  const body = JSON.parse(event.body);
+  console.log(body);
 
   // Check if honeypot field is filled out
   if (body.mapleSyrup) {
     return {
       statusCode: 400,
       body: JSON.stringify({ message: 'robot detected, goodbye' }),
-    }
+    };
   }
 
   //Validation
   // make sure all fields are filled out and correct
-  const requiredFields = ['email', 'name', 'order']
+  const requiredFields = ['email', 'name', 'order'];
   for (const field of requiredFields) {
     if (!body[field]) {
       return {
@@ -79,7 +107,7 @@ exports.handler = async (event, context) => {
         body: JSON.stringify({
           message: `Oops! You are missing the ${field} field`,
         }),
-      }
+      };
     }
   }
   // make sure customer actually has items in that order - do this in context func?
@@ -89,7 +117,7 @@ exports.handler = async (event, context) => {
       body: JSON.stringify({
         message: `The cart is empty!`,
       }),
-    }
+    };
   }
   // TODO make sure items are in stock and of sufficient stock
 
@@ -98,6 +126,7 @@ exports.handler = async (event, context) => {
   //create payment with stripe
   // charge(confirm) here
   // OPTION - create an intent, and attach intent.client_secret to the response to the client so it can be used on the frontend when ready to finalize payment.  client secret can be kept in the shopping cart.
+  //receive confirmation from stripe
   const charge = await stripe.paymentIntents
     .create({
       amount: body.total,
@@ -106,16 +135,21 @@ exports.handler = async (event, context) => {
       payment_method: body.paymentMethod,
     })
     .catch((err) => {
-      console.error(err)
-      throw new Error(err.message)
-    })
-  console.log('charge', charge)
-
-  //receive confirmation from stripe
+      console.error(err);
+      throw new Error(err.message);
+    });
+  console.log('charge', charge);
 
   // ? write order to sanity
-
-  // semnd email confirmations:
+  await writeOrderToSanity({
+    name: body.name,
+    email: body.email,
+    phone: body.phone,
+    total: body.total,
+    number: 1,
+    date: Date.now(),
+  });
+  // send email confirmations:
   // to rich / order intake
   // to customer
 
@@ -124,9 +158,9 @@ exports.handler = async (event, context) => {
     to: `${body.name} <${body.email}>, orders@neighborlycoffee.com`,
     subject: 'Your Order!',
     html: generateOrderEmail({ order: body.order, total: body.total }),
-  })
+  });
   return {
     statusCode: 200,
     body: JSON.stringify({ message: 'Success', order: body.order, charge }),
-  }
-}
+  };
+};

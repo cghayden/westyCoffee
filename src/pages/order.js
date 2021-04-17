@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
-import OrderListItem from '../components/OrderListItem'
-import SEO from '../components/SEO'
-import CartPageStyles from '../styles/CartPageStyles'
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import OrderListItem from '../components/OrderListItem';
+import SEO from '../components/SEO';
+import CartPageStyles from '../styles/CartPageStyles';
 const CheckoutPageWrapper = styled.div`
   font-family: monospace;
-`
+`;
 export default function orderPage({ location }) {
-  const [order, setOrder] = useState([])
+  console.log('location', location.state);
+  const [order, setOrder] = useState([]);
   useEffect(() => {
-    setOrder(location.state.orderRes.order)
-  }, [])
+    if (location.state) {
+      setOrder(location.state.res.order);
+    } else return;
+  }, []);
   // const payment = location.state.orderRes.charge
 
   return (
@@ -25,5 +28,5 @@ export default function orderPage({ location }) {
         </ul>
       </CartPageStyles>
     </CheckoutPageWrapper>
-  )
+  );
 }
