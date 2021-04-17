@@ -49,7 +49,7 @@ const GlobalStyles = createGlobalStyle`
     }
 
     main{
-      font-family: 'Raleway', sans-serif;
+      font-family: 'Nunito', sans-serif;
       text-align: center;
       max-width: 1000px;
       width:95%;
@@ -61,6 +61,7 @@ const GlobalStyles = createGlobalStyle`
   }
   p{
     margin:2px;
+    font-size: 1rem;
   }
     //-------BUTTON AND ANCHOR STYLES ----------------//
   

@@ -138,17 +138,17 @@ exports.handler = async (event, context) => {
       console.error(err);
       throw new Error(err.message);
     });
-  console.log('charge', charge);
+  console.log('SERVER SIDE CHARGE RESPONSE: ', charge);
 
   // ? write order to sanity
-  await writeOrderToSanity({
-    name: body.name,
-    email: body.email,
-    phone: body.phone,
-    total: body.total,
-    number: 1,
-    date: Date.now(),
-  });
+  // await writeOrderToSanity({
+  //   name: body.name,
+  //   email: body.email,
+  //   phone: body.phone,
+  //   total: body.total,
+  //   number: 1,
+  //   date: Date.now(),
+  // });
   // send email confirmations:
   // to rich / order intake
   // to customer
@@ -161,6 +161,10 @@ exports.handler = async (event, context) => {
   });
   return {
     statusCode: 200,
-    body: JSON.stringify({ message: 'Success', order: body.order, charge }),
+    body: JSON.stringify({
+      message: 'Success',
+      orderItems: body.order,
+      charge,
+    }),
   };
 };
