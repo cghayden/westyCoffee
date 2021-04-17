@@ -52,6 +52,7 @@ function CheckoutPage_CartContents({ availableCoffee }) {
 const CartItemLi = styled.li`
   width: 100%;
   position: relative;
+  padding-top: 1rem;
   .cartItem-heading {
     display: flex;
     align-items: center;

@@ -15,7 +15,7 @@ const CartStyles = styled.div`
   min-width: 310px;
   bottom: 0;
   transform: translateX(105%);
-  transition: all 0.3s;
+  transition: all 0.5s;
   box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.2);
   z-index: 5;
   display: flex;

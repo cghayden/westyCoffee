@@ -19,7 +19,6 @@ const CardStyle = styled.div`
 
   header {
     width: 100%;
-    /* grid-column: 1/-1; */
     font-size: 1.5rem;
     a {
       padding: 0;
@@ -111,7 +110,7 @@ const QuantitySelector = styled.div`
 `;
 const initialInputValues = { size: 'half pound' };
 function CoffeeCard({ coffee, showOrderForm, toggleOrderForm }) {
-  const { addToCart, totalCartPounds } = useCart();
+  const { addToCart, totalCartPounds, openCart } = useCart();
   const { inputs, handleChange, resetForm, clearForm } = useForm(
     initialInputValues
   );
@@ -138,6 +137,7 @@ function CoffeeCard({ coffee, showOrderForm, toggleOrderForm }) {
       size: inputs.size,
     });
     toggleOrderForm(false);
+    openCart();
   }
 
   const cost = coffee.price / 100;
