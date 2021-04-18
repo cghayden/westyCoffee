@@ -119,8 +119,14 @@ const CheckoutForm = () => {
   const { orderTotal, processOrder } = useCart();
   const { availableCoffee } = useCurrentAvailableCoffee();
 
-  async function writeOrderToSanity({ name, email, phone, number, total }) {
-    console.log('SANITY_MUTATION_API', process.env.GATSBY_SANITY_MUTATION_API);
+  async function writeOrderToSanity({
+    name,
+    email,
+    phone,
+    number,
+    total,
+    orderItems,
+  }) {
     const mutations = [
       {
         createOrReplace: {
@@ -130,7 +136,9 @@ const CheckoutForm = () => {
           customerPhone: phone,
           number: number,
           total: total,
+          orderItems,
         },
+        // returnDocuments: true
       },
     ];
     await fetch(`https://yi1dikna.api.sanity.io/v1/data/mutate/production`, {
@@ -142,36 +150,31 @@ const CheckoutForm = () => {
       body: JSON.stringify({ mutations }),
     })
       .then((response) => response.json())
-      .then((result) => console.log('mutation result', result))
+      .then((result) => console.log('MUTATION RESPONSE', result))
       .catch((error) => console.error('MUTATION ERROR', error));
   }
 
   async function handleSubmit(event) {
     event.preventDefault();
-
     if (!stripe || !elements) {
       // Stripe.js has not loaded yet. Make sure to disable
       // form submission until Stripe.js has loaded.
       return;
     }
-
     if (error) {
       elements.getElement('card').focus();
       return;
     }
-
     if (cardComplete) {
       setProcessing(true);
     }
-
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',
       card: elements.getElement(CardElement),
       billing_details: billingDetails,
     });
-
     if (error) {
-      console.log('error', error);
+      console.log('error creating payment method', error);
       setError(error);
     } else {
       setPaymentMethod(paymentMethod);
@@ -182,27 +185,28 @@ const CheckoutForm = () => {
         botBait
       )
         .then((res) => res.json())
-        // .then((res) => console.log(res))
-        // .then((res) => setOrderSuccess(res))
-        .then((res) =>
+        .then((parsedRes) => {
+          console.log('parsedRes', parsedRes);
+
           navigate('/order', {
-            state: { res },
-          })
-        )
+            state: parsedRes,
+          });
+          writeOrderToSanity({
+            name: billingDetails.name,
+            email: billingDetails.email,
+            phone: billingDetails.phone,
+            total: parsedRes.charge.amount,
+            number: parsedRes.charge.amount,
+            date: Date.now(),
+            orderItems: parsedRes.orderItems,
+          });
+        })
         .catch((err) => {
           setError(err);
           console.log('error processing payment method', err);
         });
       if (!error) {
         console.log('noerror');
-        await writeOrderToSanity({
-          name: billingDetails.name,
-          email: billingDetails.email,
-          phone: billingDetails.phone,
-          total: parseInt(orderTotal) * 100,
-          number: 1,
-          date: Date.now(),
-        });
         reset();
       }
     }

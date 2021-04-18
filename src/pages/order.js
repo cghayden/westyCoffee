@@ -3,15 +3,30 @@ import styled from 'styled-components';
 import OrderListItem from '../components/OrderListItem';
 import SEO from '../components/SEO';
 import CartPageStyles from '../styles/CartPageStyles';
+import formatMoney from '../utils/formatMoney';
+
+const OrderPageStyles = styled(CartPageStyles)`
+  .paymentDetails {
+    border-top: 2px solid black;
+    color: darkred;
+    text-align: right;
+    p {
+      font-size: 1.2rem;
+    }
+  }
+`;
 const CheckoutPageWrapper = styled.div`
   font-family: monospace;
+  padding: 1rem;
 `;
 export default function orderPage({ location }) {
   console.log('location', location.state);
-  const [order, setOrder] = useState([]);
+  const [orderItems, setOrderItems] = useState([]);
+  const [charge, setCharge] = useState([]);
   useEffect(() => {
-    if (location.state) {
-      setOrder(location.state.res.order);
+    if (location?.state) {
+      setOrderItems(location.state.orderItems);
+      setCharge(location.state.charge);
     } else return;
   }, []);
   // const payment = location.state.orderRes.charge
@@ -19,14 +34,19 @@ export default function orderPage({ location }) {
   return (
     <CheckoutPageWrapper>
       <SEO title={'Order Summary'} />
-      <CartPageStyles>
-        <h1>Your Order</h1>
-        <ul>
-          {order.map((orderItem, i) => (
-            <OrderListItem item={orderItem} key={`${orderItem.coffee}-`} />
-          ))}
-        </ul>
-      </CartPageStyles>
+      <main>
+        <OrderPageStyles>
+          <h1>Your Order</h1>
+          <ul>
+            {orderItems.map((orderItem, i) => (
+              <OrderListItem item={orderItem} key={`${orderItem.coffee}-`} />
+            ))}
+          </ul>
+          <div className='paymentDetails'>
+            <p>Total Amount Charged: {formatMoney(charge.amount)}</p>
+          </div>
+        </OrderPageStyles>
+      </main>
     </CheckoutPageWrapper>
   );
 }

@@ -73,12 +73,10 @@ const CoffeeDetails = styled.dl`
 `;
 export default function SingleCoffeePage({ data: { coffee } }) {
   console.log('coffee', coffee);
-  coffee.descriptionLong =
-    "'A longer, more detailed story about the coffee to display on the specific page for the roast.  All I know is something like a bird within her sang. Tell me all that you know.  I'll show you snow and rain.";
-  coffee.flavorProfile = 'Amaretto, Fruity, Light  ';
-  coffee.process = 'washed';
-  coffee.elevation = '1200m';
-  coffee.cultivar = 'sumatra eliongata';
+  // coffee.flavorProfile = 'Amaretto, Fruity, Light  ';
+  // coffee.process = 'washed';
+  // coffee.elevation = '1200m';
+  // coffee.cultivar = 'sumatra eliongata';
   return (
     <>
       <SEO title={coffee.name} />
@@ -86,11 +84,14 @@ export default function SingleCoffeePage({ data: { coffee } }) {
         {/* <Img fluid={coffee.image.asset.fluid} /> */}
         <CoffeeHeader>
           <h2>{coffee.name}</h2>
-          <p>{coffee.description}</p>
+          {coffee.description && <p>{coffee.description}</p>}
         </CoffeeHeader>
         <CoffeeBody>
           <div className='descriptionLong'>
-            <p>{coffee.descriptionLong}</p>
+            {coffee.descriptionLong &&
+              coffee.descriptionLong.map((obj, i) => (
+                <p key={i}>{obj.children[0].text}</p>
+              ))}
           </div>
           <DeetsAndForm>
             <CoffeeDetails>
@@ -153,15 +154,22 @@ export default function SingleCoffeePage({ data: { coffee } }) {
 export const query = graphql`
   query($slug: String!) {
     coffee: sanityCoffee(slug: { current: { eq: $slug } }) {
+      id
       name
       description
-      grade
-      id
-      price
-      process
-      region
-      roastDate
+      descriptionLong {
+        children {
+          text
+        }
+      }
       roastLevel
+      grade
+      roastDate
+      price
+      region
+      cultivar
+      elevation
+      process
       stock
     }
   }

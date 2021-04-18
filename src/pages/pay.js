@@ -18,9 +18,9 @@ function CheckoutPage() {
   }
   if (!cartContents.length) {
     return (
-      <div>
+      <main>
         <p>Your cart is empty!</p>
-      </div>
+      </main>
     );
   }
 
