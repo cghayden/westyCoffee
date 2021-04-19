@@ -33,7 +33,7 @@ export const query = graphql`
   query {
     coffees: allSanityCoffee {
       nodes {
-        id
+        _id
         name
         price
         region
@@ -70,7 +70,7 @@ export const query = graphql`
 //         <h2>Our Roasts of the Week</h2>
 //         <HomePageTextStyles>
 //           {homePageLead?.contentRaw.map((entry) => (
-//             <p key={entry._key}>{entry.children[0].text}</p>
+//             <p key={entry._ref}>{entry.children[0].text}</p>
 //           ))}
 //         </HomePageTextStyles>
 //         <CoffeeDisplay>

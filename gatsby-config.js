@@ -31,7 +31,7 @@ export default {
     //     name: 'images',
     //     path: './src/images/',
     //   },
-    //   __key: 'images',
+    //   __ref: 'images',
     // },
   ],
 };

@@ -1,17 +1,17 @@
-import React from 'react'
-import styled from 'styled-components'
-import CartStyles from '../styles/CartStyles'
-import { useCart } from './CartContext'
-import CloseButton from './CloseButton'
-import TrashIcon from './Icons/TrashIcon'
-import formatMoney from '../utils/formatMoney'
-import { Link } from 'gatsby'
-import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee'
-import checkStock from '../utils/checkStock'
-import CartAlerts from './CartAlerts'
-import MinusSvg from './Icons/MinusSvg'
-import PlusSvg from './Icons/PlusSvg'
-import compileCurrentStockAndPrice from '../utils/compileCurrentStockAndPriceListing'
+import React from 'react';
+import styled from 'styled-components';
+import CartStyles from '../styles/CartStyles';
+import { useCart } from './CartContext';
+import CloseButton from './CloseButton';
+import TrashIcon from './Icons/TrashIcon';
+import formatMoney from '../utils/formatMoney';
+import { Link } from 'gatsby';
+import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee';
+import checkStock from '../utils/checkStock';
+import CartAlerts from './CartAlerts';
+import MinusSvg from './Icons/MinusSvg';
+import PlusSvg from './Icons/PlusSvg';
+import compileCurrentStockAndPrice from '../utils/compileCurrentStockAndPriceListing';
 
 function Cart() {
   const {
@@ -20,11 +20,11 @@ function Cart() {
     cartContents,
     orderTotal,
     totalCartPounds,
-  } = useCart()
+  } = useCart();
 
-  const { availableCoffee } = useCurrentAvailableCoffee()
-  const currentStockAndPrice = compileCurrentStockAndPrice(availableCoffee)
-  const stockAlerts = checkStock(currentStockAndPrice, totalCartPounds)
+  const { availableCoffee } = useCurrentAvailableCoffee();
+  const currentStockAndPrice = compileCurrentStockAndPrice(availableCoffee);
+  const stockAlerts = checkStock(currentStockAndPrice, totalCartPounds);
 
   return (
     <CartStyles open={cartOpen}>
@@ -40,7 +40,7 @@ function Cart() {
       </header>
       <ul>
         {cartContents.map((cartItem, i) => (
-          <CartItem cartItem={cartItem} key={`${i}-${cartItem.coffee}`} />
+          <CartItem cartItem={cartItem} key={`${i}-${cartItem.name}`} />
         ))}
       </ul>
       {stockAlerts.length > 0 && <CartAlerts alerts={stockAlerts} />}
@@ -53,7 +53,7 @@ function Cart() {
         </footer>
       )}
     </CartStyles>
-  )
+  );
 }
 
 const CartItemLi = styled.li`
@@ -86,7 +86,7 @@ const CartItemLi = styled.li`
     grid-gap: 0.5rem;
     margin: 0.5rem;
   }
-`
+`;
 const QuantitySelector = styled.div`
   display: flex;
   justify-content: space-evenly;
@@ -102,16 +102,16 @@ const QuantitySelector = styled.div`
     font-size: 1.2rem;
     padding-bottom: 4px;
   }
-`
+`;
 function CartItem({ cartItem }) {
   //TODO - move the useCart call up to Cart
-  const { removeFromCart, addToCart } = useCart()
-  if (!cartItem) return null
-  const totalCost = formatMoney(cartItem.quantity * cartItem.unitPrice)
+  const { removeFromCart, addToCart } = useCart();
+  if (!cartItem) return null;
+  const totalCost = formatMoney(cartItem.quantity * cartItem.unitPrice);
   return (
     <CartItemLi>
       <div className='cartItem-heading'>
-        <h3>{cartItem.coffee}</h3>
+        <h3>{cartItem.name}</h3>
         <QuantitySelector>
           <button
             type='button'
@@ -120,11 +120,12 @@ function CartItem({ cartItem }) {
             onClick={() => {
               addToCart({
                 quantity: -1,
-                coffee: cartItem.coffee,
+                name: cartItem.name,
                 grind: cartItem.grind,
                 unitPrice: cartItem.unitPrice,
                 size: cartItem.size,
-              })
+                _ref: cartItem._ref,
+              });
             }}
           >
             <MinusSvg w={'18'} h={'18'} />
@@ -136,11 +137,12 @@ function CartItem({ cartItem }) {
             onClick={() => {
               addToCart({
                 quantity: 1,
-                coffee: cartItem.coffee,
+                name: cartItem.name,
                 grind: cartItem.grind,
                 unitPrice: cartItem.unitPrice,
                 size: cartItem.size,
-              })
+                _ref: cartItem._ref,
+              });
             }}
           >
             <PlusSvg w={'18'} h={'18'} />
@@ -152,10 +154,10 @@ function CartItem({ cartItem }) {
           onClick={() => {
             if (
               confirm(
-                `Would you like to remove all ${cartItem.size}, ${cartItem.grind}, ${cartItem.coffee} form your cart?`
+                `Would you like to remove all ${cartItem.size}, ${cartItem.grind}, ${cartItem.name} form your cart?`
               )
             )
-              removeFromCart(cartItem)
+              removeFromCart(cartItem);
           }}
         >
           <TrashIcon />
@@ -170,7 +172,7 @@ function CartItem({ cartItem }) {
         <span>${totalCost}</span>
       </p>
     </CartItemLi>
-  )
+  );
 }
 
-export default Cart
+export default Cart;

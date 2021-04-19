@@ -15,7 +15,7 @@ function CoffeeDisplay({ allCoffee }) {
   return (
     <CoffeeDisplayStyles>
       {allCoffee.map((coffee) => (
-        <SingleCoffeeTile key={coffee.id} coffee={coffee} />
+        <SingleCoffeeTile key={coffee._id} coffee={coffee} />
       ))}
     </CoffeeDisplayStyles>
   );

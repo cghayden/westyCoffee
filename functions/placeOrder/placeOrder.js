@@ -27,7 +27,7 @@ function generateOrderEmail({ order, total }) {
           const unitPrice = formatMoney(item.unitPrice);
           const itemTotal = formatMoney(item.quantity * item.unitPrice);
           return `<li>
-          <p><strong>${item.size} bag of ${item.grind} ${item.coffee}</strong></p>
+          <p><strong>${item.size} bag of ${item.grind} ${item.name}</strong></p>
             <p>${item.quantity} @ ${unitPrice} ea. = ${itemTotal}</p></li>`;
         })
         .join('')}
@@ -42,33 +42,33 @@ function generateOrderEmail({ order, total }) {
     </div>`;
 }
 
-function writeOrderToSanity({ name, email, phone, total, number }) {
-  const mutations = [
-    {
-      createOrReplace: {
-        _type: 'order',
-        customerName: name,
-        customerEmail: email,
-        customerPhone: phone,
-        total: total,
-        number: 1,
-        date: Date.now(),
-      },
-    },
-  ];
-  axios
-    .post(`https://yi1dikna.api.sanity.io/v1/data/mutate/production`, {
-      method: 'post',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${process.env.GATSBY_SANITY_MUTATION_API}`,
-      },
-      body: JSON.stringify({ mutations }),
-    })
-    .then((response) => response.json())
-    .then((result) => console.log('mutation result', result))
-    .catch((error) => console.error('MUTATION ERROR', error));
-}
+// function writeOrderToSanity({ name, email, phone, total, number }) {
+//   const mutations = [
+//     {
+//       createOrReplace: {
+//         _type: 'order',
+//         customerName: name,
+//         customerEmail: email,
+//         customerPhone: phone,
+//         total: total,
+//         number: 1,
+//         date: Date.now(),
+//       },
+//     },
+//   ];
+//   axios
+//     .post(`https://yi1dikna.api.sanity.io/v1/data/mutate/production`, {
+//       method: 'post',
+//       headers: {
+//         'Content-type': 'application/json',
+//         Authorization: `Bearer ${process.env.GATSBY_SANITY_MUTATION_API}`,
+//       },
+//       body: JSON.stringify({ mutations }),
+//     })
+//     .then((response) => response.json())
+//     .then((result) => console.log('mutation result', result))
+//     .catch((error) => console.error('MUTATION ERROR', error));
+// }
 
 //TODO = add payment receipt in email html,
 

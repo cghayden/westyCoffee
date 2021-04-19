@@ -39,7 +39,7 @@ export default function orderPage({ location }) {
           <h1>Your Order</h1>
           <ul>
             {orderItems.map((orderItem, i) => (
-              <OrderListItem item={orderItem} key={`${orderItem.coffee}-`} />
+              <OrderListItem item={orderItem} key={`${orderItem.name}-`} />
             ))}
           </ul>
           <div className='paymentDetails'>

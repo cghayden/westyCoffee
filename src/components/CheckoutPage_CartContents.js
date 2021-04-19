@@ -36,7 +36,7 @@ function CheckoutPage_CartContents({ availableCoffee }) {
             cartItem={cartItem}
             removeFromCart={removeFromCart}
             addToCart={addToCart}
-            key={`${i}-${cartItem.coffee}`}
+            key={`${i}-${cartItem.name}`}
           />
         ))}
       </ul>
@@ -103,7 +103,7 @@ function CartItem({ cartItem, removeFromCart, addToCart }) {
   return (
     <CartItemLi>
       <div className='cartItem-heading'>
-        <h3>{cartItem.coffee}</h3>
+        <h3>{cartItem.name}</h3>
         <QuantitySelector>
           <button
             type='button'
@@ -112,10 +112,11 @@ function CartItem({ cartItem, removeFromCart, addToCart }) {
             onClick={() => {
               addToCart({
                 quantity: -1,
-                coffee: cartItem.coffee,
+                name: cartItem.name,
                 grind: cartItem.grind,
                 unitPrice: cartItem.unitPrice,
                 size: cartItem.size,
+                _ref: cartItem._ref,
               });
             }}
           >
@@ -128,10 +129,11 @@ function CartItem({ cartItem, removeFromCart, addToCart }) {
             onClick={() => {
               addToCart({
                 quantity: 1,
-                coffee: cartItem.coffee,
+                name: cartItem.name,
                 grind: cartItem.grind,
                 unitPrice: cartItem.unitPrice,
                 size: cartItem.size,
+                _ref: cartItem._ref,
               });
             }}
           >
@@ -144,7 +146,7 @@ function CartItem({ cartItem, removeFromCart, addToCart }) {
           onClick={() => {
             if (
               confirm(
-                `Would you like to remove all ${cartItem.size}, ${cartItem.grind}, ${cartItem.coffee} form your cart?`
+                `Would you like to remove all ${cartItem.size}, ${cartItem.grind}, ${cartItem.name} form your cart?`
               )
             )
               removeFromCart(cartItem);

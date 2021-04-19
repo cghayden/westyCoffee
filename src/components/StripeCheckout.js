@@ -4,7 +4,7 @@
 
 import React, { useState } from 'react';
 import { navigate } from 'gatsby';
-
+import { nanoid } from 'nanoid';
 import { loadStripe } from '@stripe/stripe-js';
 import {
   CardElement,
@@ -105,7 +105,6 @@ const ErrorMessage = ({ children }) => (
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
-  const [orderSuccess, setOrderSuccess] = useState();
   const [error, setError] = useState(null);
   const [cardComplete, setCardComplete] = useState(false);
   const [processing, setProcessing] = useState(false);
@@ -116,7 +115,7 @@ const CheckoutForm = () => {
     name: '',
   });
   const [botBait, setBotBait] = useState('');
-  const { orderTotal, processOrder } = useCart();
+  const { orderTotal, processOrder, emptyCart } = useCart();
   const { availableCoffee } = useCurrentAvailableCoffee();
 
   async function writeOrderToSanity({
@@ -127,6 +126,20 @@ const CheckoutForm = () => {
     total,
     orderItems,
   }) {
+    const configuredOrderItems = orderItems.map((orderItem) => {
+      console.log('orderItem', orderItem);
+      return {
+        coffee: {
+          _type: 'reference',
+          _ref: orderItem._ref,
+          _key: nanoid(),
+        },
+        grind: orderItem.grind,
+        size: orderItem.size,
+        quantity: orderItem.quantity,
+      };
+    });
+    console.log('configuredOrderItems', configuredOrderItems);
     const mutations = [
       {
         createOrReplace: {
@@ -136,7 +149,7 @@ const CheckoutForm = () => {
           customerPhone: phone,
           number: number,
           total: total,
-          orderItems,
+          orderItems: configuredOrderItems,
         },
         // returnDocuments: true
       },
@@ -187,7 +200,7 @@ const CheckoutForm = () => {
         .then((res) => res.json())
         .then((parsedRes) => {
           console.log('parsedRes', parsedRes);
-
+          emptyCart();
           navigate('/order', {
             state: parsedRes,
           });

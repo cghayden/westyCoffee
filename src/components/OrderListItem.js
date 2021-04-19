@@ -9,7 +9,7 @@ export default function OrderListItem({ item }) {
   return (
     <LineItemLi>
       <div className='cartItem-heading'>
-        <h2>{item.coffee}</h2>
+        <h2>{item.name}</h2>
       </div>
       <p className='grind'>{item.grind}</p>
       <p className='price'>
