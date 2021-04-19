@@ -7,17 +7,18 @@ import MinusSvg from './Icons/MinusSvg';
 import PlusSvg from './Icons/PlusSvg';
 
 const CardStyle = styled.div`
-  background: var(--green);
+  background: var(--lightGray);
   border-radius: 4px;
-  width: 260px;
+  width: 280px;
   height: 260px;
   padding: 8px;
   margin-bottom: 4px;
   display: grid;
   grid-template-rows: auto 1fr 26px;
-  /* box-shadow: 1px 1px 3px 1px var(--green); */
 
   header {
+    color: darkgreen;
+
     width: 100%;
     font-size: 1.4rem;
     a {
@@ -133,10 +134,11 @@ function CoffeeCard({ coffee, showOrderForm, toggleOrderForm }) {
     }
     addToCart({
       quantity: quantity,
-      coffee: coffee.name,
+      name: coffee.name,
       grind: inputs.grind,
       unitPrice: inputs.size === 'half pound' ? coffee.price / 2 : coffee.price,
       size: inputs.size,
+      _ref: coffee._id,
     });
     toggleOrderForm(false);
     openCart();
@@ -149,10 +151,10 @@ function CoffeeCard({ coffee, showOrderForm, toggleOrderForm }) {
         <Link to={`/coffee/${coffee.slug.current}`}>{coffee.name}</Link>
       </header>
       <CoffeeDetails>
-        <p>{coffee.roastLevel} roast</p>
-        <p>{coffee.description}</p>
-        <p>{coffee.region}</p>
-        <p>{coffee.grade}</p>
+        {coffee.roastLevel && <p>{coffee.roastLevel} roast</p>}
+        {coffee.description && <p>{coffee.description}</p>}
+        {coffee.region && <p>{coffee.region}</p>}
+        {coffee.grade && <p>{coffee.grade}</p>}
         <OrderForm action='POST' onSubmit={submitToCart} open={showOrderForm}>
           <fieldset>
             <div className='input-item'>

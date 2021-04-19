@@ -1,14 +1,16 @@
 export default function calcTotalPoundsInCart(cartContents) {
-  const poundCount = {}
+  const poundCount = {};
   cartContents.forEach((cartItem) => {
     const poundsOfCartItem =
-      cartItem.size === 'half pound' ? cartItem.quantity / 2 : cartItem.quantity
-    const currentPounds = poundCount[cartItem.coffee]
+      cartItem.size === 'half pound'
+        ? cartItem.quantity / 2
+        : cartItem.quantity;
+    const currentPounds = poundCount[cartItem.name];
     if (currentPounds) {
-      poundCount[cartItem.coffee] += poundsOfCartItem
+      poundCount[cartItem.name] += poundsOfCartItem;
     } else {
-      poundCount[cartItem.coffee] = poundsOfCartItem
+      poundCount[cartItem.name] = poundsOfCartItem;
     }
-  })
-  return poundCount
+  });
+  return poundCount;
 }

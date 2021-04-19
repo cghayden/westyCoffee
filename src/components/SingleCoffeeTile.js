@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { useCart } from './CartContext';
 import styled from 'styled-components';
 import CoffeeCard from './CoffeeCard';
+import pine1 from '../assets/images/pine1.jpg';
 
 const CoffeeTile = styled.div`
-  padding: 1rem;
-  background: var(--white);
+  padding: 0.5rem;
+  background: var(--lightGray);
+  box-shadow: 1px 1px 4px 1px hsl(0deg 15% 30% / 14%);
 `;
 const CoffeeStatus = styled.div`
   height: 40px;

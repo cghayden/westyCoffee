@@ -94,10 +94,11 @@ function AddToCartForm({ coffee }) {
     }
     addToCart({
       quantity: quantity,
-      coffee: coffee.name,
+      name: coffee.name,
       grind: inputs.grind,
       unitPrice: inputs.size === 'half pound' ? coffee.price / 2 : coffee.price,
       size: inputs.size,
+      _ref: coffee._id,
     });
     openCart();
   }
