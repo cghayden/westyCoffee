@@ -403,14 +403,14 @@ const CheckoutForm = () => {
           </div>
         </div>
       </fieldset>
-      < className='FormGroup'>
+      <fieldset className='FormGroup'>
         <CardField
           onChange={(e) => {
             setError(e.error);
             setCardComplete(e.complete);
           }}
         />
-      </>
+      </fieldset>
       {error && <ErrorMessage>{error.message}</ErrorMessage>}
       <SubmitButton processing={processing} error={error} disabled={!stripe}>
         Pay ${orderTotal}

@@ -8,7 +8,9 @@ const StripeCheckoutStyles = styled.div`
   margin: 0 auto;
   font-size: 14px;
 
-  input,
+  input[type='text'],
+  input[type='email'],
+  input[type='tel'],
   button {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -27,10 +29,10 @@ const StripeCheckoutStyles = styled.div`
     height: 100%;
   }
 
-  body {
+  /* body {
     height: 100%;
     margin: 0;
-  }
+  } */
 
   #root {
     height: 100%;
@@ -66,6 +68,8 @@ const StripeCheckoutStyles = styled.div`
   }
 
   .FormRow {
+    /* padding: 1.14em; */
+
     display: -ms-flexbox;
     display: flex;
     -ms-flex-align: center;
@@ -73,11 +77,92 @@ const StripeCheckoutStyles = styled.div`
     margin-left: 15px;
     border-top: 1px solid #819efc;
   }
-
+  .FormRow:after,
+  .FormRow:before {
+    content: '';
+    display: table;
+  }
   .FormRow:first-child {
     border-top: none;
   }
 
+  .radio__input,
+  .checkbox__input {
+    display: table;
+    padding-right: 0.75em;
+    white-space: nowrap;
+  }
+  .radio-wrapper,
+  .checkbox-wrapper {
+    zoom: 1;
+    display: flex;
+    /* margin-bottom: 1em; */
+  }
+
+  .radio-wrapper:last-child,
+  .checkbox-wrapper:last-child {
+    margin-bottom: 0;
+  }
+  .radio__input,
+  .checkbox__input {
+    padding-right: 0.75em;
+    white-space: nowrap;
+  }
+  .display-table .radio__input,
+  .display-table .checkbox__input {
+    display: table-cell;
+  }
+  .radio__label,
+  .checkbox__label {
+    cursor: pointer;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+  }
+  .display-table .radio__label,
+  .display-table .checkbox__label {
+    /* display: table-cell; */
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .display-table .radio__label__primary:only-child {
+    display: block;
+  }
+  .display-table .radio__label__primary {
+    display: table-cell;
+    width: 100%;
+  }
+
+  .radio__label--active {
+    color: #3097b4;
+  }
+  .radio__label > svg {
+    margin-right: 10px;
+    fill: currentColor;
+  }
+  .input-checkbox,
+  .input-radio {
+    border-color: black;
+    background-color: white;
+    cursor: pointer;
+    padding: 0;
+    white-space: nowrap;
+    width: 18px;
+    height: 18px;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    cursor: pointer;
+    vertical-align: -4px;
+    border: 1px solid;
+  }
+  .input-checkbox:checked,
+  .input-radio:checked {
+    border-color: blue;
+  }
+  .input-radio:checked {
+    border-width: 7px;
+  }
   .FormRowLabel {
     width: 15%;
     min-width: 70px;

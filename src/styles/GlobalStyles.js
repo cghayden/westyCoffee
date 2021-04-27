@@ -53,7 +53,7 @@ const GlobalStyles = styled.createGlobalStyle`
 
   main {
     font-family: 'Nunito', sans-serif;
-    text-align: center;
+    /* text-align: center; */
     max-width: 1000px;
     width: 95%;
     margin: 1rem auto;
