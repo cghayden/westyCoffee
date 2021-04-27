@@ -5,6 +5,7 @@
 import React, { useState } from 'react';
 import { navigate } from 'gatsby';
 import { nanoid } from 'nanoid';
+import dayjs from 'dayjs';
 import { loadStripe } from '@stripe/stripe-js';
 import {
   CardElement,
@@ -13,8 +14,11 @@ import {
   useStripe,
 } from '@stripe/react-stripe-js';
 import { StripeCheckoutStyles } from '../styles/StripeCheckoutStyles';
+import ShippingTruckIcon from './Icons/ShippingTruckIcon';
+import StoreFrontIcon from './Icons/StoreFrontIcon';
 import { useCart } from './CartContext';
 import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee';
+import styled from 'styled-components';
 
 const CARD_OPTIONS = {
   iconStyle: 'solid',
@@ -48,7 +52,20 @@ const CardField = ({ onChange }) => (
     <CardElement options={CARD_OPTIONS} onChange={onChange} />
   </div>
 );
-
+const RadioLabel = styled.label`
+  cursor: pointer;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  color: ${(props) => (props.active ? 'blue' : 'black')};
+  span {
+    transition: all 0.2s ease-in-out;
+  }
+`;
+const RadioInput = styled.input`
+  appearance: none;
+  border-radius: 50%;
+`;
 const Field = ({
   label,
   id,
@@ -113,9 +130,10 @@ const CheckoutForm = () => {
     email: '',
     phone: '',
     name: '',
+    deliveryMethod: '',
   });
   const [botBait, setBotBait] = useState('');
-  const { orderTotal, processOrder, emptyCart } = useCart();
+  const { orderTotal, processOrder, emptyCart, totalCartPounds } = useCart();
   const { availableCoffee } = useCurrentAvailableCoffee();
 
   async function writeOrderToSanity({
@@ -125,46 +143,72 @@ const CheckoutForm = () => {
     number,
     total,
     orderItems,
+    stripe_id,
+    deliveryMethod,
+    pickupLocation,
   }) {
     const configuredOrderItems = orderItems.map((orderItem) => {
-      console.log('orderItem', orderItem);
       return {
-        coffee: {
-          _type: 'reference',
-          _ref: orderItem._ref,
-          _key: nanoid(),
-        },
+        name: orderItem.name,
         grind: orderItem.grind,
         size: orderItem.size,
         quantity: orderItem.quantity,
+        _key: nanoid(),
       };
     });
     console.log('configuredOrderItems', configuredOrderItems);
-    const mutations = [
+    const adjustQuantityMutations = orderItems.map((orderItem) => ({
+      patch: {
+        id: orderItem._ref,
+        dec: {
+          stock: totalCartPounds[orderItem.name],
+        },
+      },
+    }));
+    const orderDate = new Date().toISOString();
+    const orderMutation = [
       {
-        createOrReplace: {
+        create: {
           _type: 'order',
           customerName: name,
           customerEmail: email,
           customerPhone: phone,
-          number: number,
+          number,
           total: total,
           orderItems: configuredOrderItems,
+          orderDate,
+          stripe_id,
+          deliveryMethod,
+          pickupLocation,
+          // set: { slug.current: number.toString() },
         },
-        // returnDocuments: true
       },
+      // returnDocuments: true,
     ];
-    await fetch(`https://yi1dikna.api.sanity.io/v1/data/mutate/production`, {
+
+    await fetch(`https://2u11zhhx.api.sanity.io/v1/data/mutate/orders`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
-        Authorization: `Bearer ${process.env.GATSBY_SANITY_MUTATION_API}`,
+        Authorization: `Bearer ${process.env.GATSBY_SANITY_ORDERS_API}`,
       },
-      body: JSON.stringify({ mutations }),
+      body: JSON.stringify({ mutations: orderMutation }),
     })
       .then((response) => response.json())
       .then((result) => console.log('MUTATION RESPONSE', result))
       .catch((error) => console.error('MUTATION ERROR', error));
+
+    //   await fetch(`https://yi1dikna.api.sanity.io/v1/data/mutate/production`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-type': 'application/json',
+    //     Authorization: `Bearer ${process.env.GATSBY_SANITY_ORDERS_API}`,
+    //   },
+    //   body: JSON.stringify({ adjustQuantityMutations }),
+    // })
+    //   .then((response) => response.json())
+    //   .then((result) => console.log('MUTATION RESPONSE', result))
+    //   .catch((error) => console.error('MUTATION ERROR', error));
   }
 
   async function handleSubmit(event) {
@@ -189,6 +233,7 @@ const CheckoutForm = () => {
     if (error) {
       console.log('error creating payment method', error);
       setError(error);
+      return;
     } else {
       setPaymentMethod(paymentMethod);
       const orderRes = await processOrder(
@@ -205,13 +250,17 @@ const CheckoutForm = () => {
             state: parsedRes,
           });
           writeOrderToSanity({
+            number: parsedRes.charge.created,
             name: billingDetails.name,
             email: billingDetails.email,
             phone: billingDetails.phone,
             total: parsedRes.charge.amount,
-            number: parsedRes.charge.amount,
-            date: Date.now(),
             orderItems: parsedRes.orderItems,
+            stripe_id: parsedRes.charge.id,
+            deliveryMethod: 'Pickup',
+            pickupLocation: billingDetails.pickupLocation
+              ? billingDetails.pickupLocation
+              : '',
           });
         })
         .catch((err) => {
@@ -233,6 +282,7 @@ const CheckoutForm = () => {
       name: '',
       email: '',
       phone: '',
+      deliveryMethod: 'Pickup',
     });
   };
 
@@ -292,14 +342,75 @@ const CheckoutForm = () => {
           className='mapleSyrup'
         />
       </fieldset>
-      <fieldset className='FormGroup'>
+      <fieldset className='FormGroup display-table'>
+        <div className='FormRow'>
+          <div className='radio-wrapper FormRowInput'>
+            <div className='radio__input'>
+              <RadioInput
+                className='input-radio'
+                type='radio'
+                active={billingDetails.deliveryMethod === 'Shipping'}
+                checked={billingDetails.deliveryMethod === 'Shipping'}
+                value='Shipping'
+                name='deliveryMethod'
+                id='checkout_id_delivery-shipping'
+                onChange={(e) => {
+                  setBillingDetails({
+                    ...billingDetails,
+                    deliveryMethod: e.target.value,
+                  });
+                }}
+              />
+            </div>
+            <RadioLabel
+              active={billingDetails.deliveryMethod === 'Shipping'}
+              for='checkout_id_delivery-shipping'
+            >
+              <span class='radio__label'>
+                <StoreFrontIcon w='18' h='18' />
+                Ship To Me
+              </span>
+            </RadioLabel>
+          </div>
+          <div className='radio-wrapper FormRowInput'>
+            <div className='radio__input'>
+              <RadioInput
+                className='input-radio'
+                type='radio'
+                value='Pickup'
+                active={billingDetails.deliveryMethod === 'Pickup'}
+                checked={billingDetails.deliveryMethod === 'Pickup'}
+                name='deliveryMethod'
+                id='checkout_id_delivery-pickup'
+                onChange={(e) => {
+                  setBillingDetails({
+                    ...billingDetails,
+                    deliveryMethod: e.target.value,
+                  });
+                }}
+              />
+            </div>
+            <RadioLabel
+              active={billingDetails.deliveryMethod === 'Pickup'}
+              for='checkout_id_delivery-pickup'
+            >
+              <span class='radio__label'>
+                <ShippingTruckIcon />
+                {/* <svg aria-hidden="true" focusable="false" class="icon-svg icon-svg--size-18 icon-svg--inline-before"> <use xlink:href="#ship"></use> </svg> */}
+                Local Pickup
+              </span>
+            </RadioLabel>
+          </div>
+        </div>
+      </fieldset>
+      < className='FormGroup'>
         <CardField
           onChange={(e) => {
             setError(e.error);
             setCardComplete(e.complete);
           }}
         />
-      </fieldset>
+      </>
       {error && <ErrorMessage>{error.message}</ErrorMessage>}
       <SubmitButton processing={processing} error={error} disabled={!stripe}>
         Pay ${orderTotal}
