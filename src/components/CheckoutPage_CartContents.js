@@ -27,23 +27,25 @@ function CheckoutPage_CartContents({ availableCoffee }) {
 
   return (
     <CartPageStyles>
-      <header>
-        <h3>Review Your Cart</h3>
-      </header>
-      <ul>
-        {cartContents.map((cartItem, i) => (
-          <CartItem
-            cartItem={cartItem}
-            removeFromCart={removeFromCart}
-            addToCart={addToCart}
-            key={`${i}-${cartItem.name}`}
-          />
-        ))}
-      </ul>
-      <footer>
-        <h3>Total: $ {orderTotal}</h3>
-      </footer>
-      {stockAlerts.length > 0 && <CartAlerts alerts={stockAlerts} />}
+      <div>
+        <header>
+          <h2>Review Your Cart</h2>
+        </header>
+        <ul>
+          {cartContents.map((cartItem, i) => (
+            <CartItem
+              cartItem={cartItem}
+              removeFromCart={removeFromCart}
+              addToCart={addToCart}
+              key={`-${cartItem.name}`}
+            />
+          ))}
+        </ul>
+        <footer>
+          <h3>Total: $ {orderTotal}</h3>
+        </footer>
+        {stockAlerts.length > 0 && <CartAlerts alerts={stockAlerts} />}
+      </div>
       {!!cartContents.length && !stockAlerts.length && <StripeCheckout />}
     </CartPageStyles>
   );
@@ -70,15 +72,20 @@ const CartItemLi = styled.li`
   }
   .grind {
     text-align: left;
+    margin: 0;
   }
-  .price {
+  .details {
     place-items: center;
     display: grid;
-    grid-template-columns: 1fr 2ch max-content 2ch max-content;
+    grid-template-columns: 2ch max-content 1ch max-content;
     justify-content: end;
     justify-items: end;
+    align-items: baseline;
     grid-gap: 0.5rem;
     margin: 0.5rem;
+  }
+  .details-quantity {
+    font-size: 1.2rem;
   }
 `;
 const QuantitySelector = styled.div`
@@ -93,7 +100,7 @@ const QuantitySelector = styled.div`
     font-size: 1.5rem;
   }
   p {
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     padding-bottom: 4px;
   }
 `;
@@ -155,15 +162,14 @@ function CartItem({ cartItem, removeFromCart, addToCart }) {
           <TrashIcon />
         </button>
       </div>
-      <p className='grind'>{cartItem.grind}</p>
-      <p className='price'>
-        <span>
-          {`${cartItem.quantity} ${cartItem.size} bag${
-            cartItem.quantity > 1 ? 's' : ''
-          }`}{' '}
-        </span>
+      <p className='grind'>{`${cartItem.grind}, ${cartItem.size} bag`}</p>
+      <p className='details'>
+        {/* <span className='details-quantity'>{`${cartItem.quantity}`}</span> */}
+        {/* <span>
+          {`${cartItem.size} bag ${cartItem.quantity > 1 ? 's' : ''}`}
+        </span> */}
         <span>&times; </span>
-        <span>${formatMoney(cartItem.unitPrice)} </span>
+        <span>{`${formatMoney(cartItem.unitPrice)} ea.`} </span>
         <span>= </span>
         <span>${totalCost}</span>
       </p>

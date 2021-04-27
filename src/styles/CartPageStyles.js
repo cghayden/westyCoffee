@@ -2,10 +2,10 @@ import styled from 'styled-components';
 
 const CartPageStyles = styled.div`
   font-family: monospace;
-  /* padding: 0 20px; */
-  display: flex;
-  flex-direction: column;
   font-size: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
   p {
     margin: 5px 0;
   }

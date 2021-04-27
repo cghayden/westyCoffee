@@ -14,6 +14,7 @@ const GlobalStyles = styled.createGlobalStyle`
     --yellow: #ffc600;
     --white: #f7fbf8;
     --grey: #efefef;
+    --darkGray: hsla(132, 5%, 38%, 1);
     --green: hsla(132, 32%, 60%, 0.8);
     --lightGray: hsla(129, 20%, 93%, 1);
     --stripeBlue: #829fff;
@@ -53,7 +54,7 @@ const GlobalStyles = styled.createGlobalStyle`
 
   main {
     font-family: 'Nunito', sans-serif;
-    text-align: center;
+    /* text-align: center; */
     max-width: 1000px;
     width: 95%;
     margin: 1rem auto;

@@ -3,7 +3,6 @@ import styled from 'styled-components';
 const StripeCheckoutStyles = styled.div`
   width: 100%;
   max-width: 500px;
-  height: 400px;
   position: relative;
   margin: 0 auto;
   font-size: 14px;
@@ -16,8 +15,11 @@ const StripeCheckoutStyles = styled.div`
     outline: none;
     border-style: none;
   }
+  input[type='radio'] {
+    border: 1px solid gray;
+  }
 
-  html {
+  /* html {
     background-color: #6772e5;
     font-size: 16px;
     font-family: Roboto, Open Sans, Segoe UI, sans-serif;
@@ -25,19 +27,14 @@ const StripeCheckoutStyles = styled.div`
     font-style: normal;
     text-rendering: optimizeLegibility;
     height: 100%;
-  }
+  } */
 
-  body {
-    height: 100%;
-    margin: 0;
-  }
-
-  #root {
+  /* #root {
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-  }
+  } */
 
   @keyframes fade {
     from {
@@ -52,13 +49,14 @@ const StripeCheckoutStyles = styled.div`
 
   .Form {
     animation: fade 200ms ease-out;
+    position: relative;
   }
 
   .FormGroup {
     margin: 10px 0px;
     padding: 0;
     border-style: none;
-    background-color: #f0f1f6;
+    background-color: #f4f4f7;
     will-change: opacity, transform;
     box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08),
       inset 0 1px 0 rgba(0, 0, 0, 0.08);
@@ -73,11 +71,93 @@ const StripeCheckoutStyles = styled.div`
     margin-left: 15px;
     border-top: 1px solid #819efc;
   }
-
+  .FormRow:after,
+  .FormRow:before {
+    content: '';
+    display: table;
+  }
   .FormRow:first-child {
     border-top: none;
   }
+  .FormRow.flex-start {
+    align-items: flex-start;
+  }
+  .radio__input,
+  .checkbox__input {
+    display: table;
+    padding-right: 0.75em;
+    white-space: nowrap;
+  }
+  .radio-wrapper,
+  .checkbox-wrapper {
+    zoom: 1;
+    display: flex;
+    /* margin-bottom: 1em; */
+  }
 
+  .radio-wrapper:last-child,
+  .checkbox-wrapper:last-child {
+    margin-bottom: 0;
+  }
+  .radio__input,
+  .checkbox__input {
+    padding-right: 0.75em;
+    white-space: nowrap;
+  }
+  .display-table .radio__input,
+  .display-table .checkbox__input {
+    display: table-cell;
+  }
+  .radio__label,
+  .checkbox__label {
+    cursor: pointer;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+  }
+  .display-table .radio__label,
+  .display-table .checkbox__label {
+    /* display: table-cell; */
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .display-table .radio__label__primary:only-child {
+    display: block;
+  }
+  .display-table .radio__label__primary {
+    display: table-cell;
+    width: 100%;
+  }
+
+  .radio__label--active {
+    color: #3097b4;
+  }
+  .radio__label > svg {
+    margin-right: 10px;
+    fill: currentColor;
+  }
+  .input-checkbox,
+  .input-radio {
+    background-color: white;
+    cursor: pointer;
+    padding: 0;
+    white-space: nowrap;
+    width: 18px;
+    height: 18px;
+    transition: all 0.2s ease-in-out;
+    position: relative;
+    cursor: pointer;
+    vertical-align: -4px;
+    border: 1px solid;
+  }
+  .input-checkbox:checked,
+  .input-radio:checked {
+    border-color: darkblue;
+  }
+  .input-radio:checked {
+    border-width: 7px;
+  }
   .FormRowLabel {
     width: 15%;
     min-width: 70px;
@@ -103,7 +183,7 @@ const StripeCheckoutStyles = styled.div`
   }
 
   .FormRowInput {
-    font-size: 16px;
+    font-size: 1.1rem;
     width: 100%;
     padding: 11px 15px 11px 0;
     color: black;
@@ -113,6 +193,7 @@ const StripeCheckoutStyles = styled.div`
 
   .FormRowInput::placeholder {
     color: gray;
+    font-size: 0.95rem;
   }
 
   .StripeElement--webkit-autofill {
@@ -218,6 +299,32 @@ const StripeCheckoutStyles = styled.div`
   }
   .mapleSyrup {
     display: none;
+  }
+
+  .form-dropdown {
+    transition: all 1s;
+    height: auto;
+  }
+  &::placeholder {
+    color: gray;
+    /* color: var(--darkGray); */
+    opacity: 1;
+  }
+  .pickupAddress {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .pickupAddress p {
+    margin: 0;
+    font-size: 14px;
+  }
+  .pickupAddress > .pickup-locationName {
+    font-size: 17px;
+  }
+  .form-heading {
+    font-weight: normal;
+    color: darkblue;
   }
 `;
 

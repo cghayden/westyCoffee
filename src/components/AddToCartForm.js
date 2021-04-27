@@ -44,8 +44,10 @@ const FormStyles = styled.form`
   p.errorMessage {
     font-size: 13px;
     color: red;
+    text-align: center;
   }
   button {
+    margin-top: 5px;
     width: 80%;
     place-self: center;
     padding: 4px 8px;

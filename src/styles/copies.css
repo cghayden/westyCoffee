@@ -13,10 +13,8 @@ textarea {
   background: transparent;
   line-height: normal;
 }
-.display-table .radio__input,
-.display-table .checkbox__input {
-  display: table-cell;
-}
+/* the whole page is wrapped in .display-table */
+
 .radio__input,
 .checkbox__input {
   padding-right: 0.75em;
@@ -38,10 +36,25 @@ textarea {
 .input-radio:checked {
   border-color: #3097b4;
 }
+.content-box__row {
+  padding: 1.14em;
+  position: relative;
+  zoom: 1;
+}
+.content-box__row:first-child {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
 .content-box .input-checkbox,
 .content-box .input-radio {
   border-color: #d9d9d9;
   background-color: white;
+}
+.display-table .content-box__row {
+  display: table;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
 }
 .input-checkbox,
 .input-radio {
@@ -85,6 +98,10 @@ textarea {
 .display-table .checkbox__label {
   display: table-cell;
   width: 100%;
+}
+.display-table .radio__input,
+.display-table .checkbox__input {
+  display: table-cell;
 }
 .radio__label,
 .checkbox__label {

@@ -4,11 +4,19 @@ import SEO from '../components/SEO';
 import styled from 'styled-components';
 import CoffeeDisplay from '../components/CoffeeDisplay';
 
+const HomeMainStyle = styled.main`
+  text-align: center;
+  h2 {
+    margin: 0.5rem;
+  }
+`;
+
 const HomePageTextStyles = styled.div`
   a {
     padding: 0;
     color: green;
   }
+  padding: 0.75rem;
 `;
 
 // *** STATICALLY BUILT PAGE
@@ -17,7 +25,7 @@ export default function homePage({ data }) {
   return (
     <>
       <SEO title={'Neighborly Coffee'} />
-      <main>
+      <HomeMainStyle>
         <h2>Our Roasts of the Week</h2>
         <HomePageTextStyles>
           {text.map((entry, i) => (
@@ -25,7 +33,7 @@ export default function homePage({ data }) {
           ))}
         </HomePageTextStyles>
         <CoffeeDisplay allCoffee={data.coffees.nodes} />
-      </main>
+      </HomeMainStyle>
     </>
   );
 }
