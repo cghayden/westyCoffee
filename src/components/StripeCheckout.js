@@ -24,7 +24,7 @@ const CARD_OPTIONS = {
   iconStyle: 'solid',
   style: {
     base: {
-      iconColor: 'darkBlue',
+      iconColor: 'darkdarkblue',
       //   iconColor: '#c4f0ff',
       color: 'black',
       fontWeight: 500,
@@ -57,7 +57,9 @@ const RadioLabel = styled.label`
   vertical-align: middle;
   display: flex;
   align-items: center;
-  color: ${(props) => (props.active ? 'blue' : 'black')};
+  color: ${(props) => (props.active ? 'darkblue' : 'gray')};
+  font-size: 1rem;
+  /* color: ${(props) => (props.active ? 'darkblue' : 'var(--darkGray)')}; */
   span {
     transition: all 0.2s ease-in-out;
   }
@@ -131,6 +133,12 @@ const CheckoutForm = () => {
     phone: '',
     name: '',
     deliveryMethod: '',
+    addressLine1: '',
+    addressLine2: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    pickupLocation: '',
   });
   const [botBait, setBotBait] = useState('');
   const { orderTotal, processOrder, emptyCart, totalCartPounds } = useCart();
@@ -294,12 +302,14 @@ const CheckoutForm = () => {
     </div>
   ) : (
     <form className='Form' onSubmit={handleSubmit}>
+      <h3 className='form-heading'>Contact</h3>
+
       <fieldset className='FormGroup'>
         <Field
           label='Name'
           id='name'
           type='text'
-          placeholder='Jane Doe'
+          placeholder=''
           required
           autoComplete='name'
           value={billingDetails.name}
@@ -367,8 +377,8 @@ const CheckoutForm = () => {
               for='checkout_id_delivery-shipping'
             >
               <span class='radio__label'>
-                <StoreFrontIcon w='18' h='18' />
-                Ship To Me
+                <ShippingTruckIcon w='18' h='18' />
+                Ship It
               </span>
             </RadioLabel>
           </div>
@@ -395,14 +405,42 @@ const CheckoutForm = () => {
               for='checkout_id_delivery-pickup'
             >
               <span class='radio__label'>
-                <ShippingTruckIcon />
+                <StoreFrontIcon />
                 {/* <svg aria-hidden="true" focusable="false" class="icon-svg icon-svg--size-18 icon-svg--inline-before"> <use xlink:href="#ship"></use> </svg> */}
-                Local Pickup
+                Pickup
               </span>
             </RadioLabel>
           </div>
         </div>
       </fieldset>
+
+      {/* ****** Shipping or delivery details ********* */}
+      <div className='form-dropdown'>
+        {billingDetails.deliveryMethod === 'Shipping' && (
+          <>
+            <h3 className='form-heading'>Shipping Address</h3>
+            <fieldset className='FormGroup'>
+              <ShippingAddressInput
+                billingDetails={billingDetails}
+                setBillingDetails={setBillingDetails}
+              />
+            </fieldset>
+          </>
+        )}
+        {billingDetails.deliveryMethod === 'Pickup' && (
+          <>
+            <h3 className='form-heading'>Pickup Location</h3>
+            <fieldset className='FormGroup'>
+              <PickupChoiceInput
+                billingDetails={billingDetails}
+                setBillingDetails={setBillingDetails}
+              />
+            </fieldset>
+          </>
+        )}
+      </div>
+      <h3 className='form-heading'>Payment</h3>
+
       <fieldset className='FormGroup'>
         <CardField
           onChange={(e) => {
@@ -411,6 +449,7 @@ const CheckoutForm = () => {
           }}
         />
       </fieldset>
+
       {error && <ErrorMessage>{error.message}</ErrorMessage>}
       <SubmitButton processing={processing} error={error} disabled={!stripe}>
         Pay ${orderTotal}
@@ -438,5 +477,146 @@ export default function StripeCheckout() {
         <CheckoutForm />
       </Elements>
     </StripeCheckoutStyles>
+  );
+}
+
+function ShippingAddressInput({ billingDetails, setBillingDetails }) {
+  return (
+    <>
+      <Field
+        label={!billingDetails.addressLine1.length ? '' : 'Address'}
+        id='addressLine1'
+        type='text'
+        placeholder={!billingDetails.addressLine1.length ? 'Address' : null}
+        required={billingDetails.deliveryMethod === 'Shipping'}
+        autoComplete='address-line1'
+        value={billingDetails.addressLine1}
+        onChange={(e) => {
+          setBillingDetails({
+            ...billingDetails,
+            addressLine1: e.target.value,
+          });
+        }}
+      />
+      <Field
+        label={!billingDetails.addressLine2.length ? '' : ''}
+        id='addressLine2'
+        type='text'
+        placeholder={!billingDetails.addressLine2.length ? 'Apt, etc.' : null}
+        autoComplete='address-line2'
+        value={billingDetails.addressLine2}
+        onChange={(e) => {
+          setBillingDetails({
+            ...billingDetails,
+            addressLine2: e.target.value,
+          });
+        }}
+      />
+      <Field
+        label={!billingDetails.city.length ? '' : 'City'}
+        id='city'
+        type='city'
+        placeholder={!billingDetails.city.length ? 'City' : null}
+        required={billingDetails.deliveryMethod === 'Shipping'}
+        autoComplete='address-level2'
+        value={billingDetails.city}
+        onChange={(e) => {
+          setBillingDetails({ ...billingDetails, city: e.target.value });
+        }}
+      />
+      <Field
+        label={!billingDetails.state.length ? '' : 'State'}
+        id='state'
+        type='state'
+        placeholder={!billingDetails.state.length ? 'State' : null}
+        required={billingDetails.deliveryMethod === 'Shipping'}
+        autoComplete='address-level1'
+        value={billingDetails.state}
+        onChange={(e) => {
+          setBillingDetails({ ...billingDetails, state: e.target.value });
+        }}
+      />
+      <Field
+        label={!billingDetails.zipCode.length ? '' : 'Zip'}
+        id='zipCode'
+        type='text'
+        placeholder='00000'
+        placeholder={!billingDetails.zipCode.length ? 'Zip Code' : null}
+        autoComplete='postal-code'
+        value={billingDetails.zipCode}
+        onChange={(e) => {
+          setBillingDetails({ ...billingDetails, zipCode: e.target.value });
+        }}
+      />
+    </>
+  );
+}
+function PickupChoiceInput({ billingDetails, setBillingDetails }) {
+  return (
+    <>
+      <div className='FormRow flex-start'>
+        <div className='radio-wrapper FormRowInput'>
+          <div className='radio__input'>
+            <RadioInput
+              className='input-radio'
+              type='radio'
+              active={billingDetails.pickupLocation === 'Daniels'}
+              checked={billingDetails.pickupLocation === 'Daniels'}
+              value='Daniels'
+              name='pickupLocation'
+              id='checkout_id_pickup-daniels'
+              onChange={(e) => {
+                setBillingDetails({
+                  ...billingDetails,
+                  pickupLocation: e.target.value,
+                });
+              }}
+            />
+          </div>
+          <RadioLabel
+            active={billingDetails.pickupLocation === 'Daniels'}
+            for='checkout_id_pickup-daniels'
+          >
+            <div class='radio__label pickupAddress'>
+              <p className='pickup-locationName'>Daniel's Home</p>
+              <p>36 Lincoln Rd.</p>
+              <p>Sharon, MA 02067</p>
+            </div>
+          </RadioLabel>
+        </div>
+        <div className='radio-wrapper FormRowInput'>
+          <div className='radio__input'>
+            <RadioInput
+              className='input-radio'
+              type='radio'
+              value='Edge'
+              active={billingDetails.pickupLocation === 'Edge'}
+              checked={billingDetails.pickupLocation === 'Edge'}
+              name='pickupLocation'
+              id='checkout_id_pickup-edge'
+              onChange={(e) => {
+                setBillingDetails({
+                  ...billingDetails,
+                  pickupLocation: e.target.value,
+                });
+              }}
+            />
+          </div>
+          <RadioLabel
+            active={billingDetails.pickupLocation === 'Edge'}
+            for='checkout_id_pickup-edge'
+          >
+            <div class='radio__label'>
+              <div class='radio__label pickupAddress'>
+                <p className='pickup-locationName'>Edge Studio</p>
+                <p>905 Turnpike St,</p>
+                <p>Suite. F</p>
+                <p>Canton, MA 02021</p>
+              </div>
+            </div>
+          </RadioLabel>
+        </div>
+      </div>
+    </>
   );
 }

@@ -14,6 +14,7 @@ const GlobalStyles = styled.createGlobalStyle`
     --yellow: #ffc600;
     --white: #f7fbf8;
     --grey: #efefef;
+    --darkGray: hsla(132, 5%, 38%, 1);
     --green: hsla(132, 32%, 60%, 0.8);
     --lightGray: hsla(129, 20%, 93%, 1);
     --stripeBlue: #829fff;

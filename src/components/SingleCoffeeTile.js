@@ -5,6 +5,7 @@ import pine1 from '../assets/images/pine1.jpg';
 
 const CoffeeTile = styled.div`
   padding: 0.5rem;
+  text-align: center;
   background: var(--lightGray);
   box-shadow: 1px 1px 4px 1px hsl(0deg 15% 30% / 14%);
 `;
