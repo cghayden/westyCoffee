@@ -31,6 +31,7 @@ const CardStyle = styled.div`
     &.price {
       font-size: 1.1rem;
       align-self: flex-end;
+      margin-bottom: --5px;
     }
   }
 `;
@@ -40,6 +41,7 @@ const CoffeeDetails = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  margin-top: 4px;
 `;
 const OrderForm = styled.form`
   background: var(--white);
@@ -88,7 +90,7 @@ const OrderForm = styled.form`
   button {
     width: 80%;
     place-self: center;
-    padding: 4px 8px;
+    padding: 8px 8px;
     font-size: 14px;
   }
   .errorDisplay {
@@ -233,7 +235,7 @@ function CoffeeCard({ coffee, showOrderForm, toggleOrderForm }) {
             <div className='errorDisplay'>
               {error && <p className='errorMessage'>{error}</p>}
             </div>
-            <button className='action-secondary' type='submit'>
+            <button className='action-primary' type='submit'>
               Add {quantity} {inputs.size} bag{quantity > 1 ? `s` : null} to
               Cart
             </button>

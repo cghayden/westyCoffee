@@ -6,6 +6,7 @@ import CartPageStyles from '../styles/CartPageStyles';
 import formatMoney from '../utils/formatMoney';
 
 const OrderPageStyles = styled(CartPageStyles)`
+  display: block;
   .paymentDetails {
     border-top: 2px solid black;
     color: darkred;

@@ -16,6 +16,10 @@ const CoffeeStatus = styled.div`
   p {
     margin: 0;
   }
+  button {
+    padding: 6px 16px;
+    width: 120px;
+  }
 `;
 
 function SingleCoffeeTile({ coffee }) {
@@ -30,10 +34,10 @@ function SingleCoffeeTile({ coffee }) {
       <CoffeeStatus>
         {coffee.stock > 0 ? (
           <button
-            className='action-primary'
+            className='action-secondary'
             onClick={() => toggleOrderForm((showOrderForm) => !showOrderForm)}
           >
-            Order Now!
+            {showOrderForm ? 'Details...' : 'Order Now!'}
           </button>
         ) : (
           <p>Out of Stock</p>

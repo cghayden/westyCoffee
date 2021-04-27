@@ -95,32 +95,6 @@ const Field = ({
   </div>
 );
 
-const SubmitButton = ({ processing, error, children, disabled }) => (
-  <button
-    className={`SubmitButton ${error ? 'SubmitButton--error' : ''}`}
-    type='submit'
-    disabled={processing || disabled}
-  >
-    {processing ? 'Processing...' : children}
-  </button>
-);
-
-const ErrorMessage = ({ children }) => (
-  <div className='ErrorMessage' role='alert'>
-    <svg width='16' height='16' viewBox='0 0 17 17'>
-      <path
-        fill='#FFF'
-        d='M8.5,17 C3.80557963,17 0,13.1944204 0,8.5 C0,3.80557963 3.80557963,0 8.5,0 C13.1944204,0 17,3.80557963 17,8.5 C17,13.1944204 13.1944204,17 8.5,17 Z'
-      />
-      <path
-        fill='#6772e5'
-        d='M8.5,7.29791847 L6.12604076,4.92395924 C5.79409512,4.59201359 5.25590488,4.59201359 4.92395924,4.92395924 C4.59201359,5.25590488 4.59201359,5.79409512 4.92395924,6.12604076 L7.29791847,8.5 L4.92395924,10.8739592 C4.59201359,11.2059049 4.59201359,11.7440951 4.92395924,12.0760408 C5.25590488,12.4079864 5.79409512,12.4079864 6.12604076,12.0760408 L8.5,9.70208153 L10.8739592,12.0760408 C11.2059049,12.4079864 11.7440951,12.4079864 12.0760408,12.0760408 C12.4079864,11.7440951 12.4079864,11.2059049 12.0760408,10.8739592 L9.70208153,8.5 L12.0760408,6.12604076 C12.4079864,5.79409512 12.4079864,5.25590488 12.0760408,4.92395924 C11.7440951,4.59201359 11.2059049,4.59201359 10.8739592,4.92395924 L8.5,7.29791847 L8.5,7.29791847 Z'
-      />
-    </svg>
-    {children}
-  </div>
-);
-
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
@@ -132,13 +106,15 @@ const CheckoutForm = () => {
     email: '',
     phone: '',
     name: '',
+  });
+  const [shippingDetails, setShippingDetails] = useState({
     deliveryMethod: '',
+    pickupLocation: '',
     addressLine1: '',
     addressLine2: '',
     city: '',
     state: '',
-    zipCode: '',
-    pickupLocation: '',
+    zip: '',
   });
   const [botBait, setBotBait] = useState('');
   const { orderTotal, processOrder, emptyCart, totalCartPounds } = useCart();
@@ -154,6 +130,11 @@ const CheckoutForm = () => {
     stripe_id,
     deliveryMethod,
     pickupLocation,
+    shippingAddressLine1,
+    shippingAddressLine2,
+    shippingCity,
+    shippingState,
+    shippingZip,
   }) {
     const configuredOrderItems = orderItems.map((orderItem) => {
       return {
@@ -188,6 +169,11 @@ const CheckoutForm = () => {
           stripe_id,
           deliveryMethod,
           pickupLocation,
+          shippingAddressLine1,
+          shippingAddressLine2,
+          shippingCity,
+          shippingState,
+          shippingZip,
           // set: { slug.current: number.toString() },
         },
       },
@@ -265,10 +251,13 @@ const CheckoutForm = () => {
             total: parsedRes.charge.amount,
             orderItems: parsedRes.orderItems,
             stripe_id: parsedRes.charge.id,
-            deliveryMethod: 'Pickup',
-            pickupLocation: billingDetails.pickupLocation
-              ? billingDetails.pickupLocation
-              : '',
+            deliveryMethod: shippingDetails.deliveryMethod,
+            pickupLocation: shippingDetails.pickupLocation,
+            shippingAddressLine1: shippingDetails.addressLine1,
+            shippingAddressLine2: shippingDetails.addressLine2,
+            shippingCity: shippingDetails.city,
+            shippingState: shippingDetails.state,
+            shippingZip: shippingDetails.zip,
           });
         })
         .catch((err) => {
@@ -290,7 +279,6 @@ const CheckoutForm = () => {
       name: '',
       email: '',
       phone: '',
-      deliveryMethod: 'Pickup',
     });
   };
 
@@ -359,21 +347,21 @@ const CheckoutForm = () => {
               <RadioInput
                 className='input-radio'
                 type='radio'
-                active={billingDetails.deliveryMethod === 'Shipping'}
-                checked={billingDetails.deliveryMethod === 'Shipping'}
+                active={shippingDetails.deliveryMethod === 'Shipping'}
+                checked={shippingDetails.deliveryMethod === 'Shipping'}
                 value='Shipping'
                 name='deliveryMethod'
                 id='checkout_id_delivery-shipping'
                 onChange={(e) => {
-                  setBillingDetails({
-                    ...billingDetails,
+                  setShippingDetails({
+                    ...shippingDetails,
                     deliveryMethod: e.target.value,
                   });
                 }}
               />
             </div>
             <RadioLabel
-              active={billingDetails.deliveryMethod === 'Shipping'}
+              active={shippingDetails.deliveryMethod === 'Shipping'}
               for='checkout_id_delivery-shipping'
             >
               <span class='radio__label'>
@@ -388,20 +376,20 @@ const CheckoutForm = () => {
                 className='input-radio'
                 type='radio'
                 value='Pickup'
-                active={billingDetails.deliveryMethod === 'Pickup'}
-                checked={billingDetails.deliveryMethod === 'Pickup'}
+                active={shippingDetails.deliveryMethod === 'Pickup'}
+                checked={shippingDetails.deliveryMethod === 'Pickup'}
                 name='deliveryMethod'
                 id='checkout_id_delivery-pickup'
                 onChange={(e) => {
-                  setBillingDetails({
-                    ...billingDetails,
+                  setShippingDetails({
+                    ...shippingDetails,
                     deliveryMethod: e.target.value,
                   });
                 }}
               />
             </div>
             <RadioLabel
-              active={billingDetails.deliveryMethod === 'Pickup'}
+              active={shippingDetails.deliveryMethod === 'Pickup'}
               for='checkout_id_delivery-pickup'
             >
               <span class='radio__label'>
@@ -416,7 +404,7 @@ const CheckoutForm = () => {
 
       {/* ****** Shipping or delivery details ********* */}
       <AnimatePresence exitBeforeEnter>
-        {billingDetails.deliveryMethod && (
+        {shippingDetails.deliveryMethod && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: '280px' }}
@@ -424,7 +412,7 @@ const CheckoutForm = () => {
             transition={{ duration: 0.5 }}
             style={{ overflow: 'hidden' }}
           >
-            {billingDetails.deliveryMethod === 'Shipping' && (
+            {shippingDetails.deliveryMethod === 'Shipping' && (
               <motion.div
                 key={'shipping'}
                 initial={{ opacity: 0 }}
@@ -435,13 +423,13 @@ const CheckoutForm = () => {
                 <h3 className='form-heading'>Shipping Address</h3>
                 <fieldset className='FormGroup'>
                   <ShippingAddressInput
-                    billingDetails={billingDetails}
-                    setBillingDetails={setBillingDetails}
+                    shippingDetails={shippingDetails}
+                    setShippingDetails={setShippingDetails}
                   />
                 </fieldset>
               </motion.div>
             )}
-            {billingDetails.deliveryMethod === 'Pickup' && (
+            {shippingDetails.deliveryMethod === 'Pickup' && (
               <motion.div
                 key={'pickup'}
                 initial={{ opacity: 0 }}
@@ -452,8 +440,8 @@ const CheckoutForm = () => {
                 <h3 className='form-heading'>Pickup Location</h3>
                 <fieldset className='FormGroup'>
                   <PickupChoiceInput
-                    billingDetails={billingDetails}
-                    setBillingDetails={setBillingDetails}
+                    shippingDetails={shippingDetails}
+                    setShippingDetails={setShippingDetails}
                   />
                 </fieldset>
               </motion.div>
@@ -502,78 +490,78 @@ export default function StripeCheckout() {
   );
 }
 
-function ShippingAddressInput({ billingDetails, setBillingDetails }) {
+function ShippingAddressInput({ shippingDetails, setShippingDetails }) {
   return (
     <>
       <Field
-        label={!billingDetails.addressLine1.length ? '' : 'Address'}
+        label={!shippingDetails.addressLine1.length ? '' : 'Address'}
         id='addressLine1'
         type='text'
-        placeholder={!billingDetails.addressLine1.length ? 'Address' : null}
-        required={billingDetails.deliveryMethod === 'Shipping'}
+        placeholder={!shippingDetails.addressLine1.length ? 'Address' : null}
+        required={shippingDetails.deliveryMethod === 'Shipping'}
         autoComplete='address-line1'
-        value={billingDetails.addressLine1}
+        value={shippingDetails.addressLine1}
         onChange={(e) => {
-          setBillingDetails({
-            ...billingDetails,
+          setShippingDetails({
+            ...shippingDetails,
             addressLine1: e.target.value,
           });
         }}
       />
       <Field
-        label={!billingDetails.addressLine2.length ? '' : ''}
+        label={!shippingDetails.addressLine2.length ? '' : ''}
         id='addressLine2'
         type='text'
-        placeholder={!billingDetails.addressLine2.length ? 'Apt, etc.' : null}
+        placeholder={!shippingDetails.addressLine2.length ? 'Apt, etc.' : null}
         autoComplete='address-line2'
-        value={billingDetails.addressLine2}
+        value={shippingDetails.addressLine2}
         onChange={(e) => {
-          setBillingDetails({
-            ...billingDetails,
+          setShippingDetails({
+            ...shippingDetails,
             addressLine2: e.target.value,
           });
         }}
       />
       <Field
-        label={!billingDetails.city.length ? '' : 'City'}
+        label={!shippingDetails.city.length ? '' : 'City'}
         id='city'
         type='city'
-        placeholder={!billingDetails.city.length ? 'City' : null}
-        required={billingDetails.deliveryMethod === 'Shipping'}
+        placeholder={!shippingDetails.city.length ? 'City' : null}
+        required={shippingDetails.deliveryMethod === 'Shipping'}
         autoComplete='address-level2'
-        value={billingDetails.city}
+        value={shippingDetails.city}
         onChange={(e) => {
-          setBillingDetails({ ...billingDetails, city: e.target.value });
+          setShippingDetails({ ...shippingDetails, city: e.target.value });
         }}
       />
       <Field
-        label={!billingDetails.state.length ? '' : 'State'}
+        label={!shippingDetails.state.length ? '' : 'State'}
         id='state'
         type='state'
-        placeholder={!billingDetails.state.length ? 'State' : null}
-        required={billingDetails.deliveryMethod === 'Shipping'}
+        placeholder={!shippingDetails.state.length ? 'State' : null}
+        required={shippingDetails.deliveryMethod === 'Shipping'}
         autoComplete='address-level1'
-        value={billingDetails.state}
+        value={shippingDetails.state}
         onChange={(e) => {
-          setBillingDetails({ ...billingDetails, state: e.target.value });
+          setShippingDetails({ ...shippingDetails, state: e.target.value });
         }}
       />
       <Field
-        label={!billingDetails.zipCode.length ? '' : 'Zip'}
+        label={!shippingDetails.zip.length ? '' : 'Zip'}
         id='zipCode'
         type='text'
         placeholder='00000'
-        placeholder={!billingDetails.zipCode.length ? 'Zip Code' : null}
+        placeholder={!shippingDetails.zip.length ? 'Zip Code' : null}
         autoComplete='postal-code'
-        value={billingDetails.zipCode}
+        value={shippingDetails.zip}
         onChange={(e) => {
-          setBillingDetails({ ...billingDetails, zipCode: e.target.value });
+          setShippingDetails({ ...shippingDetails, zip: e.target.value });
         }}
       />
     </>
   );
 }
-function PickupChoiceInput({ billingDetails, setBillingDetails }) {
+function PickupChoiceInput({ shippingDetails, setShippingDetails }) {
   return (
     <>
       <div className='FormRow flex-start'>
@@ -582,21 +570,21 @@ function PickupChoiceInput({ billingDetails, setBillingDetails }) {
             <RadioInput
               className='input-radio'
               type='radio'
-              active={billingDetails.pickupLocation === 'Daniels'}
-              checked={billingDetails.pickupLocation === 'Daniels'}
+              active={shippingDetails.pickupLocation === 'Daniels'}
+              checked={shippingDetails.pickupLocation === 'Daniels'}
               value='Daniels'
               name='pickupLocation'
               id='checkout_id_pickup-daniels'
               onChange={(e) => {
-                setBillingDetails({
-                  ...billingDetails,
+                setShippingDetails({
+                  ...shippingDetails,
                   pickupLocation: e.target.value,
                 });
               }}
             />
           </div>
           <RadioLabel
-            active={billingDetails.pickupLocation === 'Daniels'}
+            active={shippingDetails.pickupLocation === 'Daniels'}
             for='checkout_id_pickup-daniels'
           >
             <div class='radio__label pickupAddress'>
@@ -614,20 +602,20 @@ function PickupChoiceInput({ billingDetails, setBillingDetails }) {
               className='input-radio'
               type='radio'
               value='Edge'
-              active={billingDetails.pickupLocation === 'Edge'}
-              checked={billingDetails.pickupLocation === 'Edge'}
+              active={shippingDetails.pickupLocation === 'Edge'}
+              checked={shippingDetails.pickupLocation === 'Edge'}
               name='pickupLocation'
               id='checkout_id_pickup-edge'
               onChange={(e) => {
-                setBillingDetails({
-                  ...billingDetails,
+                setShippingDetails({
+                  ...shippingDetails,
                   pickupLocation: e.target.value,
                 });
               }}
             />
           </div>
           <RadioLabel
-            active={billingDetails.pickupLocation === 'Edge'}
+            active={shippingDetails.pickupLocation === 'Edge'}
             for='checkout_id_pickup-edge'
           >
             <div class='radio__label'>
@@ -644,3 +632,28 @@ function PickupChoiceInput({ billingDetails, setBillingDetails }) {
     </>
   );
 }
+const SubmitButton = ({ processing, error, children, disabled }) => (
+  <button
+    className={`SubmitButton ${error ? 'SubmitButton--error' : ''}`}
+    type='submit'
+    disabled={processing || disabled}
+  >
+    {processing ? 'Processing...' : children}
+  </button>
+);
+
+const ErrorMessage = ({ children }) => (
+  <div className='ErrorMessage' role='alert'>
+    <svg width='16' height='16' viewBox='0 0 17 17'>
+      <path
+        fill='#FFF'
+        d='M8.5,17 C3.80557963,17 0,13.1944204 0,8.5 C0,3.80557963 3.80557963,0 8.5,0 C13.1944204,0 17,3.80557963 17,8.5 C17,13.1944204 13.1944204,17 8.5,17 Z'
+      />
+      <path
+        fill='#6772e5'
+        d='M8.5,7.29791847 L6.12604076,4.92395924 C5.79409512,4.59201359 5.25590488,4.59201359 4.92395924,4.92395924 C4.59201359,5.25590488 4.59201359,5.79409512 4.92395924,6.12604076 L7.29791847,8.5 L4.92395924,10.8739592 C4.59201359,11.2059049 4.59201359,11.7440951 4.92395924,12.0760408 C5.25590488,12.4079864 5.79409512,12.4079864 6.12604076,12.0760408 L8.5,9.70208153 L10.8739592,12.0760408 C11.2059049,12.4079864 11.7440951,12.4079864 12.0760408,12.0760408 C12.4079864,11.7440951 12.4079864,11.2059049 12.0760408,10.8739592 L9.70208153,8.5 L12.0760408,6.12604076 C12.4079864,5.79409512 12.4079864,5.25590488 12.0760408,4.92395924 C11.7440951,4.59201359 11.2059049,4.59201359 10.8739592,4.92395924 L8.5,7.29791847 L8.5,7.29791847 Z'
+      />
+    </svg>
+    {children}
+  </div>
+);
