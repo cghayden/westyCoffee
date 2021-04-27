@@ -30,11 +30,13 @@ const CoffeeBody = styled.div`
   }
 `;
 const DeetsAndForm = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  /* grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
 `;
 const CoffeeDetails = styled.dl`
-  margin: 0 auto;
+  margin: 0 auto 20px auto;
   width: max-content;
   display: grid;
   grid-template-columns: 80px auto;
@@ -136,13 +138,12 @@ export default function SingleCoffeePage({ data: { coffee } }) {
                 // </div>
               )}
             </CoffeeDetails>
-            <div>
-              {coffee.stock > 0 ? (
-                <AddToCartForm coffee={coffee} />
-              ) : (
-                <p>Out of Stock</p>
-              )}
-            </div>
+
+            {coffee.stock > 0 ? (
+              <AddToCartForm coffee={coffee} />
+            ) : (
+              <p>Out of Stock</p>
+            )}
           </DeetsAndForm>
         </CoffeeBody>
       </main>

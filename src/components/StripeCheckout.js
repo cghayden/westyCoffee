@@ -5,7 +5,7 @@
 import React, { useState } from 'react';
 import { navigate } from 'gatsby';
 import { nanoid } from 'nanoid';
-import dayjs from 'dayjs';
+import { motion, AnimatePresence } from 'framer-motion';
 import { loadStripe } from '@stripe/stripe-js';
 import {
   CardElement,
@@ -415,30 +415,52 @@ const CheckoutForm = () => {
       </fieldset>
 
       {/* ****** Shipping or delivery details ********* */}
-      <div className='form-dropdown'>
-        {billingDetails.deliveryMethod === 'Shipping' && (
-          <>
-            <h3 className='form-heading'>Shipping Address</h3>
-            <fieldset className='FormGroup'>
-              <ShippingAddressInput
-                billingDetails={billingDetails}
-                setBillingDetails={setBillingDetails}
-              />
-            </fieldset>
-          </>
+      <AnimatePresence exitBeforeEnter>
+        {billingDetails.deliveryMethod && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: '280px' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.5 }}
+            style={{ overflow: 'hidden' }}
+          >
+            {billingDetails.deliveryMethod === 'Shipping' && (
+              <motion.div
+                key={'shipping'}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <h3 className='form-heading'>Shipping Address</h3>
+                <fieldset className='FormGroup'>
+                  <ShippingAddressInput
+                    billingDetails={billingDetails}
+                    setBillingDetails={setBillingDetails}
+                  />
+                </fieldset>
+              </motion.div>
+            )}
+            {billingDetails.deliveryMethod === 'Pickup' && (
+              <motion.div
+                key={'pickup'}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <h3 className='form-heading'>Pickup Location</h3>
+                <fieldset className='FormGroup'>
+                  <PickupChoiceInput
+                    billingDetails={billingDetails}
+                    setBillingDetails={setBillingDetails}
+                  />
+                </fieldset>
+              </motion.div>
+            )}
+          </motion.div>
         )}
-        {billingDetails.deliveryMethod === 'Pickup' && (
-          <>
-            <h3 className='form-heading'>Pickup Location</h3>
-            <fieldset className='FormGroup'>
-              <PickupChoiceInput
-                billingDetails={billingDetails}
-                setBillingDetails={setBillingDetails}
-              />
-            </fieldset>
-          </>
-        )}
-      </div>
+      </AnimatePresence>
       <h3 className='form-heading'>Payment</h3>
 
       <fieldset className='FormGroup'>
@@ -584,6 +606,8 @@ function PickupChoiceInput({ billingDetails, setBillingDetails }) {
             </div>
           </RadioLabel>
         </div>
+      </div>
+      <div className='FormRow flex-start'>
         <div className='radio-wrapper FormRowInput'>
           <div className='radio__input'>
             <RadioInput
