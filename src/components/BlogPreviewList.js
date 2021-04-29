@@ -19,6 +19,7 @@ const BlogPreviewUlStyles = styled.ul`
 `;
 
 export default function BlogPreviewList(props) {
+  console.log('preview List Props', props);
   return (
     <div>
       {props.title && <h2>{props.title}</h2>}

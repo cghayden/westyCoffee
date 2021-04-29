@@ -52,6 +52,9 @@ const GlobalStyles = styled.createGlobalStyle`
     background: var(--white);
     font-family: 'Nunito', sans-serif;
   }
+  .pageHeader {
+    text-align: center;
+  }
 
   main {
     /* text-align: center; */
