@@ -50,10 +50,10 @@ const GlobalStyles = styled.createGlobalStyle`
     flex-direction: column;
     height: 100%;
     background: var(--white);
+    font-family: 'Nunito', sans-serif;
   }
 
   main {
-    font-family: 'Nunito', sans-serif;
     /* text-align: center; */
     max-width: 1000px;
     width: 95%;
