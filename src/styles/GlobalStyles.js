@@ -69,6 +69,7 @@ const GlobalStyles = styled.createGlobalStyle`
   p {
     margin: 2px;
     font-size: 1rem;
+    line-height: 1.4;
   }
   //-------BUTTON AND ANCHOR STYLES ----------------//
 

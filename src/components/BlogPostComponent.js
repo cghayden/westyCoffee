@@ -53,6 +53,7 @@ const ImageDiv = styled.div`
 const BlogBody = styled.article`
   p {
     margin: 10px;
+    line-height: 1.4;
   }
   a {
     margin: 0;
@@ -63,7 +64,7 @@ const BlogBody = styled.article`
 `;
 
 function BlogPost(props) {
-  console.log('props', props);
+  // console.log('props', props);
   const { _rawExcerpt, _rawBody, title, mainImage, publishedAt } = props;
   console.log('mainImage', mainImage);
   const image = props.mainImage.asset.gatsbyImageData;

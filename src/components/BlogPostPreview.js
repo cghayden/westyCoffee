@@ -38,7 +38,7 @@ const Date = styled.div`
   }
 `;
 function BlogPostPreview(props) {
-  console.log('BlogPostPreview props', props);
+  // console.log('BlogPostPreview props', props);
   const image = props.mainImage.asset.gatsbyImageData;
   return (
     <Link to={getBlogUrl(props.slug.current)}>

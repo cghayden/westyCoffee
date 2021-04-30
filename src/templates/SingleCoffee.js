@@ -16,11 +16,6 @@ const CoffeeHeader = styled.div`
   }
 `;
 const CoffeeBody = styled.div`
-  /* display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  place-items:center;
-  grid-gap: 1rem; */
-
   .descriptionLong {
     grid-column: 1/-1;
     max-width: 500px;
@@ -32,7 +27,6 @@ const DeetsAndForm = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  /* grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
 `;
 const CoffeeDetails = styled.dl`
   margin: 0 auto 20px auto;
@@ -73,11 +67,6 @@ const CoffeeDetails = styled.dl`
   }
 `;
 export default function SingleCoffeePage({ data: { coffee } }) {
-  console.log('coffee', coffee);
-  // coffee.flavorProfile = 'Amaretto, Fruity, Light  ';
-  // coffee.process = 'washed';
-  // coffee.elevation = '1200m';
-  // coffee.cultivar = 'sumatra eliongata';
   return (
     <>
       <SEO title={coffee.name} />

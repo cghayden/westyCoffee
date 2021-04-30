@@ -3,9 +3,10 @@ import { graphql } from 'gatsby';
 // import Container from "../components/container";
 import GraphQLErrorList from '../components/GraphqlErrorList';
 import BlogPostComponent from '../components/BlogPostComponent';
+import SEO from '../components/SEO';
 // import SEO from "../components/seo";
 // import Layout from "../containers/layout";
-// import { toPlainText } from '../lib/helpers';
+import { toPlainText } from '../utils/helpers';
 
 export const query = graphql`
   query BlogPostTemplateQuery($id: String!) {
@@ -37,13 +38,13 @@ const BlogPostTemplate = (props) => {
   return (
     <div>
       {/* {errors && <SEO title='GraphQL Error' />} */}
-      {/* {post && (
+      {post && (
         <SEO
           title={post.title || 'Untitled'}
           description={toPlainText(post._rawExcerpt)}
-          image={post.mainImage}
+          // image={post.mainImage}
         />
-      )} */}
+      )}
 
       {errors && (
         <div>
