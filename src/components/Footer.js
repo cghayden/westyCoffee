@@ -5,7 +5,7 @@ import InstagramSvg from './Icons/InstagramSvg';
 const FooterStyle = styled.footer`
   background: linear-gradient(
     to top,
-    white 60%,
+    white 70%,
     hsla(0, 100%, 100%, 0.6) 95%,
     transparent
   );
@@ -15,7 +15,7 @@ const FooterStyle = styled.footer`
   display: grid;
   grid-template-columns: 1fr 1fr;
   place-items: center;
-  padding: 1rem 0;
+  padding: 1.75rem 0 1.25rem;
   a {
     color: green;
   }
@@ -24,7 +24,9 @@ const FooterStyle = styled.footer`
   }
 `;
 
-const Address = styled.div``;
+const Address = styled.div`
+  padding-top: 5px;
+`;
 const Contact = styled.div`
   display: flex;
   align-items: center;

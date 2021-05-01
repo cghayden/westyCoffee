@@ -230,6 +230,7 @@ const CheckoutForm = () => {
       return;
     } else {
       setPaymentMethod(paymentMethod);
+      console.log('paymentMethod', paymentMethod);
       const orderRes = await processOrder(
         billingDetails,
         availableCoffee,

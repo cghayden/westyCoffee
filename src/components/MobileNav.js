@@ -58,7 +58,7 @@ export default function MobileNav({ showMobileNav, toggleShowMobileNav }) {
         <ul>
           <li>
             <Link onClick={() => toggleShowMobileNav(false)} to='/'>
-              home
+              coffee
             </Link>
           </li>
           <li>

@@ -3,13 +3,19 @@ import { graphql } from 'gatsby';
 import styled from 'styled-components';
 import SEO from '../components/SEO';
 import AddToCartForm from '../components/AddToCartForm';
+import { GatsbyImage } from 'gatsby-plugin-image';
 
 const CoffeeHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* grid-template-columns: repeat(auto-fit, minmax(300px, 600px)); */
+  /* place-items: center; */
   margin-bottom: 2rem;
   h1,
   h2 {
     font-size: 1.8rem;
-    margin: 0;
+    margin: 0 0 1rem 0;
   }
   p {
     font-style: italic;
@@ -67,6 +73,9 @@ const CoffeeDetails = styled.dl`
   }
 `;
 export default function SingleCoffeePage({ data: { coffee } }) {
+  console.log('coffee', coffee);
+  const image = coffee.image?.asset.gatsbyImageData;
+
   return (
     <>
       <SEO title={coffee.name} />
@@ -74,7 +83,12 @@ export default function SingleCoffeePage({ data: { coffee } }) {
         {/* <Img fluid={coffee.image.asset.fluid} /> */}
         <CoffeeHeader>
           <h2>{coffee.name}</h2>
-          {coffee.description && <p>{coffee.description}</p>}
+          {image && (
+            <div>
+              <GatsbyImage image={image} alt={image.alt} />
+            </div>
+          )}
+          <div>{coffee.description && <p>{coffee.description}</p>}</div>
         </CoffeeHeader>
         <CoffeeBody>
           <div className='descriptionLong'>
@@ -149,6 +163,15 @@ export const query = graphql`
       descriptionLong {
         children {
           text
+        }
+      }
+      image {
+        asset {
+          gatsbyImageData(
+            width: 600
+            placeholder: BLURRED
+            formats: [AUTO, WEBP, AVIF]
+          )
         }
       }
       roastLevel
