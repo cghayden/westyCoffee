@@ -26,8 +26,8 @@ const Date = styled.div`
 const EventInfoStyles = styled.div`
   margin-left: 2rem;
 `;
-export default function BlogPreviewList(props) {
-  console.log('events props', props.nodes);
+export default function EventList(props) {
+  //   console.log('events props', props.nodes);
   return (
     <div>
       <EventListUlStyles>

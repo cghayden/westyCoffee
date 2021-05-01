@@ -3,7 +3,9 @@ import { graphql } from 'gatsby';
 import { mapEdgesToNodes } from '../utils/helpers';
 import SEO from '../components/SEO';
 import EventList from '../components/EventList';
+import EventRequestText from '../components/EventRequestText';
 export default function eventsPage({ data, errors }) {
+  console.log('data', data);
   if (errors) {
     return <GraphQLErrorList errors={errors} />;
   }
@@ -12,7 +14,10 @@ export default function eventsPage({ data, errors }) {
     <>
       <SEO title={'Events'} />
       <h1 className='pageHeader'>Events</h1>
-      <main>{eventNodes && <EventList nodes={eventNodes} />}</main>
+      <main>
+        {eventNodes && <EventList nodes={eventNodes} />}
+        {data?.contentQuery && <EventRequestText node={data.contentQuery} />}
+      </main>
     </>
   );
 }
@@ -34,6 +39,10 @@ export const query = graphql`
           location
         }
       }
+    }
+    contentQuery: sanityTextBlock(name: { eq: "Event Page Content" }) {
+      id
+      _rawContent
     }
   }
 `;

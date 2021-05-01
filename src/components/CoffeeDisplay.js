@@ -6,7 +6,7 @@ import SingleCoffeeTile from './SingleCoffeeTile';
 const CoffeeDisplayStyles = styled.div`
   display: grid;
   grid-gap: 3rem;
-  grid-template-columns: repeat(auto-fill, 275px);
+  grid-template-columns: repeat(auto-fill, 315px);
   place-content: center;
   place-items: center;
 `;
@@ -15,7 +15,7 @@ function CoffeeDisplay({ allCoffee }) {
   return (
     <CoffeeDisplayStyles>
       {allCoffee.map((coffee) => (
-        <SingleCoffeeTile key={coffee._id} coffee={coffee} />
+        <SingleCoffeeTile ffeeTile key={coffee._id} coffee={coffee} />
       ))}
     </CoffeeDisplayStyles>
   );

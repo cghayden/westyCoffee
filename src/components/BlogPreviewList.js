@@ -10,6 +10,7 @@ const BlogPreviewUlStyles = styled.ul`
   grid-gap: 20px;
   margin: 0 auto;
   width: 95%;
+  max-width: 800px;
   a {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -19,7 +20,7 @@ const BlogPreviewUlStyles = styled.ul`
 `;
 
 export default function BlogPreviewList(props) {
-  console.log('preview List Props', props);
+  // console.log('preview List Props', props);
   return (
     <div>
       {props.title && <h2>{props.title}</h2>}

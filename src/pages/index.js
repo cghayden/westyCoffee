@@ -26,7 +26,7 @@ export default function homePage({ data }) {
     <>
       <SEO title={'Neighborly Coffee'} />
       <HomeMainStyle>
-        <h2>Our Roasts of the Week</h2>
+        <h2>Available Roasts</h2>
         <HomePageTextStyles>
           {text.map((entry, i) => (
             <p key={i}>{entry._rawChildren[0].text}</p>
@@ -39,7 +39,7 @@ export default function homePage({ data }) {
 }
 export const query = graphql`
   query {
-    coffees: allSanityCoffee {
+    coffees: allSanityCoffee(filter: { stock: { gt: 0 } }) {
       nodes {
         _id
         name
@@ -50,6 +50,7 @@ export const query = graphql`
         grade
         stock
         blend
+        roastDate
         slug {
           current
         }

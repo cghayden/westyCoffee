@@ -18,7 +18,7 @@ function formatMoney(amount = 0) {
   return formatter.format(amount / 100);
 }
 
-function generateOrderEmail({ order, total }) {
+function generateOrderEmail({ order, total, receiptUrl }) {
   return `<div
       <h2>Your Recent Order from Neighborly Coffee</h2>
       <ul>
@@ -33,6 +33,7 @@ function generateOrderEmail({ order, total }) {
         .join('')}
       </ul>
       <p>Your total is <strong>${formatMoney(total)}</strong> due at pickup</p>
+      <a href="${receiptUrl}" target="_blank" rel="noreferrer noopener">View this transaction Receipt</a>
       <p>Thank You for your business!</p>
       <style>
           ul {
@@ -133,6 +134,7 @@ exports.handler = async (event, context) => {
       currency: 'USD',
       confirm: true,
       payment_method: body.paymentMethod,
+      receipt_email: body.email,
     })
     .catch((err) => {
       console.error(err);
@@ -157,7 +159,11 @@ exports.handler = async (event, context) => {
     from: ' Neighborly Coffee <neighborly@example.com>',
     to: `${body.name} <${body.email}>, orders@neighborlycoffee.com`,
     subject: 'Your Order!',
-    html: generateOrderEmail({ order: body.order, total: body.total }),
+    html: generateOrderEmail({
+      order: body.order,
+      total: body.total,
+      receiptUrl: charge.charges[0].receipt_url,
+    }),
   });
   return {
     statusCode: 200,

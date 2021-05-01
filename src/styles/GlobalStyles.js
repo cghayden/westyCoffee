@@ -60,6 +60,7 @@ const GlobalStyles = styled.createGlobalStyle`
     /* text-align: center; */
     max-width: 1000px;
     width: 95%;
+    min-width: 318px;
     margin: 1rem auto;
     padding: 1rem 1rem 2rem 1rem;
     background: var(--white);
@@ -69,6 +70,7 @@ const GlobalStyles = styled.createGlobalStyle`
   p {
     margin: 2px;
     font-size: 1rem;
+    line-height: 1.4;
   }
   //-------BUTTON AND ANCHOR STYLES ----------------//
 

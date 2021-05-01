@@ -38,6 +38,11 @@ export default function orderPage({ location }) {
       <main>
         <OrderPageStyles>
           <h1>Your Order</h1>
+          <p>Thank You for your business!</p>
+          <p>
+            You should receive an email with a summary of your order and a link
+            to a receipt
+          </p>
           <ul>
             {orderItems.map((orderItem, i) => (
               <OrderListItem item={orderItem} key={`${orderItem.name}-`} />
