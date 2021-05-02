@@ -48,7 +48,6 @@ export const query = graphql`
         description
         grade
         stock
-        blend
         roastDate
         slug {
           current
