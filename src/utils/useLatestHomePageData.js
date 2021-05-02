@@ -22,7 +22,6 @@ export default function useLatestHomePageData() {
               _id
               name
               roastLevel
-              blend
               description
               region
               grade
