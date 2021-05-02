@@ -13,6 +13,12 @@ import PlusSvg from './Icons/PlusSvg';
 import compileCurrentStockAndPrice from '../utils/compileCurrentStockAndPriceListing';
 import checkStock from '../utils/checkStock';
 
+const CartContents = styled.div`
+  width: 100%;
+  min-width: 310px;
+  max-width: 550px;
+`;
+
 function CheckoutPage_CartContents({ availableCoffee }) {
   const {
     cartContents,
@@ -26,8 +32,9 @@ function CheckoutPage_CartContents({ availableCoffee }) {
   const stockAlerts = checkStock(currentStockAndPrice, totalCartPounds);
 
   return (
-    <CartPageStyles>
-      <div>
+    <CartPageStyles className='contentBox'>
+      {/* <div className='contentBox'> */}
+      <CartContents>
         <header>
           <h2>Review Your Cart</h2>
         </header>
@@ -42,11 +49,12 @@ function CheckoutPage_CartContents({ availableCoffee }) {
           ))}
         </ul>
         <footer>
-          <h3>Total: $ {orderTotal}</h3>
+          <p>Total: $ {orderTotal}</p>
         </footer>
         {stockAlerts.length > 0 && <CartAlerts alerts={stockAlerts} />}
-      </div>
+      </CartContents>
       {!!cartContents.length && !stockAlerts.length && <StripeCheckout />}
+      {/* </div> */}
     </CartPageStyles>
   );
 }

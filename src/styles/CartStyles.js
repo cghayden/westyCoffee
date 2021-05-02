@@ -6,6 +6,7 @@ const CartStyles = styled.div`
   padding: 20px;
   position: relative;
   background: white;
+  color: var(--raisinBlack);
   position: fixed;
   height: 100%;
   top: 0;

@@ -9,14 +9,14 @@ const EventListUlStyles = styled.ul`
   display: grid;
   grid-gap: 20px;
   margin: 0 auto;
-  width: 95%;
+  /* width: 95%; */
   h2 {
     font-size: 1.3rem;
     margin: 0.5rem 0;
   }
 `;
 const Date = styled.div`
-  font-size: 14px;
+  font-size: 15px;
   margin: 0.5rem 0;
   @media screen and (min-width: 767px) {
     font-size: 0.9em;
@@ -33,7 +33,7 @@ export default function EventList(props) {
       <EventListUlStyles>
         {props.nodes &&
           props.nodes.map((node) => (
-            <li key={node.id}>
+            <li className='contentBox' key={node.id}>
               <h2>{node.title}</h2>
               <EventInfoStyles>
                 <Date>{dayjs(node.date).format('MMMM DD, YYYY')}</Date>

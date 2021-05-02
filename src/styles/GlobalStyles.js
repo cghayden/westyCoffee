@@ -2,7 +2,6 @@ import { createGlobalStyle } from 'styled-components';
 // import * as styled from 'styled-components';
 // see video 7 for more on importing svgs
 // import bg from '../assets/images/bg.svg';
-// import stripes from '../assets/images/stripes.svg';
 
 // assign to styled in order for prettier to recognize and format
 const styled = { createGlobalStyle };
@@ -15,6 +14,11 @@ const GlobalStyles = styled.createGlobalStyle`
     --white: #f7fbf8;
     --grey: #efefef;
     --darkGray: hsla(132, 5%, 38%, 1);
+    --singleOriginGreen: hsl(146, 13%, 90%); /* #e2e9e5 */
+    --singleOriginText: hsl(145, 10%, 20%);
+    --blendGreen: hsl(145, 10%, 63%);
+    --blendText: hsl(145, 10%, 20%);
+    --navPanelGreen: hsla(120, 25%, 95%, 1);
     --green: hsla(132, 32%, 60%, 0.8);
     --lightGray: hsla(129, 20%, 93%, 1);
     --stripeBlue: #829fff;
@@ -22,6 +26,11 @@ const GlobalStyles = styled.createGlobalStyle`
     --redFlameFade: hsla(15, 61%, 51%, 0.7);
     --blueYonder: hsla(217, 34%, 48%, 1);
     --blueYonderFade: hsla(217, 34%, 48%, 0.7);
+
+    /* with blend green : */
+    --raisinBlack: #2e282a;
+    --mediumGreenText: #8b7c69;
+    --blueBell: #a4a8d1;
 
     --dropShadow0: 1px 1px 0px 0px rgba(0, 0, 0, 0);
     --dropShadow1: 1px 1px 0px 0px rgba(0, 0, 0, 0.3);
@@ -33,6 +42,7 @@ const GlobalStyles = styled.createGlobalStyle`
   }
   html {
     height: 100%;
+    scrollbar-width: thin;
   }
   #gatsby-focus-wrapper {
     /* background-color: var(--white); */
@@ -46,13 +56,14 @@ const GlobalStyles = styled.createGlobalStyle`
     height: 100%;
   }
   body {
+    font-family: 'Hind Siliguri', sans-serif;
+    font-weight: 300;
     display: flex;
     flex-direction: column;
     height: 100%;
     background: var(--white);
-    font-family: 'Nunito', sans-serif;
   }
-  .pageHeader {
+  .alignCenter {
     text-align: center;
   }
 
@@ -61,11 +72,21 @@ const GlobalStyles = styled.createGlobalStyle`
     max-width: 1000px;
     width: 95%;
     min-width: 318px;
-    margin: 1rem auto;
-    padding: 1rem 1rem 2rem 1rem;
-    background: var(--white);
+    margin: 0 auto 2rem auto;
+    /* padding: 1rem 1rem 2rem 1rem; */
+    /* background: var(--white); */
     border-radius: 4px;
-    box-shadow: 0px 2px 10px 4px hsl(0deg 15% 30% / 15%);
+    /* box-shadow: 0px 2px 10px 4px hsl(0deg 15% 30% / 15%); */
+    h1,
+    h2,
+    h3,
+    h4,
+    h4,
+    h5,
+    h6 {
+      margin: 0;
+      margin-bottom: 1rem;
+    }
   }
   p {
     margin: 2px;
@@ -144,15 +165,27 @@ const GlobalStyles = styled.createGlobalStyle`
     padding: 0;
   }
 
-  html {
-    scrollbar-width: thin;
-    /* scrollbar-color: var(--red) var(--white); */
-  }
-
   img {
     max-width: 100%;
   }
 
+  .contentBox {
+    background: var(--white);
+    padding: 1rem;
+    border-radius: 4px;
+  }
+  .ctaBox {
+    background: var(--singleOriginGreen);
+    color: var(--darkGreenText);
+  }
+  .address {
+    p {
+      margin: 6px;
+    }
+  }
+  .whiteText {
+    color: var(--white);
+  }
   .hideOnDesktop {
     @media screen and (min-width: 768px) {
       display: none;

@@ -13,10 +13,10 @@ export default function eventsPage({ data, errors }) {
   return (
     <>
       <SEO title={'Events'} />
-      <h1 className='pageHeader'>Events</h1>
       <main>
-        {eventNodes && <EventList nodes={eventNodes} />}
+        <h1 className='alignCenter whiteText'>events</h1>
         {data?.contentQuery && <EventRequestText node={data.contentQuery} />}
+        {eventNodes && <EventList nodes={eventNodes} />}
       </main>
     </>
   );

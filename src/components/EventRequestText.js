@@ -3,18 +3,17 @@ import styled from 'styled-components';
 import PortableText from './PortableText';
 
 const EventRequestTextStyles = styled.div`
-  margin: 2rem auto;
-  max-width: 75%;
-  p {
-    margin: 0.5rem;
-    line-height: 1.4;
-  }
+  /* max-width: 75%; */
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--white);
+  margin-bottom: 0.5rem;
 `;
 
 function EventRequestText({ node }) {
   console.log('event request node', node);
   return (
-    <EventRequestTextStyles>
+    <EventRequestTextStyles className='alignCenter'>
       {node && <PortableText blocks={node._rawContent} />}
     </EventRequestTextStyles>
   );

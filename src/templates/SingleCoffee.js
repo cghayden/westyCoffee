@@ -9,9 +9,8 @@ const CoffeeHeader = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* grid-template-columns: repeat(auto-fit, minmax(300px, 600px)); */
-  /* place-items: center; */
-  margin-bottom: 2rem;
+  color: var(--white);
+  margin-bottom: 1rem;
   h1,
   h2 {
     font-size: 1.8rem;
@@ -21,12 +20,17 @@ const CoffeeHeader = styled.div`
     font-style: italic;
   }
 `;
+const ShortDescriptionDiv = styled.div`
+  max-width: 85%;
+  margin: 0 auto;
+  text-align: center;
+`;
+
 const CoffeeBody = styled.div`
   .descriptionLong {
     grid-column: 1/-1;
     max-width: 500px;
-    margin: 1.5rem auto;
-    /* justify-self: center; */
+    margin: 0 auto 1.5rem auto;
   }
 `;
 const DeetsAndForm = styled.div`
@@ -38,16 +42,17 @@ const CoffeeDetails = styled.dl`
   margin: 0 auto 20px auto;
   width: max-content;
   display: grid;
-  grid-template-columns: 80px auto;
+  grid-template-columns: max-content auto;
   align-items: baseline;
   dt {
     text-transform: uppercase;
     padding: 0.5rem 0;
     justify-self: left;
     font-size: 0.85rem;
+    margin-right: 20px;
   }
   dd {
-    margin-left: 2rem;
+    /* margin-left: 2rem; */
     color: darkgreen;
     font-weight: bold;
     justify-self: left;
@@ -72,6 +77,7 @@ const CoffeeDetails = styled.dl`
     }
   }
 `;
+
 export default function SingleCoffeePage({ data: { coffee } }) {
   console.log('coffee', coffee);
   const image = coffee.image?.asset.gatsbyImageData;
@@ -81,16 +87,18 @@ export default function SingleCoffeePage({ data: { coffee } }) {
       <SEO title={coffee.name} />
       <main>
         {/* <Img fluid={coffee.image.asset.fluid} /> */}
-        <CoffeeHeader>
+        <CoffeeHeader className=''>
           <h2>{coffee.name}</h2>
           {image && (
             <div>
               <GatsbyImage image={image} alt={image.alt} />
             </div>
           )}
-          <div>{coffee.description && <p>{coffee.description}</p>}</div>
+          <ShortDescriptionDiv>
+            {coffee.description && <p>{coffee.description}</p>}
+          </ShortDescriptionDiv>
         </CoffeeHeader>
-        <CoffeeBody>
+        <CoffeeBody className='contentBox'>
           <div className='descriptionLong'>
             {coffee.descriptionLong &&
               coffee.descriptionLong.map((obj, i) => (
