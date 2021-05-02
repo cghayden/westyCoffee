@@ -16,13 +16,6 @@ const Container = styled.div`
   max-width: 960px;
   padding: 1.5em;
   margin: 0 auto;
-  aside {
-    color: darkgreen;
-  }
-  h1 {
-    font-size: 1.9rem;
-    margin: 0.5em 0;
-  }
   h2 {
     font-size: 1.5rem;
     margin: 0.5em 0;
@@ -38,11 +31,14 @@ const Container = styled.div`
   }
 `;
 const BlogHeader = styled.div`
+  color: var(--white);
   h1 {
-    margin: 0.5em 0;
+    margin: 0.5em 0 0.25rem 0;
+    font-size: 1.9rem;
   }
   aside {
     margin-left: auto;
+    margin-bottom: 0.5rem;
   }
 `;
 const ImageDiv = styled.div`
@@ -51,10 +47,10 @@ const ImageDiv = styled.div`
   margin: 0 auto;
 `;
 const BlogBody = styled.article`
-  p {
+  /* p {
     margin: 10px;
     line-height: 1.4;
-  }
+  } */
   a {
     margin: 0;
     padding: 0;
@@ -86,7 +82,9 @@ function BlogPost(props) {
           </aside>
         </BlogHeader>
         {/* <ShareLinks url={window.location.href} text={_rawExcerpt} /> */}
-        <BlogBody>{_rawBody && <PortableText blocks={_rawBody} />}</BlogBody>
+        <BlogBody className='contentBox'>
+          {_rawBody && <PortableText blocks={_rawBody} />}
+        </BlogBody>
       </main>
     </Container>
   );

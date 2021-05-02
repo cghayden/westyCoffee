@@ -3,20 +3,17 @@ import { graphql } from 'gatsby';
 import SEO from '../components/SEO';
 import styled from 'styled-components';
 
-const AboutContentStyles = styled.div`
-  margin: 2rem;
-  text-align: left;
-`;
+const AboutContentStyles = styled.div``;
 
 export default function aboutPage({ data }) {
   const content = data.contentQuery.nodes[0];
   const text = data.contentQuery.nodes[0].content;
   return (
     <>
-      <SEO title={'Our Story'} />
+      <SEO title={'about'} />
       <main>
-        <h1>{content.heading}</h1>
-        <AboutContentStyles>
+        <h1 className='whiteText'>{content.heading}</h1>
+        <AboutContentStyles className='contentBox'>
           {text.map((entry, i) => (
             <p key={i}>{entry._rawChildren[0].text}</p>
           ))}

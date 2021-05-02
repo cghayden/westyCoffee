@@ -2,15 +2,14 @@ import React, { useState } from 'react';
 import { Link } from 'gatsby';
 import styled from 'styled-components';
 import DesktopNav from './DesktopNav';
-import '@fontsource/nunito';
 import MenuSvg from './Icons/MenuSvg';
 import MobileNav from './MobileNav';
 import CartButton from './CartButton';
 import Cart from './Cart';
 
 const HeaderStyles = styled.header`
-  font-family: 'Nunito', open-sans;
   display: flex;
+  color: var(--white);
   align-items: center;
   padding: 1rem;
   /* width: 100%; */

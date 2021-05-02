@@ -3,6 +3,7 @@ import styled from 'styled-components';
 const CartPageStyles = styled.div`
   font-family: monospace;
   font-size: 1rem;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -20,6 +21,9 @@ const CartPageStyles = styled.div`
     padding-right: 2rem;
     color: green;
     align-items: center;
+    p {
+      font-size: 20px;
+    }
   }
   ul {
     margin: 0;

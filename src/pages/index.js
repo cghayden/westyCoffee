@@ -6,12 +6,10 @@ import CoffeeDisplay from '../components/CoffeeDisplay';
 
 const HomeMainStyle = styled.main`
   text-align: center;
-  h2 {
-    margin: 0.5rem;
-  }
 `;
 
 const HomePageTextStyles = styled.div`
+  color: var(--white);
   a {
     padding: 0;
     color: green;
@@ -26,8 +24,8 @@ export default function homePage({ data }) {
     <>
       <SEO title={'Neighborly Coffee'} />
       <HomeMainStyle>
-        <h2>Available Roasts</h2>
         <HomePageTextStyles>
+          <h1>Available Roasts</h1>
           {text.map((entry, i) => (
             <p key={i}>{entry._rawChildren[0].text}</p>
           ))}
@@ -46,6 +44,7 @@ export const query = graphql`
         price
         region
         roastLevel
+        singleOrigin
         description
         grade
         stock

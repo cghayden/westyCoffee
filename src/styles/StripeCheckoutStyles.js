@@ -4,7 +4,7 @@ const StripeCheckoutStyles = styled.div`
   width: 100%;
   max-width: 500px;
   position: relative;
-  margin: 0 auto;
+  margin: 2rem auto;
   font-size: 14px;
 
   input,
@@ -53,7 +53,7 @@ const StripeCheckoutStyles = styled.div`
   }
 
   .FormGroup {
-    margin: 10px 0px;
+    margin: 1rem 0px;
     padding: 0;
     border-style: none;
     background-color: #f4f4f7;

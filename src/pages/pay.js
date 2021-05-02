@@ -19,7 +19,9 @@ function CheckoutPage() {
   if (!cartContents.length) {
     return (
       <main>
-        <p>Your cart is empty!</p>
+        <div className='contentBox'>
+          <p>Your cart is empty!</p>
+        </div>
       </main>
     );
   }

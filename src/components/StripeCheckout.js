@@ -68,6 +68,9 @@ const RadioInput = styled.input`
   appearance: none;
   border-radius: 50%;
 `;
+const PaymentDetailsHeading = styled.h2`
+  font-weight: normal;
+`;
 const Field = ({
   label,
   id,
@@ -291,14 +294,15 @@ const CheckoutForm = () => {
     </div>
   ) : (
     <form className='Form' onSubmit={handleSubmit}>
+      <PaymentDetailsHeading>payment details</PaymentDetailsHeading>
       <h3 className='form-heading'>Contact</h3>
 
       <fieldset className='FormGroup'>
         <Field
-          label='Name'
+          label={!billingDetails.name.length ? '' : 'Name'}
           id='name'
           type='text'
-          placeholder=''
+          placeholder={!billingDetails.name.length ? 'Name' : null}
           required
           autoComplete='name'
           value={billingDetails.name}
@@ -307,10 +311,10 @@ const CheckoutForm = () => {
           }}
         />
         <Field
-          label='Email'
+          label={!billingDetails.email.length ? '' : 'Email'}
           id='email'
           type='email'
-          placeholder='janedoe@gmail.com'
+          placeholder={!billingDetails.email.length ? 'Email' : null}
           required
           autoComplete='email'
           value={billingDetails.email}
@@ -319,10 +323,10 @@ const CheckoutForm = () => {
           }}
         />
         <Field
-          label='Phone'
+          label={!billingDetails.phone.length ? '' : 'Phone'}
           id='phone'
           type='tel'
-          placeholder='(941) 555-0123'
+          placeholder={!billingDetails.phone.length ? 'Phone' : null}
           required
           autoComplete='tel'
           value={billingDetails.phone}
@@ -341,6 +345,8 @@ const CheckoutForm = () => {
           className='mapleSyrup'
         />
       </fieldset>
+      <h3 className='form-heading'>$10 Shipping or Free Pickup</h3>
+
       <fieldset className='FormGroup display-table'>
         <div className='FormRow'>
           <div className='radio-wrapper FormRowInput'>
@@ -368,6 +374,7 @@ const CheckoutForm = () => {
               <span class='radio__label'>
                 <ShippingTruckIcon w='18' h='18' />
                 Ship It
+                {/* <span>$10</span> */}
               </span>
             </RadioLabel>
           </div>
@@ -401,6 +408,8 @@ const CheckoutForm = () => {
             </RadioLabel>
           </div>
         </div>
+        {/* <p>$10 / order</p> */}
+        {/* <span>($10)</span> */}
       </fieldset>
 
       {/* ****** Shipping or delivery details ********* */}
@@ -589,7 +598,7 @@ function PickupChoiceInput({ shippingDetails, setShippingDetails }) {
             for='checkout_id_pickup-daniels'
           >
             <div class='radio__label pickupAddress'>
-              <p className='pickup-locationName'>Daniel's Home</p>
+              <p className='pickup-locationName'>Neighborly Coffee</p>
               <p>36 Lincoln Rd.</p>
               <p>Sharon, MA 02067</p>
             </div>
