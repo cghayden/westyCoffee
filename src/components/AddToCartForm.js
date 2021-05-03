@@ -21,7 +21,7 @@ const FormStyles = styled.form`
     flex-direction: column;
     justify-content: space-evenly;
     align-items: baseline;
-    width: max-content;
+    width: 250px;
     margin: 0 auto;
   }
   .input-item {
@@ -60,18 +60,18 @@ const FormStyles = styled.form`
 const QuantitySelector = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 40px);
-  align-items: center;
-  width: 60%;
+  place-items: center;
+  width: 120px;
   button {
     padding: 0;
+    margin: 0;
     font-size: 1.5rem;
   }
   p {
     font-size: 1.5rem;
-    padding-bottom: 4px;
   }
 `;
-const initialInputValues = { size: 'half pound' };
+const initialInputValues = { size: 'one pound' };
 
 function AddToCartForm({ coffee }) {
   const { addToCart, totalCartPounds, openCart } = useCart();
@@ -82,7 +82,6 @@ function AddToCartForm({ coffee }) {
   const [error, setError] = useState();
 
   function submitToCart(e) {
-    console.log('add to cart');
     e.preventDefault();
     const poundsToAdd =
       inputs.size === 'half pound' ? quantity * 0.5 : quantity;
@@ -112,6 +111,7 @@ function AddToCartForm({ coffee }) {
             Grind:
           </label>
           <select
+            style={{ maxWidth: '200px' }}
             required
             id='grind'
             name='grind'
@@ -126,9 +126,18 @@ function AddToCartForm({ coffee }) {
               Select ...
             </option>
             <option value='whole bean'>Whole Bean</option>
-            <option value='coarse ground'>Coarse</option>
-            <option value='medium ground'>Medium</option>
-            <option value='fine ground'>Fine</option>
+            <option value='extra coarse ground'>
+              Extra Coarse / Cold Brew
+            </option>
+            <option value='coarse ground'>Coarse / French Press</option>
+            <option value='medium course ground'>Medium-course / Chemex</option>
+            <option value='medium  ground'>
+              Medium / Flat Drip, Pour Over
+            </option>
+            <option value='medium fine ground'>
+              Medium-fine / Cone Drip, Pour Over, Aeropress
+            </option>
+            <option value='fine ground'>Fine / Espresso</option>
           </select>
         </div>
         <div className='input-item'>

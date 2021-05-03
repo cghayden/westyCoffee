@@ -20,33 +20,6 @@ import { useCart } from './CartContext';
 import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee';
 import styled from 'styled-components';
 
-const CARD_OPTIONS = {
-  iconStyle: 'solid',
-  style: {
-    base: {
-      iconColor: 'darkdarkblue',
-      //   iconColor: '#c4f0ff',
-      color: 'black',
-      fontWeight: 500,
-      fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
-      fontSize: '16px',
-      fontSmoothing: 'antialiased',
-      ':-webkit-autofill': {
-        color: 'black',
-      },
-      '::placeholder': {
-        color: 'gray',
-      },
-    },
-    invalid: {
-      iconColor: 'red',
-      //   iconColor: '#ffc7ee',
-      color: 'red',
-      //   color: '#ffc7ee',
-    },
-  },
-};
-
 const CardField = ({ onChange }) => (
   <div className='FormRow'>
     <CardElement options={CARD_OPTIONS} onChange={onChange} />
@@ -153,7 +126,10 @@ const CheckoutForm = () => {
       patch: {
         id: orderItem._ref,
         dec: {
-          stock: totalCartPounds[orderItem.name],
+          stock:
+            orderItem.size === 'half pound'
+              ? orderItem.quantity * 0.5
+              : orderItem.quantity,
         },
       },
     }));
@@ -183,29 +159,17 @@ const CheckoutForm = () => {
       // returnDocuments: true,
     ];
 
-    await fetch(`https://2u11zhhx.api.sanity.io/v1/data/mutate/orders`, {
+    await fetch(`https://yi1dikna.api.sanity.io/v1/data/mutate/production`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
-        Authorization: `Bearer ${process.env.GATSBY_SANITY_ORDERS_API}`,
+        Authorization: `Bearer ${process.env.GATSBY_SANITY_MUTATION_API}`,
       },
-      body: JSON.stringify({ mutations: orderMutation }),
+      body: JSON.stringify({ mutations: adjustQuantityMutations }),
     })
       .then((response) => response.json())
       .then((result) => console.log('MUTATION RESPONSE', result))
       .catch((error) => console.error('MUTATION ERROR', error));
-
-    //   await fetch(`https://yi1dikna.api.sanity.io/v1/data/mutate/production`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-type': 'application/json',
-    //     Authorization: `Bearer ${process.env.GATSBY_SANITY_ORDERS_API}`,
-    //   },
-    //   body: JSON.stringify({ adjustQuantityMutations }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((result) => console.log('MUTATION RESPONSE', result))
-    //   .catch((error) => console.error('MUTATION ERROR', error));
   }
 
   async function handleSubmit(event) {
@@ -236,7 +200,7 @@ const CheckoutForm = () => {
       console.log('paymentMethod', paymentMethod);
       const orderRes = await processOrder(
         billingDetails,
-        availableCoffee,
+        shippingDetails,
         paymentMethod,
         botBait
       )
@@ -246,6 +210,7 @@ const CheckoutForm = () => {
           emptyCart();
           navigate('/order', {
             state: parsedRes,
+            // shippingDetails
           });
           writeOrderToSanity({
             number: parsedRes.charge.created,
@@ -266,7 +231,10 @@ const CheckoutForm = () => {
         })
         .catch((err) => {
           setError(err);
-          console.log('error processing payment method', err);
+          console.log(
+            'error submitting payment method and order in processOrder',
+            err
+          );
         });
       if (!error) {
         console.log('noerror');
@@ -478,14 +446,6 @@ const CheckoutForm = () => {
   );
 };
 
-const ELEMENTS_OPTIONS = {
-  fonts: [
-    {
-      cssSrc: 'https://fonts.googleapis.com/css?family=Roboto',
-    },
-  ],
-};
-
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
 const stripePromise = loadStripe(process.env.GATSBY_STRIPE_PUBLISHABLE_KEY);
@@ -667,3 +627,36 @@ const ErrorMessage = ({ children }) => (
     {children}
   </div>
 );
+const CARD_OPTIONS = {
+  iconStyle: 'solid',
+  style: {
+    base: {
+      iconColor: 'darkdarkblue',
+      //   iconColor: '#c4f0ff',
+      color: 'black',
+      fontWeight: 500,
+      fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
+      fontSize: '16px',
+      fontSmoothing: 'antialiased',
+      ':-webkit-autofill': {
+        color: 'black',
+      },
+      '::placeholder': {
+        color: 'gray',
+      },
+    },
+    invalid: {
+      iconColor: 'red',
+      //   iconColor: '#ffc7ee',
+      color: 'red',
+      //   color: '#ffc7ee',
+    },
+  },
+};
+const ELEMENTS_OPTIONS = {
+  fonts: [
+    {
+      cssSrc: 'https://fonts.googleapis.com/css?family=Roboto',
+    },
+  ],
+};

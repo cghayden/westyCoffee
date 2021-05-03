@@ -36,8 +36,8 @@ export default function orderPage({ location }) {
     <CheckoutPageWrapper>
       <SEO title={'Order Summary'} />
       <main>
-        <OrderPageStyles>
-          <h1>Your Order</h1>
+        <h1 className='whiteText'>Your Order</h1>
+        <OrderPageStyles className='contentBox'>
           <p>Thank You for your business!</p>
           <p>
             You should receive an email with a summary of your order and a link

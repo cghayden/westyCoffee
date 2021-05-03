@@ -95,10 +95,12 @@ function CartStateProvider({ children }) {
   function emptyCart() {
     setCartContents([]);
   }
+  const orderTotal = formatMoney(calcOrderTotal(cartContents));
+  const totalCartPounds = calcTotalPoundsInCart(cartContents);
   const gql = String.raw;
   async function processOrder(
     billingDetails,
-    availableCoffee,
+    shippingDetails,
     paymentMethod,
     botBait
   ) {
@@ -129,8 +131,8 @@ function CartStateProvider({ children }) {
     )
       .then((res) => res.json())
       .catch((err) => {
-        console.log('SHOOOOOT');
-        console.log(err);
+        console.log('error fetching current price data', err);
+        throw new Error('Current Price Data could not be obtained');
       });
 
     const coffee_price = sanityQuery.data.allCoffee.map((coffee) => [
@@ -153,8 +155,10 @@ function CartStateProvider({ children }) {
       name: billingDetails.name,
       email: billingDetails.email,
       phone: billingDetails.phone,
+      shippingDetails,
       mapleSyrup: botBait,
       paymentMethod: paymentMethod.id,
+      totalCartPounds,
     };
     const res = await fetch(
       `${process.env.GATSBY_SERVERLESS_BASE}/placeOrder`,
@@ -168,8 +172,7 @@ function CartStateProvider({ children }) {
     );
     return res;
   }
-  const orderTotal = formatMoney(calcOrderTotal(cartContents));
-  const totalCartPounds = calcTotalPoundsInCart(cartContents);
+
   return (
     <CartProvider
       value={{

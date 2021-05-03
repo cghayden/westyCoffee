@@ -165,7 +165,7 @@ export default function SingleCoffeePage({ data: { coffee } }) {
 export const query = graphql`
   query($slug: String!) {
     coffee: sanityCoffee(slug: { current: { eq: $slug } }) {
-      id
+      _id
       name
       description
       descriptionLong {
@@ -182,6 +182,7 @@ export const query = graphql`
           )
         }
       }
+      singleOrigin
       roastLevel
       grade
       roastDate
