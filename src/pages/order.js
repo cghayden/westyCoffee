@@ -24,7 +24,7 @@ const CheckoutPageWrapper = styled.div`
   padding: 0 1rem;
 `;
 export default function orderPage({ location }) {
-  console.log('location', location.state);
+  // console.log('location', location.state);
   const [orderItems, setOrderItems] = useState([]);
   const [charge, setCharge] = useState([]);
   const [shippingDetails, setShippingDetails] = useState([]);

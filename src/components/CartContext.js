@@ -81,7 +81,6 @@ function CartStateProvider({ children }) {
   function removeFromCart(cartItem) {
     const cartCopy = [...cartContents];
     const newCart = cartCopy.filter((item) => {
-      console.log('filter item', item);
       if (
         item.name === cartItem.name &&
         item.grind === cartItem.grind &&
@@ -136,7 +135,15 @@ function CartStateProvider({ children }) {
         console.log('error fetching current price data', err);
         return { error: err };
       });
-
+    if (!sanityQuery.data) {
+      return {
+        statusCode: 418,
+        body: JSON.stringify({
+          error: 'We could not verify current pricing, please try again',
+          message: 'We could not verify current pricing, please try again',
+        }),
+      };
+    }
     const coffee_price = sanityQuery.data.allCoffee.map((coffee) => [
       coffee.name,
       coffee.price,

@@ -11,7 +11,6 @@ const EventRequestTextStyles = styled.div`
 `;
 
 function EventRequestText({ node }) {
-  console.log('event request node', node);
   return (
     <EventRequestTextStyles className='alignCenter'>
       {node && <PortableText blocks={node._rawContent} />}

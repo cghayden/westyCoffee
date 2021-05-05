@@ -180,15 +180,15 @@ const CheckoutForm = () => {
         botBait
       );
       const parsedResponse = await orderRes.json();
-      console.log('parsedResponse', parsedResponse);
-      console.log('checkout orderRes', orderRes);
-      console.log('checkout orderRes status', orderRes.status);
+      // console.log('parsedResponse', parsedResponse);
+      // console.log('checkout orderRes', orderRes);
+      // console.log('checkout orderRes status', orderRes.status);
       if (orderRes.status >= 400 && orderRes.status < 600) {
         setError(parsedResponse.error || 'there was an error');
         setProcessing(false);
         setPaymentMethod(null);
       } else {
-        console.log('order successful', parsedResponse);
+        // console.log('order successful', parsedResponse);
         //update stock
         // adjustSanityStock(parsedResponse.orderItems);
         //route to order summary page

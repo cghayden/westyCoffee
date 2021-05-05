@@ -5,7 +5,7 @@ import SEO from '../components/SEO';
 import EventList from '../components/EventList';
 import EventRequestText from '../components/EventRequestText';
 export default function eventsPage({ data, errors }) {
-  console.log('data', data);
+  // console.log('data', data);
   if (errors) {
     return <GraphQLErrorList errors={errors} />;
   }
