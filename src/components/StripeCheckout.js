@@ -293,6 +293,7 @@ const CheckoutForm = () => {
           <div className='radio-wrapper FormRowInput'>
             <div className='radio__input'>
               <RadioInput
+                disabled
                 className='input-radio'
                 type='radio'
                 active={shippingDetails.deliveryMethod === 'Shipping'}
