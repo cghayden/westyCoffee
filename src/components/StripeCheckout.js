@@ -432,9 +432,7 @@ const CheckoutForm = ({ shippingBoolean, setShippingBoolean }) => {
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
-const stripePromise = loadStripe(
-  process.env.GATSBY_STRIPE_TEST_PUBLISHABLE_KEY
-);
+const stripePromise = loadStripe(process.env.GATSBY_STRIPE_PUBLISHABLE_KEY);
 
 export default function StripeCheckout({
   shippingBoolean,
