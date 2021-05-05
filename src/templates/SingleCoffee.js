@@ -107,6 +107,14 @@ export default function SingleCoffeePage({ data: { coffee } }) {
           </div>
           <DeetsAndForm>
             <CoffeeDetails>
+              {coffee.roastDate && (
+                // <div className='content-item'>
+                <>
+                  <dt>Roasted</dt>
+                  <dd>{coffee.roastDate}</dd>
+                </>
+                // </div>
+              )}
               {coffee.grade && (
                 // <div className='content-item'>
                 <>
@@ -115,13 +123,11 @@ export default function SingleCoffeePage({ data: { coffee } }) {
                 </>
                 //</div>
               )}
-              {coffee.process && (
-                // <div className='content-item'>
+              {coffee.region && (
                 <>
-                  <dt>Process</dt>
-                  <dd>{coffee.process}</dd>
+                  <dt>Region</dt>
+                  <dd>{coffee.region}</dd>
                 </>
-                //</div>
               )}
               {coffee.cultivar && (
                 // <div className='content-item'>
@@ -139,13 +145,13 @@ export default function SingleCoffeePage({ data: { coffee } }) {
                 </>
                 //</div>
               )}
-              {coffee.roastDate && (
+              {coffee.process && (
                 // <div className='content-item'>
                 <>
-                  <dt>Roasted</dt>
-                  <dd>{coffee.roastDate}</dd>
+                  <dt>Process</dt>
+                  <dd>{coffee.process}</dd>
                 </>
-                // </div>
+                //</div>
               )}
             </CoffeeDetails>
 

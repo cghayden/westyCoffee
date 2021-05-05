@@ -98,12 +98,14 @@ function CartStateProvider({ children }) {
   const orderTotal = formatMoney(calcOrderTotal(cartContents));
   const totalCartPounds = calcTotalPoundsInCart(cartContents);
   const gql = String.raw;
+
   async function processOrder(
     billingDetails,
     shippingDetails,
     paymentMethod,
     botBait
   ) {
+    // const result={error:false}
     //1. set prices on each order item and calculate order total
     //(coffeePrices is from the checkout page dynamic query of all coffees and their prices, to guard against client changing the prices in the browser state before submitting order.)
 
@@ -132,7 +134,7 @@ function CartStateProvider({ children }) {
       .then((res) => res.json())
       .catch((err) => {
         console.log('error fetching current price data', err);
-        throw new Error('Current Price Data could not be obtained');
+        return { error: err };
       });
 
     const coffee_price = sanityQuery.data.allCoffee.map((coffee) => [
@@ -169,7 +171,7 @@ function CartStateProvider({ children }) {
         },
         body: JSON.stringify(body),
       }
-    );
+    ).catch((err) => console.log('ERR in caught in Context', err));
     return res;
   }
 

@@ -6,28 +6,33 @@ import CartPageStyles from '../styles/CartPageStyles';
 import formatMoney from '../utils/formatMoney';
 
 const OrderPageStyles = styled(CartPageStyles)`
+  p {
+    font-size: 14px;
+  }
   display: block;
   .paymentDetails {
     border-top: 2px solid black;
     color: darkred;
     text-align: right;
     p {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
     }
   }
 `;
 const CheckoutPageWrapper = styled.div`
   font-family: monospace;
-  padding: 1rem;
+  padding: 0 1rem;
 `;
 export default function orderPage({ location }) {
   console.log('location', location.state);
   const [orderItems, setOrderItems] = useState([]);
   const [charge, setCharge] = useState([]);
+  const [shippingDetails, setShippingDetails] = useState([]);
   useEffect(() => {
     if (location?.state) {
       setOrderItems(location.state.orderItems);
       setCharge(location.state.charge);
+      setShippingDetails(location.state.shippingDetails);
     } else return;
   }, []);
   // const payment = location.state.orderRes.charge
@@ -39,17 +44,21 @@ export default function orderPage({ location }) {
         <h1 className='whiteText'>Your Order</h1>
         <OrderPageStyles className='contentBox'>
           <p>Thank You for your business!</p>
+          <p>A summary of your order is below.</p>
           <p>
-            You should receive an email with a summary of your order and a link
-            to a receipt
+            We will text and/or email you when your order
+            {shippingDetails.deliveryMethod === 'Pickup'
+              ? 'is ready for pickup'
+              : ' ships'}
           </p>
+          <p>Check your email for a receipt of your order</p>
           <ul>
             {orderItems.map((orderItem, i) => (
               <OrderListItem item={orderItem} key={`${orderItem.name}-`} />
             ))}
           </ul>
           <div className='paymentDetails'>
-            <p>Total Amount Charged: {formatMoney(charge.amount)}</p>
+            <p>Total Amount Charged: ${formatMoney(charge.amount)}</p>
           </div>
         </OrderPageStyles>
       </main>

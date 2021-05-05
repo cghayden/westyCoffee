@@ -96,10 +96,14 @@ async function writeOrderToSanity({
   };
   await SanityOrders.create(doc)
     .then((res) => {
-      console.log(`Order was created, document ID is ${res._id}`);
-      return res;
+      console.log(
+        `Order was created in Sanity, document ID is ${res._id}, write response is ${res}`
+      );
     })
-    .catch((error) => ({ error }));
+    .catch((err) => {
+      console.error('error writing order to Sanity:', err);
+      // notify neighborly of error writing to sanity orders
+    });
 }
 
 const stripe = new Stripe(process.env.GATSBY_STRIPE_SECRET_KEY, {
@@ -117,8 +121,7 @@ exports.handler = async (event, context) => {
     };
   }
 
-  //Validation
-  // make sure all fields are filled out and correct
+  //Validation - make sure all fields are filled out and correct
   const requiredFields = ['email', 'name', 'order'];
   for (const field of requiredFields) {
     if (!body[field]) {
@@ -143,28 +146,28 @@ exports.handler = async (event, context) => {
   // x calculate and verify total price - INCOMING FROM CONTEXT processOrder
 
   //create payment with stripe & charge(confirm) here
-  const charge = await stripe.paymentIntents
-    .create({
+  let charge;
+  try {
+    charge = await stripe.paymentIntents.create({
       amount: body.total,
       currency: 'USD',
       confirm: true,
       payment_method: body.paymentMethod,
       receipt_email: body.email,
-    })
-    .catch((err) => {
-      console.error(err);
-      return {
-        statusCode: 500,
-        body: JSON.stringify({
-          message: 'There was an error completing your payment',
-          err: err,
-          orderItems: body.order,
-        }),
-      };
     });
-  console.log('SERVER SIDE CHARGE SUCCESS: ', charge);
-
-  const writtenOrder = await writeOrderToSanity({
+  } catch (err) {
+    console.error('CHARGE ERR', err);
+    return {
+      statusCode: err.statusCode || 418,
+      body: JSON.stringify({
+        error: err.message,
+        message:
+          err.message ||
+          `There was an error processing your payment.  You're card was not charged`,
+      }),
+    };
+  }
+  writeOrderToSanity({
     name: body.name,
     email: body.email,
     phone: body.phone,
@@ -180,8 +183,8 @@ exports.handler = async (event, context) => {
     shippingState: body.shippingDetails.state,
     shippingZip: body.shippingDetails.zip,
     totalCartPounds: body.totalCartPounds,
-  }).catch((err) => console.log('err', err));
-  console.log('writtenOrder', writtenOrder);
+  });
+
   return {
     statusCode: 200,
     body: JSON.stringify({

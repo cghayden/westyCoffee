@@ -4,7 +4,7 @@ const StripeCheckoutStyles = styled.div`
   width: 100%;
   max-width: 500px;
   position: relative;
-  margin: 2rem auto;
+  margin: 1rem auto;
   font-size: 14px;
 
   input,
@@ -210,7 +210,7 @@ const StripeCheckoutStyles = styled.div`
     font-size: 16px;
     width: calc(100% - 30px);
     height: 40px;
-    margin: 40px 15px 0;
+    margin: 16px 15px 0;
     /* background-color: #f6a4eb; */
     background-color: green;
     box-shadow: 0 6px 9px rgba(50, 50, 93, 0.06), 0 2px 5px rgba(0, 0, 0, 0.08),
