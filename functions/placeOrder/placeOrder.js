@@ -90,7 +90,7 @@ async function writeOrderToSanity({
     });
 }
 
-const stripe = new Stripe(process.env.GATSBY_STRIPE_SECRET_KEY, {
+const stripe = new Stripe(process.env.GATSBY_STRIPE_TEST_SECRET_KEY, {
   apiVersion: '2020-08-27',
 });
 exports.handler = async (event, context) => {

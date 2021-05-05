@@ -15,6 +15,7 @@ const OrderPageStyles = styled(CartPageStyles)`
     color: darkred;
     text-align: right;
     p {
+      margin-right: 0.5rem;
       font-size: 1.1rem;
     }
   }
@@ -57,7 +58,19 @@ export default function orderPage({ location }) {
               <OrderListItem item={orderItem} key={`${orderItem.name}-`} />
             ))}
           </ul>
+
           <div className='paymentDetails'>
+            {shippingDetails.deliveryMethod === 'Shipping' && (
+              <p
+                style={{
+                  textAlign: 'right',
+                  color: 'darkgreen',
+                  fontSize: '1rem',
+                }}
+              >
+                Shipping: $10.00
+              </p>
+            )}
             <p>Total Amount Charged: ${formatMoney(charge.amount)}</p>
           </div>
         </OrderPageStyles>
