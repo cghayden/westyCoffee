@@ -3,8 +3,8 @@
 // https://www.stripe.com/docs/payments/integration-builder
 
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import { navigate } from 'gatsby';
-import { nanoid } from 'nanoid';
 import { motion, AnimatePresence } from 'framer-motion';
 import { loadStripe } from '@stripe/stripe-js';
 import {
@@ -17,41 +17,8 @@ import { StripeCheckoutStyles } from '../styles/StripeCheckoutStyles';
 import ShippingTruckIcon from './Icons/ShippingTruckIcon';
 import StoreFrontIcon from './Icons/StoreFrontIcon';
 import { useCart } from './CartContext';
-import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee';
-import styled from 'styled-components';
-
-const CARD_OPTIONS = {
-  iconStyle: 'solid',
-  style: {
-    base: {
-      iconColor: 'darkdarkblue',
-      //   iconColor: '#c4f0ff',
-      color: 'black',
-      fontWeight: 500,
-      fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
-      fontSize: '16px',
-      fontSmoothing: 'antialiased',
-      ':-webkit-autofill': {
-        color: 'black',
-      },
-      '::placeholder': {
-        color: 'gray',
-      },
-    },
-    invalid: {
-      iconColor: 'red',
-      //   iconColor: '#ffc7ee',
-      color: 'red',
-      //   color: '#ffc7ee',
-    },
-  },
-};
-
-const CardField = ({ onChange }) => (
-  <div className='FormRow'>
-    <CardElement options={CARD_OPTIONS} onChange={onChange} />
-  </div>
-);
+import Stripe_Blurple from '../assets/images/Stripe_Blurple.png';
+// import StripeLogo from './Icons/StripeLogoBlurple';
 const RadioLabel = styled.label`
   cursor: pointer;
   vertical-align: middle;
@@ -59,7 +26,6 @@ const RadioLabel = styled.label`
   align-items: center;
   color: ${(props) => (props.active ? 'darkblue' : 'gray')};
   font-size: 1rem;
-  /* color: ${(props) => (props.active ? 'darkblue' : 'var(--darkGray)')}; */
   span {
     transition: all 0.2s ease-in-out;
   }
@@ -70,6 +36,10 @@ const RadioInput = styled.input`
 `;
 const PaymentDetailsHeading = styled.h2`
   font-weight: normal;
+`;
+const ErrorStyle = styled.div`
+  color: red;
+  padding-bottom: red;
 `;
 const Field = ({
   label,
@@ -98,9 +68,30 @@ const Field = ({
   </div>
 );
 
+const StripeLogoDiv = styled.div`
+  width: 44px;
+  height: 20px;
+  background-image: url(${Stripe_Blurple});
+  background-size: contain;
+`;
+
+const CreditCardHeadingStyle = styled.div`
+  display: flex;
+  align-items: center;
+  h3 {
+    margin-bottom: 0;
+    margin-right: 20px;
+  }
+  p {
+    font-size: 13px;
+    margin: 0 10px;
+  }
+`;
+
 const CheckoutForm = () => {
   const stripe = useStripe();
   const elements = useElements();
+  const [stripeError, setStripeError] = useState(null);
   const [error, setError] = useState(null);
   const [cardComplete, setCardComplete] = useState(false);
   const [processing, setProcessing] = useState(false);
@@ -120,92 +111,40 @@ const CheckoutForm = () => {
     zip: '',
   });
   const [botBait, setBotBait] = useState('');
-  const { orderTotal, processOrder, emptyCart, totalCartPounds } = useCart();
-  const { availableCoffee } = useCurrentAvailableCoffee();
+  const { orderTotal, processOrder, emptyCart } = useCart();
+  // const {
+  //   error,
+  //   loading,
+  //   message,
+  //   submitOrder,
+  //   orderDeets,
+  // } = useProcessOrder();
 
-  async function writeOrderToSanity({
-    name,
-    email,
-    phone,
-    number,
-    total,
-    orderItems,
-    stripe_id,
-    deliveryMethod,
-    pickupLocation,
-    shippingAddressLine1,
-    shippingAddressLine2,
-    shippingCity,
-    shippingState,
-    shippingZip,
-  }) {
-    const configuredOrderItems = orderItems.map((orderItem) => {
-      return {
-        name: orderItem.name,
-        grind: orderItem.grind,
-        size: orderItem.size,
-        quantity: orderItem.quantity,
-        _key: nanoid(),
-      };
-    });
-    console.log('configuredOrderItems', configuredOrderItems);
+  async function adjustSanityStock(orderItems) {
     const adjustQuantityMutations = orderItems.map((orderItem) => ({
       patch: {
         id: orderItem._ref,
         dec: {
-          stock: totalCartPounds[orderItem.name],
+          stock:
+            orderItem.size === 'half pound'
+              ? orderItem.quantity * 0.5
+              : orderItem.quantity,
         },
       },
     }));
-    const orderDate = new Date().toISOString();
-    const orderMutation = [
-      {
-        create: {
-          _type: 'order',
-          customerName: name,
-          customerEmail: email,
-          customerPhone: phone,
-          number,
-          total: total,
-          orderItems: configuredOrderItems,
-          orderDate,
-          stripe_id,
-          deliveryMethod,
-          pickupLocation,
-          shippingAddressLine1,
-          shippingAddressLine2,
-          shippingCity,
-          shippingState,
-          shippingZip,
-          // set: { slug.current: number.toString() },
-        },
-      },
-      // returnDocuments: true,
-    ];
-
-    await fetch(`https://2u11zhhx.api.sanity.io/v1/data/mutate/orders`, {
+    await fetch(`https://yi1dikna.api.sanity.io/v1/data/mutate/production`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
-        Authorization: `Bearer ${process.env.GATSBY_SANITY_ORDERS_API}`,
+        Authorization: `Bearer ${process.env.GATSBY_SANITY_MUTATION_API}`,
       },
-      body: JSON.stringify({ mutations: orderMutation }),
+      body: JSON.stringify({ mutations: adjustQuantityMutations }),
     })
-      .then((response) => response.json())
-      .then((result) => console.log('MUTATION RESPONSE', result))
-      .catch((error) => console.error('MUTATION ERROR', error));
-
-    //   await fetch(`https://yi1dikna.api.sanity.io/v1/data/mutate/production`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-type': 'application/json',
-    //     Authorization: `Bearer ${process.env.GATSBY_SANITY_ORDERS_API}`,
-    //   },
-    //   body: JSON.stringify({ adjustQuantityMutations }),
-    // })
-    //   .then((response) => response.json())
-    //   .then((result) => console.log('MUTATION RESPONSE', result))
-    //   .catch((error) => console.error('MUTATION ERROR', error));
+      .then((response) => console.log('MUTATION RESPONSE', response.json()))
+      .catch((error) => {
+        console.error('ERROR ADJUSTING PRODUCT STOCK', error);
+        // send error to neighborly that stock could not be adjusted
+      });
   }
 
   async function handleSubmit(event) {
@@ -215,7 +154,7 @@ const CheckoutForm = () => {
       // form submission until Stripe.js has loaded.
       return;
     }
-    if (error) {
+    if (stripeError) {
       elements.getElement('card').focus();
       return;
     }
@@ -228,61 +167,57 @@ const CheckoutForm = () => {
       billing_details: billingDetails,
     });
     if (error) {
-      console.log('error creating payment method', error);
+      console.error('error creating payment method', error);
+      setProcessing(false);
       setError(error);
       return;
     } else {
-      setPaymentMethod(paymentMethod);
-      console.log('paymentMethod', paymentMethod);
+      // console.log('paymentMethod created', paymentMethod);
       const orderRes = await processOrder(
         billingDetails,
-        availableCoffee,
+        shippingDetails,
         paymentMethod,
         botBait
-      )
-        .then((res) => res.json())
-        .then((parsedRes) => {
-          console.log('parsedRes', parsedRes);
-          emptyCart();
-          navigate('/order', {
-            state: parsedRes,
-          });
-          writeOrderToSanity({
-            number: parsedRes.charge.created,
-            name: billingDetails.name,
-            email: billingDetails.email,
-            phone: billingDetails.phone,
-            total: parsedRes.charge.amount,
-            orderItems: parsedRes.orderItems,
-            stripe_id: parsedRes.charge.id,
-            deliveryMethod: shippingDetails.deliveryMethod,
-            pickupLocation: shippingDetails.pickupLocation,
-            shippingAddressLine1: shippingDetails.addressLine1,
-            shippingAddressLine2: shippingDetails.addressLine2,
-            shippingCity: shippingDetails.city,
-            shippingState: shippingDetails.state,
-            shippingZip: shippingDetails.zip,
-          });
-        })
-        .catch((err) => {
-          setError(err);
-          console.log('error processing payment method', err);
+      );
+      const parsedResponse = await orderRes.json();
+      console.log('parsedResponse', parsedResponse);
+      console.log('checkout orderRes', orderRes);
+      console.log('checkout orderRes status', orderRes.status);
+      if (orderRes.status >= 400 && orderRes.status < 600) {
+        setError(parsedResponse.error || 'there was an error');
+        setProcessing(false);
+        setPaymentMethod(null);
+      } else {
+        console.log('order successful', parsedResponse);
+        //update stock
+        // adjustSanityStock(parsedResponse.orderItems);
+        //route to order summary page
+        emptyCart();
+        resetPage();
+        navigate('/order', {
+          state: parsedResponse,
         });
-      if (!error) {
-        console.log('noerror');
-        reset();
       }
     }
   }
 
-  const reset = () => {
-    setError(null);
+  const resetPage = () => {
+    setStripeError(null);
     setProcessing(false);
     setPaymentMethod(null);
     setBillingDetails({
       name: '',
       email: '',
       phone: '',
+    });
+    setShippingDetails({
+      deliveryMethod: '',
+      pickupLocation: '',
+      addressLine1: '',
+      addressLine2: '',
+      city: '',
+      state: '',
+      zip: '',
     });
   };
 
@@ -295,6 +230,12 @@ const CheckoutForm = () => {
   ) : (
     <form className='Form' onSubmit={handleSubmit}>
       <PaymentDetailsHeading>payment details</PaymentDetailsHeading>
+      {error && (
+        <ErrorStyle>
+          <p>!! Your payment failed: </p>
+          <p>{error}</p>
+        </ErrorStyle>
+      )}
       <h3 className='form-heading'>Contact</h3>
 
       <fieldset className='FormGroup'>
@@ -459,31 +400,42 @@ const CheckoutForm = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
       <h3 className='form-heading'>Payment</h3>
 
       <fieldset className='FormGroup'>
         <CardField
           onChange={(e) => {
-            setError(e.error);
+            setStripeError(e.error);
             setCardComplete(e.complete);
           }}
         />
       </fieldset>
+      <div
+        style={{
+          color: 'darkblue',
+          fontSize: '13px',
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <p style={{ fontSize: '13px' }}>checkout securely with</p>
+        <StripeLogoDiv />
+      </div>
 
-      {error && <ErrorMessage>{error.message}</ErrorMessage>}
-      <SubmitButton processing={processing} error={error} disabled={!stripe}>
+      {stripeError && (
+        <FormErrorMessage>{stripeError.message}</FormErrorMessage>
+      )}
+      {error && <FormErrorMessage>{error}</FormErrorMessage>}
+      <SubmitButton
+        processing={processing}
+        error={stripeError || error}
+        disabled={!stripe || !elements || processing}
+      >
         Pay ${orderTotal}
       </SubmitButton>
     </form>
   );
-};
-
-const ELEMENTS_OPTIONS = {
-  fonts: [
-    {
-      cssSrc: 'https://fonts.googleapis.com/css?family=Roboto',
-    },
-  ],
 };
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
@@ -493,7 +445,10 @@ const stripePromise = loadStripe(process.env.GATSBY_STRIPE_PUBLISHABLE_KEY);
 export default function StripeCheckout() {
   return (
     <StripeCheckoutStyles>
-      <Elements stripe={stripePromise} options={ELEMENTS_OPTIONS}>
+      <Elements
+        stripe={stripePromise}
+        // options={ELEMENTS_OPTIONS}
+      >
         <CheckoutForm />
       </Elements>
     </StripeCheckoutStyles>
@@ -642,6 +597,11 @@ function PickupChoiceInput({ shippingDetails, setShippingDetails }) {
     </>
   );
 }
+const CardField = ({ onChange }) => (
+  <div className='FormRow'>
+    <CardElement options={CARD_OPTIONS} onChange={onChange} />
+  </div>
+);
 const SubmitButton = ({ processing, error, children, disabled }) => (
   <button
     className={`SubmitButton ${error ? 'SubmitButton--error' : ''}`}
@@ -652,7 +612,7 @@ const SubmitButton = ({ processing, error, children, disabled }) => (
   </button>
 );
 
-const ErrorMessage = ({ children }) => (
+const FormErrorMessage = ({ children }) => (
   <div className='ErrorMessage' role='alert'>
     <svg width='16' height='16' viewBox='0 0 17 17'>
       <path
@@ -667,3 +627,36 @@ const ErrorMessage = ({ children }) => (
     {children}
   </div>
 );
+const CARD_OPTIONS = {
+  iconStyle: 'solid',
+  style: {
+    base: {
+      iconColor: 'darkblue',
+      //   iconColor: '#c4f0ff',
+      color: 'black',
+      fontWeight: 500,
+      fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
+      fontSize: '16px',
+      fontSmoothing: 'antialiased',
+      ':-webkit-autofill': {
+        color: 'black',
+      },
+      '::placeholder': {
+        color: 'gray',
+      },
+    },
+    invalid: {
+      iconColor: 'red',
+      //   iconColor: '#ffc7ee',
+      color: 'red',
+      //   color: '#ffc7ee',
+    },
+  },
+};
+const ELEMENTS_OPTIONS = {
+  fonts: [
+    {
+      cssSrc: 'https://fonts.googleapis.com/css?family=Roboto',
+    },
+  ],
+};

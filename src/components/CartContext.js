@@ -95,13 +95,17 @@ function CartStateProvider({ children }) {
   function emptyCart() {
     setCartContents([]);
   }
+  const orderTotal = formatMoney(calcOrderTotal(cartContents));
+  const totalCartPounds = calcTotalPoundsInCart(cartContents);
   const gql = String.raw;
+
   async function processOrder(
     billingDetails,
-    availableCoffee,
+    shippingDetails,
     paymentMethod,
     botBait
   ) {
+    // const result={error:false}
     //1. set prices on each order item and calculate order total
     //(coffeePrices is from the checkout page dynamic query of all coffees and their prices, to guard against client changing the prices in the browser state before submitting order.)
 
@@ -129,8 +133,8 @@ function CartStateProvider({ children }) {
     )
       .then((res) => res.json())
       .catch((err) => {
-        console.log('SHOOOOOT');
-        console.log(err);
+        console.log('error fetching current price data', err);
+        return { error: err };
       });
 
     const coffee_price = sanityQuery.data.allCoffee.map((coffee) => [
@@ -153,8 +157,10 @@ function CartStateProvider({ children }) {
       name: billingDetails.name,
       email: billingDetails.email,
       phone: billingDetails.phone,
+      shippingDetails,
       mapleSyrup: botBait,
       paymentMethod: paymentMethod.id,
+      totalCartPounds,
     };
     const res = await fetch(
       `${process.env.GATSBY_SERVERLESS_BASE}/placeOrder`,
@@ -165,11 +171,10 @@ function CartStateProvider({ children }) {
         },
         body: JSON.stringify(body),
       }
-    );
+    ).catch((err) => console.log('ERR in caught in Context', err));
     return res;
   }
-  const orderTotal = formatMoney(calcOrderTotal(cartContents));
-  const totalCartPounds = calcTotalPoundsInCart(cartContents);
+
   return (
     <CartProvider
       value={{

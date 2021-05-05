@@ -68,7 +68,7 @@ function SingleCoffeeTile({ coffee }) {
 
   return (
     <CoffeeTileStyles singleOrigin={coffee.singleOrigin}>
-      <header singleOrigin={coffee.singleOrigin}>
+      <header>
         <Link to={`/coffee/${coffee.slug.current}`}>{coffee.name}</Link>
       </header>
       <CoffeeDetails>

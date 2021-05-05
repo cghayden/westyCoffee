@@ -1,5 +1,4 @@
 import React from 'react';
-import StripeCheckout from '../components/StripeCheckout';
 import styled from 'styled-components';
 import CheckoutPage_CartContents from '../components/CheckoutPage_CartContents';
 import SEO from '../components/SEO';

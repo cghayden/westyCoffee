@@ -3,19 +3,26 @@ import styled from 'styled-components';
 import '@fontsource/raleway';
 import InstagramSvg from './Icons/InstagramSvg';
 const FooterStyle = styled.footer`
-  background: linear-gradient(
+  /* background: linear-gradient(
     to top,
     white 70%,
     hsla(0, 100%, 100%, 0.6) 95%,
     transparent
-  );
+  ); */
+  background: var(--white);
   font-family: 'Raleway';
   margin-top: auto;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
   place-items: center;
-  padding: 1.75rem 0 1.25rem;
+  padding: 0.5rem 0;
+  * {
+    font-size: 0.9rem;
+  }
+  a.phone {
+    padding: 0.5rem;
+  }
   a {
     color: green;
   }
@@ -41,7 +48,9 @@ function Footer() {
         <p>Sharon, Ma 02067</p>
       </Address>
       <Contact>
-        <a href='tel:617-894-5656'>617-894-5656</a>
+        <a className='phone' href='tel:617-894-5656'>
+          617-894-5656
+        </a>
         <a
           href='https://www.instagram.com/neighborlycoffee'
           rel='noopener noreferrer'
