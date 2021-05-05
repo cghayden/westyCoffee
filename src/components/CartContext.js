@@ -10,9 +10,10 @@ function CartStateProvider({ children }) {
   // Closed cart by default
   const [cartOpen, setCartOpen] = useState(false);
   const [cartContents, setCartContents] = useState([]);
+  const [shipping, setShipping] = useState(false);
 
   function toggleCart() {
-    setCartOpen(!cartOpen);
+    setCartOpen((cartOpen) => !cartOpen);
   }
 
   function closeCart() {
@@ -21,6 +22,10 @@ function CartStateProvider({ children }) {
 
   function openCart() {
     setCartOpen(true);
+  }
+
+  function toggleShipping() {
+    setShipping((shipping) => !shipping);
   }
 
   function sortCart(a, b) {
@@ -158,9 +163,14 @@ function CartStateProvider({ children }) {
       return { ...cartItem, price, unitPrice: validatedUnitPrice };
     });
     // send order with valid prices to serverless function
+    const total =
+      shippingDetails.deliveryMethod === 'Shipping'
+        ? calcOrderTotal(cartContents) + 1000
+        : calcOrderTotal(cartCopy);
+    console.log('total', total);
     const body = {
       order: cartCopy,
-      total: calcOrderTotal(cartCopy),
+      total,
       name: billingDetails.name,
       email: billingDetails.email,
       phone: billingDetails.phone,
@@ -198,6 +208,8 @@ function CartStateProvider({ children }) {
         processOrder,
         orderTotal,
         totalCartPounds,
+        shipping,
+        setShipping,
       }}
     >
       {children}

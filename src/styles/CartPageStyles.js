@@ -7,9 +7,9 @@ const CartPageStyles = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  p {
+  /* p {
     margin: 5px 0;
-  }
+  } */
   header {
     border-bottom: 3px solid var(--black);
     display: flex;
@@ -18,10 +18,12 @@ const CartPageStyles = styled.div`
     border-top: solid 3px var(--black);
     text-align: right;
     margin-top: 1rem;
-    padding-right: 2rem;
+    /* padding-right: 2rem; */
     color: green;
     align-items: center;
-    p {
+    .shippingLineItem {
+    }
+    .grandTotal {
       font-size: 20px;
     }
   }

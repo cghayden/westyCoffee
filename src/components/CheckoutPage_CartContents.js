@@ -5,21 +5,28 @@ import TrashIcon from './Icons/TrashIcon';
 import formatMoney from '../utils/formatMoney';
 import CartPageStyles from '../styles/CartPageStyles';
 import calcPoundsAvailable from '../utils/calcPoundsAvailable';
-import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee';
+import calcOrderTotal from '../utils/calcOrderTotal';
 import StripeCheckout from './StripeCheckout';
 import CartAlerts from './CartAlerts';
 import MinusSvg from './Icons/MinusSvg';
 import PlusSvg from './Icons/PlusSvg';
 import compileCurrentStockAndPrice from '../utils/compileCurrentStockAndPriceListing';
 import checkStock from '../utils/checkStock';
+import ShippingTruckIcon from './Icons/ShippingTruckIcon';
 
 const CartContents = styled.div`
   width: 100%;
   min-width: 310px;
   max-width: 550px;
 `;
+const ShippingLineItem = styled.p`
+  color: darkgreen;
+  text-align: right;
+  margin-right: 0.5rem;
+`;
 
 function CheckoutPage_CartContents({ availableCoffee }) {
+  const [shippingBoolean, setShippingBoolean] = useState(false);
   const {
     cartContents,
     removeFromCart,
@@ -28,12 +35,11 @@ function CheckoutPage_CartContents({ availableCoffee }) {
     totalCartPounds,
   } = useCart();
 
+  console.log('orderTotal', orderTotal);
   const currentStockAndPrice = compileCurrentStockAndPrice(availableCoffee);
   const stockAlerts = checkStock(currentStockAndPrice, totalCartPounds);
-
   return (
     <CartPageStyles className='contentBox'>
-      {/* <div className='contentBox'> */}
       <CartContents>
         <header>
           <h2>Review Your Cart</h2>
@@ -49,12 +55,26 @@ function CheckoutPage_CartContents({ availableCoffee }) {
           ))}
         </ul>
         <footer>
-          <p>Total: $ {orderTotal}</p>
+          {shippingBoolean ? (
+            <>
+              <p className='shippingLineItem'>Shipping: $10.00</p>
+              <p className='grandTotal'>
+                Total: ${formatMoney(calcOrderTotal(cartContents) + 1000)}
+              </p>
+            </>
+          ) : (
+            <p className='grandTotal'>Total: ${orderTotal}</p>
+          )}
+          {/* <p>Total: $ {orderTotal}</p> */}
         </footer>
         {stockAlerts.length > 0 && <CartAlerts alerts={stockAlerts} />}
       </CartContents>
-      {!!cartContents.length && !stockAlerts.length && <StripeCheckout />}
-      {/* </div> */}
+      {!!cartContents.length && !stockAlerts.length && (
+        <StripeCheckout
+          shippingBoolean={shippingBoolean}
+          setShippingBoolean={setShippingBoolean}
+        />
+      )}
     </CartPageStyles>
   );
 }
@@ -85,15 +105,12 @@ const CartItemLi = styled.li`
   .details {
     place-items: center;
     display: grid;
-    grid-template-columns: 2ch max-content 1ch max-content;
+    grid-template-columns: max-content 2ch max-content 1ch max-content;
     justify-content: end;
     justify-items: end;
     align-items: baseline;
     grid-gap: 0.5rem;
     margin: 0.5rem;
-  }
-  .details-quantity {
-    font-size: 1.2rem;
   }
 `;
 const QuantitySelector = styled.div`
@@ -172,9 +189,9 @@ function CartItem({ cartItem, removeFromCart, addToCart }) {
       </div>
       <p className='grind'>{`${cartItem.grind}, ${cartItem.size} bag`}</p>
       <p className='details'>
-        {/* <span className='details-quantity'>{`${cartItem.quantity}`}</span> */}
+        <span>{`${cartItem.quantity}`}</span>
         {/* <span>
-          {`${cartItem.size} bag ${cartItem.quantity > 1 ? 's' : ''}`}
+          {cartItem.quantity > 1 ? 's' : ''}
         </span> */}
         <span>&times; </span>
         <span>{`${formatMoney(cartItem.unitPrice)} ea.`} </span>

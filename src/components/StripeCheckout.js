@@ -18,7 +18,8 @@ import ShippingTruckIcon from './Icons/ShippingTruckIcon';
 import StoreFrontIcon from './Icons/StoreFrontIcon';
 import { useCart } from './CartContext';
 import Stripe_Blurple from '../assets/images/Stripe_Blurple.png';
-// import StripeLogo from './Icons/StripeLogoBlurple';
+import formatMoney from '../utils/formatMoney';
+
 const RadioLabel = styled.label`
   cursor: pointer;
   vertical-align: middle;
@@ -75,20 +76,7 @@ const StripeLogoDiv = styled.div`
   background-size: contain;
 `;
 
-const CreditCardHeadingStyle = styled.div`
-  display: flex;
-  align-items: center;
-  h3 {
-    margin-bottom: 0;
-    margin-right: 20px;
-  }
-  p {
-    font-size: 13px;
-    margin: 0 10px;
-  }
-`;
-
-const CheckoutForm = () => {
+const CheckoutForm = ({ shippingBoolean, setShippingBoolean }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [stripeError, setStripeError] = useState(null);
@@ -111,7 +99,7 @@ const CheckoutForm = () => {
     zip: '',
   });
   const [botBait, setBotBait] = useState('');
-  const { orderTotal, processOrder, emptyCart } = useCart();
+  const { orderTotal, processOrder, emptyCart, setShipping } = useCart();
   // const {
   //   error,
   //   loading,
@@ -149,7 +137,7 @@ const CheckoutForm = () => {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    if (!stripe || !elements) {
+    if (!stripe || !elements || !cardComplete) {
       // Stripe.js has not loaded yet. Make sure to disable
       // form submission until Stripe.js has loaded.
       return;
@@ -293,7 +281,6 @@ const CheckoutForm = () => {
           <div className='radio-wrapper FormRowInput'>
             <div className='radio__input'>
               <RadioInput
-                disabled
                 className='input-radio'
                 type='radio'
                 active={shippingDetails.deliveryMethod === 'Shipping'}
@@ -302,6 +289,7 @@ const CheckoutForm = () => {
                 name='deliveryMethod'
                 id='checkout_id_delivery-shipping'
                 onChange={(e) => {
+                  setShippingBoolean(true);
                   setShippingDetails({
                     ...shippingDetails,
                     deliveryMethod: e.target.value,
@@ -331,6 +319,7 @@ const CheckoutForm = () => {
                 name='deliveryMethod'
                 id='checkout_id_delivery-pickup'
                 onChange={(e) => {
+                  setShippingBoolean(false);
                   setShippingDetails({
                     ...shippingDetails,
                     deliveryMethod: e.target.value,
@@ -407,6 +396,7 @@ const CheckoutForm = () => {
       <fieldset className='FormGroup'>
         <CardField
           onChange={(e) => {
+            console.log(' card change e:', e);
             setStripeError(e.error);
             setCardComplete(e.complete);
           }}
@@ -431,9 +421,10 @@ const CheckoutForm = () => {
       <SubmitButton
         processing={processing}
         error={stripeError || error}
-        disabled={!stripe || !elements || processing}
+        disabled={!stripe || !elements || processing || !cardComplete}
       >
-        Pay ${orderTotal}
+        Pay $
+        {shippingBoolean ? formatMoney(orderTotal * 100 + 1000) : orderTotal}
       </SubmitButton>
     </form>
   );
@@ -443,14 +434,20 @@ const CheckoutForm = () => {
 // recreating the `Stripe` object on every render.
 const stripePromise = loadStripe(process.env.GATSBY_STRIPE_PUBLISHABLE_KEY);
 
-export default function StripeCheckout() {
+export default function StripeCheckout({
+  shippingBoolean,
+  setShippingBoolean,
+}) {
   return (
     <StripeCheckoutStyles>
       <Elements
         stripe={stripePromise}
         // options={ELEMENTS_OPTIONS}
       >
-        <CheckoutForm />
+        <CheckoutForm
+          shippingBoolean={shippingBoolean}
+          setShippingBoolean={setShippingBoolean}
+        />
       </Elements>
     </StripeCheckoutStyles>
   );
