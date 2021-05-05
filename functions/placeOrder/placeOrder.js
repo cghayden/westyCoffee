@@ -47,7 +47,6 @@ async function writeOrderToSanity({
   shippingCity,
   shippingState,
   shippingZip,
-  totalCartPounds,
 }) {
   const configuredOrderItems = orderItems.map((orderItem) => {
     return {
@@ -58,23 +57,7 @@ async function writeOrderToSanity({
       _key: nanoid(),
     };
   });
-  console.log('configuredOrderItems', configuredOrderItems);
-  // orderItems.forEach((orderItem) => {
-  //   let totalPounds = orderItem.quantity;
-  //   if (orderItem.size === 'half pound') {
-  //     totalPounds = totalPounds / 2;
-  //   }
-  //   SanityContent.patch(orderItem._ref)
-  //     .dec({ stock: totalPounds })
-  //     .commit()
-  //     .then((updatedProduct) => {
-  //       console.log('product was updated! New document:');
-  //       console.log(updatedProduct);
-  //     })
-  //     .catch((err) => {
-  //       console.error('Oh no, the update failed: ', err.message);
-  //     });
-  // });
+
   const orderDate = new Date().toISOString();
   const doc = {
     _type: 'order',
@@ -97,7 +80,8 @@ async function writeOrderToSanity({
   await SanityOrders.create(doc)
     .then((res) => {
       console.log(
-        `Order was created in Sanity, document ID is ${res._id}, write response is ${res}`
+        'order written to sanity'
+        // `Order was created in Sanity, document ID is ${res._id}, write response is ${res}`
       );
     })
     .catch((err) => {

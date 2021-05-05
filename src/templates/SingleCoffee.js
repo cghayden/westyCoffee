@@ -79,7 +79,6 @@ const CoffeeDetails = styled.dl`
 `;
 
 export default function SingleCoffeePage({ data: { coffee } }) {
-  console.log('coffee', coffee);
   const image = coffee.image?.asset.gatsbyImageData;
 
   return (

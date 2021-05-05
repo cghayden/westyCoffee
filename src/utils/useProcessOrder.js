@@ -15,8 +15,8 @@ function usePlaceOrder() {
     paymentMethod,
     botBait,
   }) {
-    console.log('Hook submitting order');
-    console.log('paymentMethod in hooks submit:', paymentMethod);
+    // console.log('Hook submitting order');
+    // console.log('paymentMethod in hooks submit:', paymentMethod);
     setLoading(true);
     setError(null);
     const gql = String.raw;
@@ -47,7 +47,7 @@ function usePlaceOrder() {
     )
       .then((res) => res.json())
       .catch((err) => {
-        console.log('error fetching current price data', err);
+        // console.log('error fetching current price data', err);
         setLoading(false);
         setError(err.message || err);
         return;
@@ -92,7 +92,7 @@ function usePlaceOrder() {
     );
     const text = JSON.parse(await res.text());
     const orderDeets = res.json();
-    console.log('orderDeets', orderDeets);
+    // console.log('orderDeets', orderDeets);
 
     if (res.status >= 400 && res.status < 600) {
       setLoading(false); // turn off loading
