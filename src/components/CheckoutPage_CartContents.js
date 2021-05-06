@@ -42,9 +42,9 @@ function CheckoutPage_CartContents({ availableCoffee }) {
     ? formatMoney(rawOrderTotal + rawShippingCost)
     : formatMoney(rawOrderTotal);
 
-  console.log('orderTotal', orderTotal);
-  console.log('rawShippingCost', rawShippingCost);
-  console.log('grandTotal', grandTotal);
+  // console.log('orderTotal', orderTotal);
+  // console.log('rawShippingCost', rawShippingCost);
+  // console.log('grandTotal', grandTotal);
 
   return (
     <CartPageStyles className='contentBox'>

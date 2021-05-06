@@ -8,7 +8,7 @@ export default function useLatestHomePageData() {
 
   // Use a side effect to fetch the data from the sanity graphql endpoint
   useEffect(function () {
-    console.log('FETCHING LATEST DATA');
+    // console.log('FETCHING LATEST DATA');
     // when the component loads, fetch the data
     fetch(process.env.GATSBY_SANITY_GRAPHQL_ENDPOINT, {
       method: 'POST',

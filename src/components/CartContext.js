@@ -141,8 +141,7 @@ function CartStateProvider({ children }) {
     )
       .then((res) => res.json())
       .catch((err) => {
-        console.log('error fetching current price data', err);
-        return { error: err };
+        console.error('error fetching current price data', err);
       });
     if (!sanityQuery.data) {
       return {
@@ -200,7 +199,9 @@ function CartStateProvider({ children }) {
         },
         body: JSON.stringify(body),
       }
-    ).catch((err) => console.log('ERR in caught in Context', err));
+    ).catch((err) =>
+      console.log('ERR in caught in place Order function in Context', err)
+    );
     return res;
   }
 
