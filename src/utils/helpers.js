@@ -1,4 +1,4 @@
-import { format, isFuture } from 'date-fns';
+import dayjs from 'dayjs';
 
 export function cn(...args) {
   return args.filter(Boolean).join(' ');
@@ -14,7 +14,8 @@ export function filterOutDocsWithoutSlugs({ slug }) {
 }
 
 export function filterOutDocsPublishedInTheFuture({ publishedAt }) {
-  return !isFuture(publishedAt);
+  return dayjs().isAfter(publishedAt);
+  // return !isFuture(publishedAt);
 }
 
 export function getBlogUrl(slug) {

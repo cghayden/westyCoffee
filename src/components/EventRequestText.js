@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import PortableText from './PortableText';
 
 const EventRequestTextStyles = styled.div`
-  /* max-width: 75%; */
   margin-left: auto;
   margin-right: auto;
   color: var(--white);

@@ -10,6 +10,7 @@ import GraphQLErrorList from '../components/GraphqlErrorList';
 import BlogPreviewList from '../components/BlogPreviewList';
 
 export default function blogPage({ data, errors }) {
+  console.log('data', data);
   if (errors) {
     return <GraphQLErrorList errors={errors} />;
   }
@@ -21,7 +22,6 @@ export default function blogPage({ data, errors }) {
   return (
     <>
       <SEO title={'Blog'} />
-
       {/* <h1>Blog</h1> */}
       {postNodes && <BlogPreviewList nodes={postNodes} />}
     </>

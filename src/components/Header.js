@@ -19,7 +19,14 @@ const HeaderStyles = styled.header`
 `;
 const LogoStyle = styled.p`
   font-size: 1.5rem;
+  h1 {
+    font-weight: 300;
+    padding: 0;
+    margin: 0;
+    font-size: 1.5rem;
+  }
   a {
+    font-size: 1.5rem;
     padding: 0;
   }
 `;
