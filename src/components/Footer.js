@@ -44,8 +44,8 @@ function Footer() {
     <FooterStyle>
       <Address>
         <p>neighborly coffee</p>
-        <p>36 Lincoln Rd.</p>
-        <p>Sharon, Ma 02067</p>
+        <p>36 lincoln rd.</p>
+        <p>sharon, ma 02067</p>
       </Address>
       <Contact>
         <a className='phone' href='tel:617-894-5656'>

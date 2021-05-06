@@ -169,10 +169,23 @@ const GlobalStyles = styled.createGlobalStyle`
     max-width: 100%;
   }
 
+  .pageHeading {
+    letter-spacing: 0.4px;
+    color: var(--white);
+    font-weight: 400;
+    font-size: 28px;
+  }
+
   .contentBox {
     background: var(--white);
     padding: 1rem;
     border-radius: 4px;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    h2 {
+      margin-bottom: 1rem;
+    }
   }
   .ctaBox {
     background: var(--singleOriginGreen);

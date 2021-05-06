@@ -42,6 +42,7 @@ export const query = graphql`
     }
     contentQuery: sanityTextBlock(name: { eq: "Event Page Content" }) {
       id
+      heading
       _rawContent
     }
   }

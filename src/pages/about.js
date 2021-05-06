@@ -2,21 +2,20 @@ import React from 'react';
 import { graphql } from 'gatsby';
 import SEO from '../components/SEO';
 import styled from 'styled-components';
+import PortableText from '../components/PortableText';
 
 const AboutContentStyles = styled.div``;
 
 export default function aboutPage({ data }) {
-  const content = data.contentQuery.nodes[0];
-  const text = data.contentQuery.nodes[0].content;
+  const pageHeading = data ? data.aboutPageText.heading : '';
+  const text = data ? data.aboutPageText._rawContent : [];
   return (
     <>
       <SEO title={'about'} />
       <main>
-        <h1 className='whiteText'>{content.heading}</h1>
+        <h1 className='pageHeading whiteText'>{pageHeading}</h1>
         <AboutContentStyles className='contentBox'>
-          {text.map((entry, i) => (
-            <p key={i}>{entry._rawChildren[0].text}</p>
-          ))}
+          <PortableText blocks={text} />
         </AboutContentStyles>
       </main>
     </>
@@ -24,17 +23,11 @@ export default function aboutPage({ data }) {
 }
 
 export const query = graphql`
-  query {
-    contentQuery: allSanityTextBlock(
-      filter: { name: { eq: "About Page Content" } }
-    ) {
-      nodes {
-        name
-        heading
-        content {
-          _rawChildren
-        }
-      }
+  query AboutPageQuery {
+    aboutPageText: sanityTextBlock(name: { eq: "About Page Content" }) {
+      id
+      heading
+      _rawContent
     }
   }
 `;

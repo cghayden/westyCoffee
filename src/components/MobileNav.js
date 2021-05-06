@@ -21,7 +21,7 @@ const MobileNavContainer = styled.div`
   overflow: hidden;
   z-index: 101;
 
-  transition: all 0.5s;
+  transition: all 0.3s;
   transform: translate3d(
     ${(props) => (props.showMobileNav ? 0 : '110%')},
     0,

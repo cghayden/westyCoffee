@@ -3,6 +3,7 @@ import { graphql } from 'gatsby';
 import SEO from '../components/SEO';
 import styled from 'styled-components';
 import CoffeeDisplay from '../components/CoffeeDisplay';
+import PortableText from '../components/PortableText';
 
 const HomeMainStyle = styled.main`
   text-align: center;
@@ -10,25 +11,25 @@ const HomeMainStyle = styled.main`
 
 const HomePageTextStyles = styled.div`
   color: var(--white);
+  margin-bottom: 1rem;
+  margin-top: 1rem;
   a {
     padding: 0;
-    color: green;
+    color: inherit;
   }
-  padding: 0.75rem;
 `;
 
 // *** STATICALLY BUILT PAGE
 export default function homePage({ data }) {
-  const text = data.textQuery.nodes[0].content;
+  const pageHeading = data ? data.homePageText.heading : '';
+  const text = data ? data.homePageText._rawContent : [];
   return (
     <>
-      <SEO title={'Neighborly Coffee'} />
+      <SEO title={'neighborly coffee'} />
       <HomeMainStyle>
+        <h1 className='pageHeading'>{pageHeading}</h1>
         <HomePageTextStyles>
-          <h1>Available Roasts</h1>
-          {text.map((entry, i) => (
-            <p key={i}>{entry._rawChildren[0].text}</p>
-          ))}
+          <PortableText blocks={text} />
         </HomePageTextStyles>
         <CoffeeDisplay allCoffee={data.coffees.nodes} />
       </HomeMainStyle>
@@ -36,7 +37,7 @@ export default function homePage({ data }) {
   );
 }
 export const query = graphql`
-  query {
+  query HomePageQuery {
     coffees: allSanityCoffee(filter: { stock: { gt: 0 } }) {
       nodes {
         _id
@@ -54,14 +55,10 @@ export const query = graphql`
         }
       }
     }
-    textQuery: allSanityTextBlock(filter: { name: { eq: "Home Page Lead" } }) {
-      nodes {
-        name
-        heading
-        content {
-          _rawChildren
-        }
-      }
+    homePageText: sanityTextBlock(name: { eq: "Home Page Lead" }) {
+      id
+      heading
+      _rawContent
     }
   }
 `;
