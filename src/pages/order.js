@@ -25,7 +25,7 @@ const CheckoutPageWrapper = styled.div`
   padding: 0 1rem;
 `;
 export default function orderPage({ location }) {
-  // console.log('location', location.state);
+  console.log('location', location.state);
   const [orderItems, setOrderItems] = useState([]);
   const [charge, setCharge] = useState([]);
   const [shippingDetails, setShippingDetails] = useState([]);
@@ -68,7 +68,7 @@ export default function orderPage({ location }) {
                   fontSize: '1rem',
                 }}
               >
-                Shipping: $10.00
+                Shipping: {charge.amount < 5000 ? '$10.00' : '$0.00'}
               </p>
             )}
             <p>Total Amount Charged: ${formatMoney(charge.amount)}</p>

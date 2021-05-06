@@ -45,12 +45,15 @@ function Cart() {
       </ul>
       {stockAlerts.length > 0 && <CartAlerts alerts={stockAlerts} />}
       {!!cartContents.length && !stockAlerts.length && (
-        <footer>
-          <h3>Total: $ {orderTotal}</h3>
-          <Link role='link' onClick={closeCart} to='/pay'>
-            Checkout
-          </Link>
-        </footer>
+        <>
+          <footer>
+            <h3>Total: $ {orderTotal}</h3>
+            <Link role='link' onClick={closeCart} to='/pay'>
+              checkout
+            </Link>
+          </footer>
+          <aside>free shipping for orders over $50.00</aside>
+        </>
       )}
     </CartStyles>
   );
