@@ -128,7 +128,7 @@ const CheckoutForm = ({ shippingBoolean, setShippingBoolean, grandTotal }) => {
       },
       body: JSON.stringify({ mutations: adjustQuantityMutations }),
     })
-      .then((response) => console.log('MUTATION RESPONSE', response.json()))
+      // .then((response) => console.log('MUTATION RESPONSE', response.json()))
       .catch((error) => {
         console.error('ERROR ADJUSTING PRODUCT STOCK', error);
         // send error to neighborly that stock could not be adjusted
@@ -178,7 +178,7 @@ const CheckoutForm = ({ shippingBoolean, setShippingBoolean, grandTotal }) => {
       } else {
         // console.log('order successful', parsedResponse);
         //update stock
-        // adjustSanityStock(parsedResponse.orderItems);
+        adjustSanityStock(parsedResponse.orderItems);
         //route to order summary page
         emptyCart();
         resetPage();
@@ -397,7 +397,6 @@ const CheckoutForm = ({ shippingBoolean, setShippingBoolean, grandTotal }) => {
       <fieldset className='FormGroup'>
         <CardField
           onChange={(e) => {
-            console.log(' card change e:', e);
             setStripeError(e.error);
             setCardComplete(e.complete);
           }}

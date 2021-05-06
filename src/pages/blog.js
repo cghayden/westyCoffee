@@ -10,7 +10,7 @@ import GraphQLErrorList from '../components/GraphqlErrorList';
 import BlogPreviewList from '../components/BlogPreviewList';
 
 export default function blogPage({ data, errors }) {
-  console.log('data', data);
+  // console.log('data', data);
   if (errors) {
     return <GraphQLErrorList errors={errors} />;
   }
