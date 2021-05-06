@@ -4,7 +4,6 @@ import { useCart } from './CartContext';
 import TrashIcon from './Icons/TrashIcon';
 import formatMoney from '../utils/formatMoney';
 import CartPageStyles from '../styles/CartPageStyles';
-import calcPoundsAvailable from '../utils/calcPoundsAvailable';
 import calcOrderTotal from '../utils/calcOrderTotal';
 import StripeCheckout from './StripeCheckout';
 import CartAlerts from './CartAlerts';
@@ -12,7 +11,6 @@ import MinusSvg from './Icons/MinusSvg';
 import PlusSvg from './Icons/PlusSvg';
 import compileCurrentStockAndPrice from '../utils/compileCurrentStockAndPriceListing';
 import checkStock from '../utils/checkStock';
-import ShippingTruckIcon from './Icons/ShippingTruckIcon';
 
 const CartContents = styled.div`
   width: 100%;
@@ -33,11 +31,21 @@ function CheckoutPage_CartContents({ availableCoffee }) {
     orderTotal,
     addToCart,
     totalCartPounds,
+    rawShippingCost,
+    rawOrderTotal,
+    // grandTotal,
   } = useCart();
-
-  console.log('orderTotal', orderTotal);
+  const formattedShippingCost = formatMoney(rawShippingCost);
   const currentStockAndPrice = compileCurrentStockAndPrice(availableCoffee);
   const stockAlerts = checkStock(currentStockAndPrice, totalCartPounds);
+  const grandTotal = shippingBoolean
+    ? formatMoney(rawOrderTotal + rawShippingCost)
+    : formatMoney(rawOrderTotal);
+
+  console.log('orderTotal', orderTotal);
+  console.log('rawShippingCost', rawShippingCost);
+  console.log('grandTotal', grandTotal);
+
   return (
     <CartPageStyles className='contentBox'>
       <CartContents>
@@ -57,13 +65,13 @@ function CheckoutPage_CartContents({ availableCoffee }) {
         <footer>
           {shippingBoolean ? (
             <>
-              <p className='shippingLineItem'>Shipping: $10.00</p>
-              <p className='grandTotal'>
-                Total: ${formatMoney(calcOrderTotal(cartContents) + 1000)}
+              <p className='shippingLineItem'>
+                Shipping: {formattedShippingCost}
               </p>
+              <p className='grandTotal'>Total: ${grandTotal}</p>
             </>
           ) : (
-            <p className='grandTotal'>Total: ${orderTotal}</p>
+            <p className='grandTotal'>Total: ${grandTotal}</p>
           )}
           {/* <p>Total: $ {orderTotal}</p> */}
         </footer>
@@ -71,6 +79,7 @@ function CheckoutPage_CartContents({ availableCoffee }) {
       </CartContents>
       {!!cartContents.length && !stockAlerts.length && (
         <StripeCheckout
+          grandTotal={grandTotal}
           shippingBoolean={shippingBoolean}
           setShippingBoolean={setShippingBoolean}
         />

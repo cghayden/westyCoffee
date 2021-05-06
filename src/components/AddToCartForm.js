@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import formatMoney from '../utils/formatMoney';
 import useForm from '../utils/useForm';
 import { useCart } from './CartContext';
 import MinusSvg from './Icons/MinusSvg';
@@ -30,7 +31,14 @@ const FormStyles = styled.form`
     align-items: center;
     margin: 10px 0;
     .input-item-label {
-      padding-right: 1em;
+      padding-right: 10px;
+      font-size: 17px;
+      font-weight: 400;
+    }
+    .radio-item-label {
+      padding-right: 10px;
+      font-size: 16px;
+      font-weight: 300;
     }
     .radioChoices {
       label {
@@ -40,6 +48,9 @@ const FormStyles = styled.form`
         margin-right: 5px;
       }
     }
+  }
+  .sizePrice {
+    margin-left: 1ch;
   }
   p.errorMessage {
     font-size: 13px;
@@ -143,8 +154,8 @@ function AddToCartForm({ coffee }) {
         <div className='input-item'>
           <p className='input-item-label'>Size:</p>
           <div className='radioChoices'>
-            <label htmlFor='size8' className='input-item-label'>
-              <input
+            {/* <label htmlFor='size8' className='input-item-label'> */}
+            {/* <input
                 id='size8'
                 type='radio'
                 name='size'
@@ -153,8 +164,8 @@ function AddToCartForm({ coffee }) {
                 onChange={handleChange}
               />
               8 oz.
-            </label>
-            <label htmlFor='size16' className='input-item-label'>
+            </label> */}
+            <label htmlFor='size16' className='radio-item-label'>
               <input
                 id='size16'
                 type='radio'
@@ -163,7 +174,10 @@ function AddToCartForm({ coffee }) {
                 checked={inputs.size === 'one pound'}
                 onChange={handleChange}
               />
-              16 oz.
+              One Pound
+              <span className='sizePrice'>
+                ${formatMoney(coffee.price)} / lb
+              </span>
             </label>
           </div>
         </div>
@@ -191,6 +205,7 @@ function AddToCartForm({ coffee }) {
             </button>
           </QuantitySelector>
         </div>
+
         <div className='errorDisplay'>
           {error && <p className='errorMessage'>{error}</p>}
         </div>

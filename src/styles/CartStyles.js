@@ -54,6 +54,11 @@ const CartStyles = styled.div`
       padding-top: 1rem;
     }
   }
+  aside {
+    padding-top: 2rem;
+    width: 60%;
+    margin: 0 auto;
+  }
 `;
 
 export default CartStyles;

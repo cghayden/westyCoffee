@@ -84,7 +84,7 @@ function SingleCoffeeTile({ coffee }) {
           <Link className='orderNowLink' to={`/coffee/${coffee.slug.current}`}>
             <CoffeeStatus singleOrigin={coffee.singleOrigin}>
               <p>{coffee.stock} lbs. in stock</p>
-              <p>Order Now!</p>
+              <p>order now!</p>
             </CoffeeStatus>
           </Link>
         ) : (

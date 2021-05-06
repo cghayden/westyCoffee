@@ -76,7 +76,7 @@ const StripeLogoDiv = styled.div`
   background-size: contain;
 `;
 
-const CheckoutForm = ({ shippingBoolean, setShippingBoolean }) => {
+const CheckoutForm = ({ shippingBoolean, setShippingBoolean, grandTotal }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [stripeError, setStripeError] = useState(null);
@@ -274,7 +274,8 @@ const CheckoutForm = ({ shippingBoolean, setShippingBoolean }) => {
           className='mapleSyrup'
         />
       </fieldset>
-      <h3 className='form-heading'>$10 Shipping or Free Pickup</h3>
+      <h4 className='form-heading'>shipping: $10, free for orders over $50</h4>
+      <h4 className='form-heading'>free local pickup</h4>
 
       <fieldset className='FormGroup display-table'>
         <div className='FormRow'>
@@ -423,8 +424,7 @@ const CheckoutForm = ({ shippingBoolean, setShippingBoolean }) => {
         error={stripeError || error}
         disabled={!stripe || !elements || processing || !cardComplete}
       >
-        Pay $
-        {shippingBoolean ? formatMoney(orderTotal * 100 + 1000) : orderTotal}
+        Pay ${grandTotal}
       </SubmitButton>
     </form>
   );
@@ -437,6 +437,7 @@ const stripePromise = loadStripe(process.env.GATSBY_STRIPE_PUBLISHABLE_KEY);
 export default function StripeCheckout({
   shippingBoolean,
   setShippingBoolean,
+  grandTotal,
 }) {
   return (
     <StripeCheckoutStyles>
@@ -445,6 +446,7 @@ export default function StripeCheckout({
         // options={ELEMENTS_OPTIONS}
       >
         <CheckoutForm
+          grandTotal={grandTotal}
           shippingBoolean={shippingBoolean}
           setShippingBoolean={setShippingBoolean}
         />

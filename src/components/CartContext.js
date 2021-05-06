@@ -99,8 +99,12 @@ function CartStateProvider({ children }) {
   function emptyCart() {
     setCartContents([]);
   }
+  const rawOrderTotal = calcOrderTotal(cartContents);
   const orderTotal = formatMoney(calcOrderTotal(cartContents));
+  const rawShippingCost = rawOrderTotal < 5000 ? 1000 : 0;
+  // const grandTotal = formatMoney(rawShippingCost + rawOrderTotal);
   const totalCartPounds = calcTotalPoundsInCart(cartContents);
+
   const gql = String.raw;
 
   async function processOrder(
@@ -162,15 +166,23 @@ function CartStateProvider({ children }) {
         cartItem.size === 'half pound' ? price / 2 : price;
       return { ...cartItem, price, unitPrice: validatedUnitPrice };
     });
+
+    function costWithShipping(cartCopy) {
+      if (calcOrderTotal(cartCopy) < 5000) {
+        return calcOrderTotal(cartCopy) + 1000;
+      }
+      return calcOrderTotal(cartCopy);
+    }
     // send order with valid prices to serverless function
-    const total =
+    const grandTotal =
       shippingDetails.deliveryMethod === 'Shipping'
-        ? calcOrderTotal(cartContents) + 1000
+        ? costWithShipping(cartCopy)
         : calcOrderTotal(cartCopy);
-    console.log('total', total);
+    console.log('verified grandTotal ', grandTotal);
+
     const body = {
       order: cartCopy,
-      total,
+      total: grandTotal,
       name: billingDetails.name,
       email: billingDetails.email,
       phone: billingDetails.phone,
@@ -207,9 +219,13 @@ function CartStateProvider({ children }) {
         emptyCart,
         processOrder,
         orderTotal,
+        rawOrderTotal,
         totalCartPounds,
         shipping,
         setShipping,
+        rawShippingCost,
+        // grandTotal,
+        rawOrderTotal,
       }}
     >
       {children}
