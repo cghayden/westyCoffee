@@ -54,7 +54,6 @@ async function writeOrderToSanity({
       grind: orderItem.grind,
       size: orderItem.size,
       quantity: orderItem.quantity,
-      comments: orderItem.comments,
       _key: nanoid(),
     };
   });
