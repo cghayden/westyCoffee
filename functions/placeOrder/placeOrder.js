@@ -54,6 +54,7 @@ async function writeOrderToSanity({
       grind: orderItem.grind,
       size: orderItem.size,
       quantity: orderItem.quantity,
+      comments: orderItem.comments,
       _key: nanoid(),
     };
   });
@@ -130,6 +131,26 @@ exports.handler = async (event, context) => {
   // x calculate and verify total price - INCOMING FROM CONTEXT processOrder
 
   //create payment with stripe & charge(confirm) here
+  function createStripeDescription(orderItems, body) {
+    const orderDesc = orderItems.map(
+      (orderItem) =>
+        `${orderItem.quantity} ${orderItem.size} bag of ${orderItem.name}, ${orderItem.grind}.  `
+    );
+    const orderString = orderDesc.join(';   ');
+    const shippingString = `Delivery Method: ${body.shippingDetails.deliveryMethod},
+    Pickup Location: ${body.shippingDetails.pickupLocation},
+    Shipping Address1: ${body.shippingDetails.addressLine1},
+    Shipping Address2: ${body.shippingDetails.addressLine2},
+    City: ${body.shippingDetails.city},
+    State: ${body.shippingDetails.state},
+    Zip: ${body.shippingDetails.zip}`;
+
+    return `${orderString};
+      ${shippingString}`;
+  }
+  const stripeDescription = createStripeDescription(body.order, body);
+  console.log('stripeDescription', stripeDescription);
+
   let charge;
   try {
     charge = await stripe.paymentIntents.create({
@@ -137,6 +158,7 @@ exports.handler = async (event, context) => {
       currency: 'USD',
       confirm: true,
       payment_method: body.paymentMethod,
+      description: stripeDescription,
       receipt_email: body.email,
     });
   } catch (err) {
@@ -151,7 +173,7 @@ exports.handler = async (event, context) => {
       }),
     };
   }
-  writeOrderToSanity({
+  await writeOrderToSanity({
     name: body.name,
     email: body.email,
     phone: body.phone,
