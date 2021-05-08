@@ -41,19 +41,19 @@ const GlobalStyles = styled.createGlobalStyle`
     box-sizing: border-box;
   }
   html {
-    height: 100%;
     scrollbar-width: thin;
+    height: -webkit-fill-available;
   }
   #gatsby-focus-wrapper {
     /* background-color: var(--white); */
-    height: 100%;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     width: 100%;
     margin: 0 auto;
   }
   #___gatsby {
-    height: 100%;
+    min-height: 100vh;
   }
   body {
     font-family: 'Hind Siliguri', sans-serif;
@@ -61,6 +61,7 @@ const GlobalStyles = styled.createGlobalStyle`
     display: flex;
     flex-direction: column;
     background: var(--white);
+    min-height: 100vh;
   }
   .alignCenter {
     text-align: center;
@@ -197,6 +198,16 @@ const GlobalStyles = styled.createGlobalStyle`
   }
   .whiteText {
     color: var(--white);
+  }
+  .visuallyHidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
   }
   .hideOnDesktop {
     @media screen and (min-width: 768px) {
