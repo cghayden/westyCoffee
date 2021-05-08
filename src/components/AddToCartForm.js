@@ -137,7 +137,9 @@ function AddToCartForm({ coffee }) {
               Select ...
             </option>
             <option value='whole bean'>Whole Bean</option>
-            <option value='extra coarse ground'>
+            <option value='whole bean'>Ground</option>
+
+            {/* <option value='extra coarse ground'>
               Extra Coarse / Cold Brew
             </option>
             <option value='coarse ground'>Coarse / French Press</option>
@@ -148,7 +150,7 @@ function AddToCartForm({ coffee }) {
             <option value='medium fine ground'>
               Medium-fine / Cone Drip, Pour Over, Aeropress
             </option>
-            <option value='fine ground'>Fine / Espresso</option>
+            <option value='fine ground'>Fine / Espresso</option> */}
           </select>
         </div>
         <div className='input-item'>

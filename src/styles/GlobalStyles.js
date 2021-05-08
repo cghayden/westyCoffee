@@ -60,7 +60,6 @@ const GlobalStyles = styled.createGlobalStyle`
     font-weight: 300;
     display: flex;
     flex-direction: column;
-    height: 100%;
     background: var(--white);
   }
   .alignCenter {

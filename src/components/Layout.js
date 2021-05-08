@@ -12,7 +12,7 @@ import darkWood11 from '../assets/images/darkWood11.jpeg';
 const LayoutWrapper = styled.div`
   flex: 1 0 auto;
   position: relative;
-  /* height: 100%; */
+  height: 100%;
   &:before {
     content: ' ';
     display: block;
