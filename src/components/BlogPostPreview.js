@@ -44,7 +44,11 @@ function BlogPostPreview(props) {
     <Link to={getBlogUrl(props.slug.current)}>
       <div>
         {props.mainImage && props.mainImage.asset && (
-          <GatsbyImage image={image} alt={props.mainImage.alt} />
+          <GatsbyImage
+            layout='constrained'
+            image={image}
+            alt={props.mainImage.alt}
+          />
         )}
       </div>
       <BlogPreviewText>

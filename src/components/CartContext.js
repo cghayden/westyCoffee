@@ -2,7 +2,6 @@ import React, { createContext, useContext, useState } from 'react';
 import formatMoney from '../utils/formatMoney';
 import calcOrderTotal from '../utils/calcOrderTotal';
 import calcTotalPoundsInCart from '../utils/calcTotalPoundsInCart';
-import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee';
 const CartContext = createContext();
 const CartProvider = CartContext.Provider;
 
@@ -53,7 +52,7 @@ function CartStateProvider({ children }) {
       (cartItem) =>
         cartItem.name === name &&
         cartItem.grind === grind &&
-        cartItem.size == size
+        cartItem.size === size
     );
     //item of same size, grind and type IS NOT in the cart already
     if (matchingCartItemIndex === -1) {
@@ -111,6 +110,7 @@ function CartStateProvider({ children }) {
     billingDetails,
     shippingDetails,
     paymentMethod,
+    customerComments,
     botBait
   ) {
     // const result={error:false}
@@ -181,6 +181,7 @@ function CartStateProvider({ children }) {
 
     const body = {
       order: cartCopy,
+      customerComments,
       total: grandTotal,
       name: billingDetails.name,
       email: billingDetails.email,

@@ -174,6 +174,7 @@ function CartItem({ cartItem }) {
         <span>= </span>
         <span>${totalCost}</span>
       </p>
+      {/* <p>Comments: {cartItem.comments}</p> */}
     </CartItemLi>
   );
 }

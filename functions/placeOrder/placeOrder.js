@@ -42,11 +42,13 @@ async function writeOrderToSanity({
   stripe_id,
   deliveryMethod,
   pickupLocation,
+  shippingName,
   shippingAddressLine1,
   shippingAddressLine2,
   shippingCity,
   shippingState,
   shippingZip,
+  customerComments,
 }) {
   const configuredOrderItems = orderItems.map((orderItem) => {
     return {
@@ -71,11 +73,13 @@ async function writeOrderToSanity({
     stripe_id,
     deliveryMethod,
     pickupLocation,
+    shippingName,
     shippingAddressLine1,
     shippingAddressLine2,
     shippingCity,
     shippingState,
     shippingZip,
+    customerComments,
   };
   await SanityOrders.create(doc)
     .then((res) => {
@@ -138,17 +142,19 @@ exports.handler = async (event, context) => {
     const orderString = orderDesc.join(';   ');
     const shippingString = `Delivery Method: ${body.shippingDetails.deliveryMethod},
     Pickup Location: ${body.shippingDetails.pickupLocation},
+    Ship To: ${body.shippingDetails.shippingName},
     Shipping Address1: ${body.shippingDetails.addressLine1},
     Shipping Address2: ${body.shippingDetails.addressLine2},
     City: ${body.shippingDetails.city},
     State: ${body.shippingDetails.state},
-    Zip: ${body.shippingDetails.zip}`;
+    Zip: ${body.shippingDetails.zip},
+    Customer Comments: ${body.customerComments}`;
 
     return `${orderString};
       ${shippingString}`;
   }
   const stripeDescription = createStripeDescription(body.order, body);
-  console.log('stripeDescription', stripeDescription);
+  // console.log('stripeDescription', stripeDescription);
 
   let charge;
   try {
@@ -179,9 +185,11 @@ exports.handler = async (event, context) => {
     number: charge.created,
     total: charge.amount,
     orderItems: body.order,
+    customerComments: body.customerComments,
     stripe_id: charge.id,
     deliveryMethod: body.shippingDetails.deliveryMethod,
     pickupLocation: body.shippingDetails.pickupLocation,
+    shippingName: body.shippingDetails.shippingName,
     shippingAddressLine1: body.shippingDetails.addressLine1,
     shippingAddressLine2: body.shippingDetails.addressLine2,
     shippingCity: body.shippingDetails.city,
@@ -195,6 +203,7 @@ exports.handler = async (event, context) => {
     body: JSON.stringify({
       message: 'Order Successfully charged',
       orderItems: body.order,
+      customerComments: body.customerComments,
       charge,
       shippingDetails: body.shippingDetails,
     }),

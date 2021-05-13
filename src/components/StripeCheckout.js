@@ -24,11 +24,16 @@ const RadioLabel = styled.label`
   cursor: pointer;
   vertical-align: middle;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   color: ${(props) => (props.active ? 'darkblue' : 'gray')};
   font-size: 1rem;
   span {
+    margin-top: 5px;
     transition: all 0.2s ease-in-out;
+  }
+  .subLabel {
+    font-size: 0.8rem;
   }
 `;
 const RadioInput = styled.input`
@@ -76,7 +81,12 @@ const StripeLogoDiv = styled.div`
   background-size: contain;
 `;
 
-const CheckoutForm = ({ shippingBoolean, setShippingBoolean, grandTotal }) => {
+const CheckoutForm = ({
+  shippingBoolean,
+  setShippingBoolean,
+  grandTotal,
+  customerComments,
+}) => {
   const stripe = useStripe();
   const elements = useElements();
   const [stripeError, setStripeError] = useState(null);
@@ -92,6 +102,7 @@ const CheckoutForm = ({ shippingBoolean, setShippingBoolean, grandTotal }) => {
   const [shippingDetails, setShippingDetails] = useState({
     deliveryMethod: '',
     pickupLocation: '',
+    shippingName: '',
     addressLine1: '',
     addressLine2: '',
     city: '',
@@ -100,13 +111,6 @@ const CheckoutForm = ({ shippingBoolean, setShippingBoolean, grandTotal }) => {
   });
   const [botBait, setBotBait] = useState('');
   const { orderTotal, processOrder, emptyCart, setShipping } = useCart();
-  // const {
-  //   error,
-  //   loading,
-  //   message,
-  //   submitOrder,
-  //   orderDeets,
-  // } = useProcessOrder();
 
   async function adjustSanityStock(orderItems) {
     const adjustQuantityMutations = orderItems.map((orderItem) => ({
@@ -165,10 +169,11 @@ const CheckoutForm = ({ shippingBoolean, setShippingBoolean, grandTotal }) => {
         billingDetails,
         shippingDetails,
         paymentMethod,
+        customerComments,
         botBait
       );
       const parsedResponse = await orderRes.json();
-      // console.log('parsedResponse', parsedResponse);
+      console.log('parsedResponse', parsedResponse);
       // console.log('checkout orderRes', orderRes);
       // console.log('checkout orderRes status', orderRes.status);
       if (orderRes.status >= 400 && orderRes.status < 600) {
@@ -178,7 +183,7 @@ const CheckoutForm = ({ shippingBoolean, setShippingBoolean, grandTotal }) => {
       } else {
         // console.log('order successful', parsedResponse);
         //update stock
-        adjustSanityStock(parsedResponse.orderItems);
+        // adjustSanityStock(parsedResponse.orderItems);
         //route to order summary page
         emptyCart();
         resetPage();
@@ -217,68 +222,15 @@ const CheckoutForm = ({ shippingBoolean, setShippingBoolean, grandTotal }) => {
     </div>
   ) : (
     <form className='Form' onSubmit={handleSubmit}>
-      <PaymentDetailsHeading>payment details</PaymentDetailsHeading>
       {error && (
         <ErrorStyle>
           <p>!! Your payment failed: </p>
           <p>{error}</p>
         </ErrorStyle>
       )}
-      <h3 className='form-heading'>Contact</h3>
-
-      <fieldset className='FormGroup'>
-        <Field
-          label={!billingDetails.name.length ? '' : 'Name'}
-          id='name'
-          type='text'
-          placeholder={!billingDetails.name.length ? 'Name' : null}
-          required
-          autoComplete='name'
-          value={billingDetails.name}
-          onChange={(e) => {
-            setBillingDetails({ ...billingDetails, name: e.target.value });
-          }}
-        />
-        <Field
-          label={!billingDetails.email.length ? '' : 'Email'}
-          id='email'
-          type='email'
-          placeholder={!billingDetails.email.length ? 'Email' : null}
-          required
-          autoComplete='email'
-          value={billingDetails.email}
-          onChange={(e) => {
-            setBillingDetails({ ...billingDetails, email: e.target.value });
-          }}
-        />
-        <Field
-          label={!billingDetails.phone.length ? '' : 'Phone'}
-          id='phone'
-          type='tel'
-          placeholder={!billingDetails.phone.length ? 'Phone' : null}
-          required
-          autoComplete='tel'
-          value={billingDetails.phone}
-          onChange={(e) => {
-            setBillingDetails({ ...billingDetails, phone: e.target.value });
-          }}
-        />
-        <input
-          type='mapleSyrup'
-          name='mapleSyrup'
-          id='mapleSyrup'
-          value={billingDetails.mapleSyrup}
-          onChange={(e) => {
-            setBotBait(e.target.value);
-          }}
-          className='mapleSyrup'
-        />
-      </fieldset>
-      <h4 className='form-heading'>shipping: $10, free for orders over $50</h4>
-      <h4 className='form-heading'>free local pickup</h4>
 
       <fieldset className='FormGroup display-table'>
-        <div className='FormRow'>
+        <div className='FormRow radioStack'>
           <div className='radio-wrapper FormRowInput'>
             <div className='radio__input'>
               <RadioInput
@@ -304,9 +256,9 @@ const CheckoutForm = ({ shippingBoolean, setShippingBoolean, grandTotal }) => {
             >
               <span class='radio__label'>
                 <ShippingTruckIcon w='18' h='18' />
-                Ship It
-                {/* <span>$10</span> */}
+                $10 shipping
               </span>
+              <span className='subLabel'>free on orders over $50</span>
             </RadioLabel>
           </div>
           <div className='radio-wrapper FormRowInput'>
@@ -334,14 +286,12 @@ const CheckoutForm = ({ shippingBoolean, setShippingBoolean, grandTotal }) => {
             >
               <span class='radio__label'>
                 <StoreFrontIcon />
-                {/* <svg aria-hidden="true" focusable="false" class="icon-svg icon-svg--size-18 icon-svg--inline-before"> <use xlink:href="#ship"></use> </svg> */}
-                Pickup
+                free pickup
               </span>
+              {/* <span>free</span> */}
             </RadioLabel>
           </div>
         </div>
-        {/* <p>$10 / order</p> */}
-        {/* <span>($10)</span> */}
       </fieldset>
 
       {/* ****** Shipping or delivery details ********* */}
@@ -349,7 +299,7 @@ const CheckoutForm = ({ shippingBoolean, setShippingBoolean, grandTotal }) => {
         {shippingDetails.deliveryMethod && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: '280px' }}
+            animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.5 }}
             style={{ overflow: 'hidden' }}
@@ -362,7 +312,7 @@ const CheckoutForm = ({ shippingBoolean, setShippingBoolean, grandTotal }) => {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <h3 className='form-heading'>Shipping Address</h3>
+                <h3 className='form-heading'>ship to:</h3>
                 <fieldset className='FormGroup'>
                   <ShippingAddressInput
                     shippingDetails={shippingDetails}
@@ -391,9 +341,55 @@ const CheckoutForm = ({ shippingBoolean, setShippingBoolean, grandTotal }) => {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <h3 className='form-heading'>Payment</h3>
-
+      <h3 className='form-heading'>payment / contact details</h3>
+      <fieldset className='FormGroup'>
+        <Field
+          label={!billingDetails.name.length ? '' : 'name'}
+          id='name'
+          type='text'
+          placeholder={!billingDetails.name.length ? 'name' : null}
+          required
+          autoComplete='name'
+          value={billingDetails.name}
+          onChange={(e) => {
+            setBillingDetails({ ...billingDetails, name: e.target.value });
+          }}
+        />
+        <Field
+          label={!billingDetails.email.length ? '' : 'email'}
+          id='email'
+          type='email'
+          placeholder={!billingDetails.email.length ? 'email' : null}
+          required
+          autoComplete='email'
+          value={billingDetails.email}
+          onChange={(e) => {
+            setBillingDetails({ ...billingDetails, email: e.target.value });
+          }}
+        />
+        <Field
+          label={!billingDetails.phone.length ? '' : 'phone'}
+          id='phone'
+          type='tel'
+          placeholder={!billingDetails.phone.length ? 'phone' : null}
+          required
+          autoComplete='tel'
+          value={billingDetails.phone}
+          onChange={(e) => {
+            setBillingDetails({ ...billingDetails, phone: e.target.value });
+          }}
+        />
+        <input
+          type='mapleSyrup'
+          name='mapleSyrup'
+          id='mapleSyrup'
+          value={billingDetails.mapleSyrup}
+          onChange={(e) => {
+            setBotBait(e.target.value);
+          }}
+          className='mapleSyrup'
+        />
+      </fieldset>
       <fieldset className='FormGroup'>
         <CardField
           onChange={(e) => {
@@ -437,6 +433,7 @@ export default function StripeCheckout({
   shippingBoolean,
   setShippingBoolean,
   grandTotal,
+  customerComments,
 }) {
   return (
     <StripeCheckoutStyles>
@@ -448,6 +445,7 @@ export default function StripeCheckout({
           grandTotal={grandTotal}
           shippingBoolean={shippingBoolean}
           setShippingBoolean={setShippingBoolean}
+          customerComments={customerComments}
         />
       </Elements>
     </StripeCheckoutStyles>
@@ -458,10 +456,25 @@ function ShippingAddressInput({ shippingDetails, setShippingDetails }) {
   return (
     <>
       <Field
-        label={!shippingDetails.addressLine1.length ? '' : 'Address'}
+        label={!shippingDetails.shippingName.length ? '' : 'name'}
+        id='shippingName'
+        type='text'
+        placeholder={!shippingDetails.shippingName.length ? 'name' : null}
+        required={shippingDetails.deliveryMethod === 'Shipping'}
+        autoComplete='name'
+        value={shippingDetails.shippingName}
+        onChange={(e) => {
+          setShippingDetails({
+            ...shippingDetails,
+            shippingName: e.target.value,
+          });
+        }}
+      />
+      <Field
+        label={!shippingDetails.addressLine1.length ? '' : 'address'}
         id='addressLine1'
         type='text'
-        placeholder={!shippingDetails.addressLine1.length ? 'Address' : null}
+        placeholder={!shippingDetails.addressLine1.length ? 'address' : null}
         required={shippingDetails.deliveryMethod === 'Shipping'}
         autoComplete='address-line1'
         value={shippingDetails.addressLine1}
@@ -476,7 +489,7 @@ function ShippingAddressInput({ shippingDetails, setShippingDetails }) {
         label={!shippingDetails.addressLine2.length ? '' : ''}
         id='addressLine2'
         type='text'
-        placeholder={!shippingDetails.addressLine2.length ? 'Apt, etc.' : null}
+        placeholder={!shippingDetails.addressLine2.length ? 'apt, etc.' : null}
         autoComplete='address-line2'
         value={shippingDetails.addressLine2}
         onChange={(e) => {
@@ -487,10 +500,10 @@ function ShippingAddressInput({ shippingDetails, setShippingDetails }) {
         }}
       />
       <Field
-        label={!shippingDetails.city.length ? '' : 'City'}
+        label={!shippingDetails.city.length ? '' : 'city'}
         id='city'
         type='city'
-        placeholder={!shippingDetails.city.length ? 'City' : null}
+        placeholder={!shippingDetails.city.length ? 'city' : null}
         required={shippingDetails.deliveryMethod === 'Shipping'}
         autoComplete='address-level2'
         value={shippingDetails.city}
@@ -499,10 +512,10 @@ function ShippingAddressInput({ shippingDetails, setShippingDetails }) {
         }}
       />
       <Field
-        label={!shippingDetails.state.length ? '' : 'State'}
+        label={!shippingDetails.state.length ? '' : 'state'}
         id='state'
         type='state'
-        placeholder={!shippingDetails.state.length ? 'State' : null}
+        placeholder={!shippingDetails.state.length ? 'state' : null}
         required={shippingDetails.deliveryMethod === 'Shipping'}
         autoComplete='address-level1'
         value={shippingDetails.state}
@@ -511,11 +524,11 @@ function ShippingAddressInput({ shippingDetails, setShippingDetails }) {
         }}
       />
       <Field
-        label={!shippingDetails.zip.length ? '' : 'Zip'}
+        label={!shippingDetails.zip.length ? '' : 'zip'}
         id='zipCode'
         type='text'
         placeholder='00000'
-        placeholder={!shippingDetails.zip.length ? 'Zip Code' : null}
+        placeholder={!shippingDetails.zip.length ? 'zip' : null}
         autoComplete='postal-code'
         value={shippingDetails.zip}
         onChange={(e) => {
@@ -552,9 +565,9 @@ function PickupChoiceInput({ shippingDetails, setShippingDetails }) {
             for='checkout_id_pickup-daniels'
           >
             <div class='radio__label pickupAddress'>
-              <p className='pickup-locationName'>Neighborly Coffee</p>
-              <p>36 Lincoln Rd.</p>
-              <p>Sharon, MA 02067</p>
+              <p className='pickup-locationName'>neighborly coffee</p>
+              <p>36 lincoln rd.</p>
+              <p>sharon, ma 02067</p>
             </div>
           </RadioLabel>
         </div>
@@ -584,10 +597,10 @@ function PickupChoiceInput({ shippingDetails, setShippingDetails }) {
           >
             <div class='radio__label'>
               <div class='radio__label pickupAddress'>
-                <p className='pickup-locationName'>Edge Studio</p>
-                <p>905 Turnpike St,</p>
-                <p>Suite. F</p>
-                <p>Canton, MA 02021</p>
+                <p className='pickup-locationName'>edge studio</p>
+                <p>905 turnpike st,</p>
+                <p>suite. f</p>
+                <p>canton, ma 02021</p>
               </div>
             </div>
           </RadioLabel>
