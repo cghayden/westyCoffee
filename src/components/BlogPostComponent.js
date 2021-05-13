@@ -1,5 +1,5 @@
 import React from 'react';
-import { GatsbyImage, getImage } from 'gatsby-plugin-image';
+import { GatsbyImage } from 'gatsby-plugin-image';
 import styled from 'styled-components';
 import PortableText from './PortableText';
 import ShareLinks from './ShareLinks';
@@ -47,10 +47,6 @@ const ImageDiv = styled.div`
   margin: 0 auto;
 `;
 const BlogBody = styled.article`
-  /* p {
-    margin: 10px;
-    line-height: 1.4;
-  } */
   a {
     margin: 0;
     padding: 0;

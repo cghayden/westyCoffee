@@ -103,6 +103,7 @@ const DeliveryMethodDiv = styled.div`
 function ShippingDetailsReview({ shippingDetails }) {
   return (
     <>
+      <p>{shippingDetails?.shippingName}</p>
       <p>{shippingDetails?.addressLine1}</p>
       <p>{shippingDetails?.addressLine2}</p>
       <p>

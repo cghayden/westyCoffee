@@ -6,9 +6,9 @@ export default {
   siteMetadata: {
     title: 'Neighborly Coffee',
     siteUrl: 'https://www.neighborlycoffee.com',
-    description: `Love your neighbor's micro coffee roastery`,
+    description: `Local coffee small batch roaster`,
     // twitter: '@handleHere',
-    // instagram: '@handleHere',
+    instagram: 'https://www.instagram.com/neighborlycoffee',
   },
   plugins: [
     {

@@ -17,14 +17,10 @@ const CartContents = styled.div`
   min-width: 310px;
   max-width: 550px;
 `;
-const ShippingLineItem = styled.p`
-  color: darkgreen;
-  text-align: right;
-  margin-right: 0.5rem;
-`;
+
 const CommentsInput = styled.div`
   width: 90%;
-  margin: 0 auto;
+  margin: -16px auto 0;
   label {
     display: block;
     margin: 4px;

@@ -4,7 +4,7 @@ const StripeCheckoutStyles = styled.div`
   width: 100%;
   max-width: 500px;
   position: relative;
-  margin: 1rem auto;
+  margin: 0 auto 1rem auto;
   font-size: 14px;
 
   input,
@@ -18,23 +18,6 @@ const StripeCheckoutStyles = styled.div`
   input[type='radio'] {
     border: 1px solid gray;
   }
-
-  /* html {
-    background-color: #6772e5;
-    font-size: 16px;
-    font-family: Roboto, Open Sans, Segoe UI, sans-serif;
-    font-weight: 500;
-    font-style: normal;
-    text-rendering: optimizeLegibility;
-    height: 100%;
-  } */
-
-  /* #root {
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  } */
 
   @keyframes fade {
     from {
@@ -71,11 +54,15 @@ const StripeCheckoutStyles = styled.div`
     margin-left: 15px;
     border-top: 1px solid #819efc;
   }
+  .FormRow.radioStack {
+    flex-direction: column;
+  }
   .FormRow:after,
   .FormRow:before {
     content: '';
     display: table;
   }
+
   .FormRow:first-child {
     border-top: none;
   }
@@ -92,7 +79,8 @@ const StripeCheckoutStyles = styled.div`
   .checkbox-wrapper {
     zoom: 1;
     display: flex;
-    /* margin-bottom: 1em; */
+    flex-wrap: nowrap;
+    align-items: center;
   }
 
   .radio-wrapper:last-child,
@@ -118,9 +106,10 @@ const StripeCheckoutStyles = styled.div`
   .display-table .radio__label,
   .display-table .checkbox__label {
     /* display: table-cell; */
-    width: 100%;
+    /* width: 100%; */
     display: flex;
     align-items: center;
+    margin-right: 16px;
   }
   .display-table .radio__label__primary:only-child {
     display: block;
