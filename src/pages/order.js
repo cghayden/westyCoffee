@@ -14,6 +14,7 @@ const OrderPageStyles = styled(CartPageStyles)`
     border-top: 2px solid black;
     color: darkred;
     text-align: right;
+    margin-bottom: 1rem;
     p {
       margin-right: 0.5rem;
       font-size: 1.1rem;
@@ -28,7 +29,7 @@ export default function orderPage({ location }) {
   // console.log('location', location.state);
   const [orderItems, setOrderItems] = useState([]);
   const [charge, setCharge] = useState([]);
-  const [shippingDetails, setShippingDetails] = useState([]);
+  const [shippingDetails, setShippingDetails] = useState({});
   useEffect(() => {
     if (location?.state) {
       setOrderItems(location.state.orderItems);
@@ -49,7 +50,7 @@ export default function orderPage({ location }) {
           <p>
             We will text and/or email you when your order
             {shippingDetails.deliveryMethod === 'Pickup'
-              ? 'is ready for pickup'
+              ? ' is ready for pickup'
               : ' ships'}
           </p>
           <p>Check your email for a receipt of your order</p>
@@ -73,8 +74,80 @@ export default function orderPage({ location }) {
             )}
             <p>Total Amount Charged: ${formatMoney(charge.amount)}</p>
           </div>
+
+          <DeliveryMethodDiv>
+            {shippingDetails.deliveryMethod === 'Pickup' ? (
+              <>
+                <h4>picking up at</h4>
+                <PickupDetailsReview shippingDetails={shippingDetails} />
+              </>
+            ) : (
+              <>
+                <h4>shipping to:</h4>
+                <ShippingDetailsReview shippingDetails={shippingDetails} />
+              </>
+            )}
+          </DeliveryMethodDiv>
         </OrderPageStyles>
       </main>
     </CheckoutPageWrapper>
   );
+}
+
+const DeliveryMethodDiv = styled.div`
+  h4 {
+    margin-bottom: 0.5rem;
+  }
+`;
+
+function ShippingDetailsReview({ shippingDetails }) {
+  return (
+    <>
+      <p>{shippingDetails?.addressLine1}</p>
+      <p>{shippingDetails?.addressLine2}</p>
+      <p>
+        <span>{shippingDetails?.city}</span>,{' '}
+        <span>{shippingDetails?.state}</span>{' '}
+        <span>{shippingDetails?.zip}</span>
+      </p>
+    </>
+  );
+}
+
+const PickupAddressStyles = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 2rem;
+  p {
+    margin: 0;
+    font-size: 14px;
+  }
+  .pickup-locationName {
+    font-size: 17px;
+  }
+`;
+
+function PickupDetailsReview({ shippingDetails }) {
+  if (shippingDetails.pickupLocation === 'Edge') {
+    return (
+      <PickupAddressStyles>
+        <p className='pickup-locationName'>Neighborly Coffee</p>
+        <p>36 Lincoln Rd.</p>
+        <p>Sharon, MA 02067</p>
+      </PickupAddressStyles>
+    );
+  }
+
+  if (shippingDetails.pickupLocation === 'Daniels') {
+    return (
+      <PickupAddressStyles>
+        <p className='pickup-locationName'>Edge Studio</p>
+        <p>905 Turnpike St,</p>
+        <p>Suite. F</p>
+        <p>Canton, MA 02021</p>
+      </PickupAddressStyles>
+    );
+  }
 }

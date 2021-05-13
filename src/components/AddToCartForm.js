@@ -49,6 +49,10 @@ const FormStyles = styled.form`
       }
     }
   }
+  #comments {
+    display: flex;
+    flex-direction: column;
+  }
   .sizePrice {
     margin-left: 1ch;
   }
@@ -101,7 +105,7 @@ function AddToCartForm({ coffee }) {
       return;
     }
     if (totalCartPounds[coffee.name] + poundsToAdd > coffee.stock) {
-      setError('There is not sufficient quantity available in stock');
+      setError('There is not sufficient quantity available');
       return;
     }
     addToCart({
@@ -110,6 +114,7 @@ function AddToCartForm({ coffee }) {
       grind: inputs.grind,
       unitPrice: inputs.size === 'half pound' ? coffee.price / 2 : coffee.price,
       size: inputs.size,
+      // comments: inputs.comments,
       _ref: coffee._id,
     });
     openCart();
@@ -119,7 +124,7 @@ function AddToCartForm({ coffee }) {
       <fieldset>
         <div className='input-item'>
           <label htmlFor='grind' className='input-item-label'>
-            Grind:
+            grind:
           </label>
           <select
             style={{ maxWidth: '200px' }}
@@ -137,24 +142,11 @@ function AddToCartForm({ coffee }) {
               Select ...
             </option>
             <option value='whole bean'>Whole Bean</option>
-            <option value='whole bean'>Ground</option>
-
-            {/* <option value='extra coarse ground'>
-              Extra Coarse / Cold Brew
-            </option>
-            <option value='coarse ground'>Coarse / French Press</option>
-            <option value='medium course ground'>Medium-course / Chemex</option>
-            <option value='medium  ground'>
-              Medium / Flat Drip, Pour Over
-            </option>
-            <option value='medium fine ground'>
-              Medium-fine / Cone Drip, Pour Over, Aeropress
-            </option>
-            <option value='fine ground'>Fine / Espresso</option> */}
+            <option value='ground'>Ground</option>
           </select>
         </div>
         <div className='input-item'>
-          <p className='input-item-label'>Size:</p>
+          <p className='input-item-label'>size:</p>
           <div className='radioChoices'>
             {/* <label htmlFor='size8' className='input-item-label'> */}
             {/* <input
@@ -184,7 +176,7 @@ function AddToCartForm({ coffee }) {
           </div>
         </div>
         <div className='input-item'>
-          <label className='input-item-label'>Quantity:</label>
+          <label className='input-item-label'>quantity:</label>
           <QuantitySelector>
             <button
               type='button'
@@ -207,7 +199,19 @@ function AddToCartForm({ coffee }) {
             </button>
           </QuantitySelector>
         </div>
-
+        {/* <div className='input-item' id='comments'>
+          <label className='visuallyHidden' for='comments'>
+            comments:
+          </label>
+          <textarea
+            placeholder='comments'
+            id='comments'
+            name='comments'
+            rows='3'
+            cols='26'
+            onChange={handleChange}
+          ></textarea>
+        </div> */}
         <div className='errorDisplay'>
           {error && <p className='errorMessage'>{error}</p>}
         </div>

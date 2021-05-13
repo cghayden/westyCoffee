@@ -76,7 +76,12 @@ const StripeLogoDiv = styled.div`
   background-size: contain;
 `;
 
-const CheckoutForm = ({ shippingBoolean, setShippingBoolean, grandTotal }) => {
+const CheckoutForm = ({
+  shippingBoolean,
+  setShippingBoolean,
+  grandTotal,
+  customerComments,
+}) => {
   const stripe = useStripe();
   const elements = useElements();
   const [stripeError, setStripeError] = useState(null);
@@ -100,13 +105,6 @@ const CheckoutForm = ({ shippingBoolean, setShippingBoolean, grandTotal }) => {
   });
   const [botBait, setBotBait] = useState('');
   const { orderTotal, processOrder, emptyCart, setShipping } = useCart();
-  // const {
-  //   error,
-  //   loading,
-  //   message,
-  //   submitOrder,
-  //   orderDeets,
-  // } = useProcessOrder();
 
   async function adjustSanityStock(orderItems) {
     const adjustQuantityMutations = orderItems.map((orderItem) => ({
@@ -165,10 +163,11 @@ const CheckoutForm = ({ shippingBoolean, setShippingBoolean, grandTotal }) => {
         billingDetails,
         shippingDetails,
         paymentMethod,
+        customerComments,
         botBait
       );
       const parsedResponse = await orderRes.json();
-      // console.log('parsedResponse', parsedResponse);
+      console.log('parsedResponse', parsedResponse);
       // console.log('checkout orderRes', orderRes);
       // console.log('checkout orderRes status', orderRes.status);
       if (orderRes.status >= 400 && orderRes.status < 600) {
@@ -178,7 +177,7 @@ const CheckoutForm = ({ shippingBoolean, setShippingBoolean, grandTotal }) => {
       } else {
         // console.log('order successful', parsedResponse);
         //update stock
-        adjustSanityStock(parsedResponse.orderItems);
+        // adjustSanityStock(parsedResponse.orderItems);
         //route to order summary page
         emptyCart();
         resetPage();
@@ -437,6 +436,7 @@ export default function StripeCheckout({
   shippingBoolean,
   setShippingBoolean,
   grandTotal,
+  customerComments,
 }) {
   return (
     <StripeCheckoutStyles>
@@ -448,6 +448,7 @@ export default function StripeCheckout({
           grandTotal={grandTotal}
           shippingBoolean={shippingBoolean}
           setShippingBoolean={setShippingBoolean}
+          customerComments={customerComments}
         />
       </Elements>
     </StripeCheckoutStyles>

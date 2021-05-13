@@ -4,7 +4,7 @@ import { useCart } from './CartContext';
 import TrashIcon from './Icons/TrashIcon';
 import formatMoney from '../utils/formatMoney';
 import CartPageStyles from '../styles/CartPageStyles';
-import calcOrderTotal from '../utils/calcOrderTotal';
+import useForm from '../utils/useForm';
 import StripeCheckout from './StripeCheckout';
 import CartAlerts from './CartAlerts';
 import MinusSvg from './Icons/MinusSvg';
@@ -22,19 +22,34 @@ const ShippingLineItem = styled.p`
   text-align: right;
   margin-right: 0.5rem;
 `;
+const CommentsInput = styled.div`
+  width: 90%;
+  margin: 0 auto;
+  label {
+    display: block;
+    margin: 4px;
+  }
+  textarea {
+    width: 100%;
+  }
+`;
+
+const initialValues = {
+  customerComments: '',
+};
 
 function CheckoutPage_CartContents({ availableCoffee }) {
   const [shippingBoolean, setShippingBoolean] = useState(false);
   const {
     cartContents,
     removeFromCart,
-    orderTotal,
     addToCart,
     totalCartPounds,
     rawShippingCost,
     rawOrderTotal,
     // grandTotal,
   } = useCart();
+  const { inputs, handleChange, resetForm, clearForm } = useForm(initialValues);
   const formattedShippingCost = formatMoney(rawShippingCost);
   const currentStockAndPrice = compileCurrentStockAndPrice(availableCoffee);
   const stockAlerts = checkStock(currentStockAndPrice, totalCartPounds);
@@ -73,16 +88,29 @@ function CheckoutPage_CartContents({ availableCoffee }) {
           ) : (
             <p className='grandTotal'>Total: ${grandTotal}</p>
           )}
-          {/* <p>Total: $ {orderTotal}</p> */}
         </footer>
         {stockAlerts.length > 0 && <CartAlerts alerts={stockAlerts} />}
       </CartContents>
+
       {!!cartContents.length && !stockAlerts.length && (
-        <StripeCheckout
-          grandTotal={grandTotal}
-          shippingBoolean={shippingBoolean}
-          setShippingBoolean={setShippingBoolean}
-        />
+        <>
+          <CommentsInput className='input-item' id='customerComments'>
+            <label for='customerComments'>comments:</label>
+            <textarea
+              placeholder='comments'
+              id='customerComments'
+              name='customerComments'
+              rows='3'
+              onChange={handleChange}
+            ></textarea>
+          </CommentsInput>
+          <StripeCheckout
+            customerComments={inputs.customerComments}
+            grandTotal={grandTotal}
+            shippingBoolean={shippingBoolean}
+            setShippingBoolean={setShippingBoolean}
+          />
+        </>
       )}
     </CartPageStyles>
   );
