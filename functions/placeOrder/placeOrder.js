@@ -165,6 +165,16 @@ exports.handler = async (event, context) => {
       payment_method: body.paymentMethod,
       description: stripeDescription,
       receipt_email: body.email,
+      shipping: {
+        name: body.shippingDetails.shippingName,
+        address: {
+          line1: body.shippingDetails.addressLine1,
+          line2: body.shippingDetails.addressLine2,
+          city: body.shippingDetails.city,
+          state: body.shippingDetails.state,
+          postal_code: body.shippingDetails.zip,
+        },
+      },
     });
   } catch (err) {
     console.error('CHARGE ERR', err);
