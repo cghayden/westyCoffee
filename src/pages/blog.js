@@ -40,12 +40,14 @@ export const query = graphql`
           id
           publishedAt
           mainImage {
+            alt
             asset {
-              gatsbyImageData(
-                width: 300
-                placeholder: BLURRED
-                formats: [AUTO, WEBP, AVIF]
-              )
+              gatsbyImageData(fit: FILLMAX, placeholder: DOMINANT_COLOR)
+              #   fluid(maxWidth: 600) {
+              #     base64
+              #     srcWebp
+              #     srcSetWebp
+              #   }
             }
           }
           title

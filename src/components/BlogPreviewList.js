@@ -11,19 +11,25 @@ const BlogPreviewUlStyles = styled.ul`
   margin: 0 auto;
   width: 95%;
   max-width: 800px;
+  li {
+    /* height: 30vh; */
+    overflow: hidden;
+  }
   a {
+    height: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: 50% 50%;
+    place-items: center;
     grid-gap: 10px;
     background: white;
   }
 `;
 
 export default function BlogPreviewList(props) {
-  // console.log('preview List Props', props);
+  console.log('preview List Props', props);
   return (
-    <div>
-      {props.title && <h2>{props.title}</h2>}
+    <div className='blogPreviewWrapper'>
+      {/* {props.title && <h2>{props.title}</h2>} */}
       <BlogPreviewUlStyles>
         {props.nodes &&
           props.nodes.map((node) => (

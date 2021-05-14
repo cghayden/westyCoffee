@@ -4,12 +4,13 @@ import styled from 'styled-components';
 import SEO from '../components/SEO';
 import AddToCartForm from '../components/AddToCartForm';
 import { GatsbyImage } from 'gatsby-plugin-image';
+import PortableText from '../components/PortableText';
 
 const CoffeeHeader = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: var(--white);
+  /* color: var(--white); */
   margin-bottom: 1rem;
   h1,
   h2 {
@@ -28,9 +29,23 @@ const ShortDescriptionDiv = styled.div`
 
 const CoffeeBody = styled.div`
   .descriptionLong {
+    p {
+      font-size: 1.1rem;
+    }
     grid-column: 1/-1;
     max-width: 500px;
     margin: 0 auto 1.5rem auto;
+  }
+`;
+const LongDescription = styled.div`
+  grid-column: 1/-1;
+  max-width: 500px;
+  margin: 0 auto 1.5rem auto;
+  p {
+    font-size: 1.1rem;
+  }
+  a {
+    color: var(--blueYonder);
   }
 `;
 const DeetsAndForm = styled.div`
@@ -39,17 +54,18 @@ const DeetsAndForm = styled.div`
   justify-content: center;
 `;
 const CoffeeDetails = styled.dl`
-  margin: 0 auto 20px auto;
-  width: max-content;
-  display: grid;
-  grid-template-columns: max-content auto;
-  align-items: baseline;
+  /* margin: 0 auto 20px auto; */
+  width: 300px;
+  padding-right: 20px;
+  /* display: grid; */
+  /* grid-template-columns: max-content auto; */
+  /* align-items: baseline; */
   dt {
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     padding: 0.5rem 0;
     justify-self: left;
-    font-size: 0.85rem;
-    margin-right: 20px;
+    font-size: 18px;
+    margin-right: 14px;
   }
   dd {
     /* margin-left: 2rem; */
@@ -63,7 +79,7 @@ const CoffeeDetails = styled.dl`
     display: flex;
     padding: 8px 0;
     margin-left: 10px;
-    flex-direction: column;
+    flex-direction: row;
 
     p {
       &:first-of-type {
@@ -79,88 +95,92 @@ const CoffeeDetails = styled.dl`
 `;
 
 export default function SingleCoffeePage({ data: { coffee } }) {
+  console.log('coffee', coffee);
   const image = coffee.image?.asset.gatsbyImageData;
+  const text = coffee ? coffee._rawDescriptionLong : [];
 
   return (
     <>
       <SEO title={coffee.name} />
       <main>
         {/* <Img fluid={coffee.image.asset.fluid} /> */}
-        <CoffeeHeader className=''>
-          <h2>{coffee.name}</h2>
-          {image && (
-            <div>
-              <GatsbyImage image={image} alt={image.alt} />
-            </div>
-          )}
-          <ShortDescriptionDiv>
-            {coffee.description && <p>{coffee.description}</p>}
-          </ShortDescriptionDiv>
-        </CoffeeHeader>
-        <CoffeeBody className='contentBox'>
-          <div className='descriptionLong'>
-            {coffee.descriptionLong &&
-              coffee.descriptionLong.map((obj, i) => (
-                <p key={i}>{obj.children[0].text}</p>
-              ))}
-          </div>
-          <DeetsAndForm>
-            <CoffeeDetails>
-              {coffee.roastDate && (
-                // <div className='content-item'>
-                <>
-                  <dt>Roasted</dt>
-                  <dd>{coffee.roastDate}</dd>
-                </>
-                // </div>
-              )}
-              {coffee.grade && (
-                // <div className='content-item'>
-                <>
-                  <dt>Grade</dt>
-                  <dd>{coffee.grade}</dd>
-                </>
-                //</div>
-              )}
-              {coffee.region && (
-                <>
-                  <dt>Region</dt>
-                  <dd>{coffee.region}</dd>
-                </>
-              )}
-              {coffee.cultivar && (
-                // <div className='content-item'>
-                <>
-                  <dt>Cultivar</dt>
-                  <dd>{coffee.cultivar}</dd>
-                </>
-                //</div>
-              )}
-              {coffee.elevation && (
-                // <div className='content-item'>
-                <>
-                  <dt>Elevation</dt>
-                  <dd>{coffee.elevation}</dd>
-                </>
-                //</div>
-              )}
-              {coffee.process && (
-                // <div className='content-item'>
-                <>
-                  <dt>Process</dt>
-                  <dd>{coffee.process}</dd>
-                </>
-                //</div>
-              )}
-            </CoffeeDetails>
-
-            {coffee.stock > 0 ? (
-              <AddToCartForm coffee={coffee} />
-            ) : (
-              <p>Out of Stock</p>
+        <div className='contentBox'>
+          <CoffeeHeader className=''>
+            <h2>{coffee.name}</h2>
+            {coffee.flavorProfile && <p>{coffee.flavorProfile}</p>}
+            {image && (
+              <div>
+                <GatsbyImage image={image} alt={image.alt} />
+              </div>
             )}
-          </DeetsAndForm>
-        </CoffeeBody>
+            {/* <ShortDescriptionDiv>
+              {coffee.description && <p>{coffee.description}</p>}
+            </ShortDescriptionDiv> */}
+          </CoffeeHeader>
+          <CoffeeBody>
+            <LongDescription>
+              {coffee._rawDescriptionLong && <PortableText blocks={text} />}
+            </LongDescription>
+
+            <DeetsAndForm>
+              <CoffeeDetails>
+                {coffee.roastDate && (
+                  <div className='content-item'>
+                    <>
+                      <dt>roasted</dt>
+                      <dd>{coffee.roastDate}</dd>
+                    </>
+                  </div>
+                )}
+                {coffee.grade && (
+                  <div className='content-item'>
+                    <>
+                      <dt>grade</dt>
+                      <dd>{coffee.grade}</dd>
+                    </>
+                  </div>
+                )}
+                {coffee.region && (
+                  <div className='content-item'>
+                    <>
+                      <dt>region</dt>
+                      <dd>{coffee.region}</dd>
+                    </>
+                  </div>
+                )}
+                {coffee.cultivar && (
+                  <div className='content-item'>
+                    <>
+                      <dt>cultivar</dt>
+                      <dd>{coffee.cultivar}</dd>
+                    </>
+                  </div>
+                )}
+                {coffee.elevation && (
+                  <div className='content-item'>
+                    <>
+                      <dt>elevation</dt>
+                      <dd>{coffee.elevation}</dd>
+                    </>
+                  </div>
+                )}
+                {coffee.process && (
+                  <div className='content-item'>
+                    <>
+                      <dt>process</dt>
+                      <dd>{coffee.process}</dd>
+                    </>
+                  </div>
+                )}
+              </CoffeeDetails>
+              {coffee.stock > 0 ? (
+                <AddToCartForm coffee={coffee} />
+              ) : (
+                <p>out of stock</p>
+              )}
+            </DeetsAndForm>
+          </CoffeeBody>
+        </div>
       </main>
     </>
   );
@@ -173,11 +193,7 @@ export const query = graphql`
       _id
       name
       description
-      descriptionLong {
-        children {
-          text
-        }
-      }
+      _rawDescriptionLong
       image {
         asset {
           gatsbyImageData(
@@ -187,6 +203,7 @@ export const query = graphql`
           )
         }
       }
+      flavorProfile
       singleOrigin
       roastLevel
       grade
