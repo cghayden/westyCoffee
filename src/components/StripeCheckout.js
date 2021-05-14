@@ -183,7 +183,7 @@ const CheckoutForm = ({
       } else {
         // console.log('order successful', parsedResponse);
         //update stock
-        // adjustSanityStock(parsedResponse.orderItems);
+        adjustSanityStock(parsedResponse.orderItems);
         //route to order summary page
         emptyCart();
         resetPage();

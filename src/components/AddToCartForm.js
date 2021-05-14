@@ -7,12 +7,15 @@ import MinusSvg from './Icons/MinusSvg';
 import PlusSvg from './Icons/PlusSvg';
 
 const FormStyles = styled.form`
-  width: 100%;
+  width: 300px;
   /* max-width: 350px; */
   padding: 0.5rem;
   width: max-content;
-  margin: 0 auto;
-
+  /* margin: 0 auto; */
+  h3 {
+    font-size: 18px;
+    color: var(--blueYonder);
+  }
   fieldset {
     border: none;
     padding: 0;
@@ -22,7 +25,6 @@ const FormStyles = styled.form`
     flex-direction: column;
     justify-content: space-evenly;
     align-items: baseline;
-    width: 250px;
     margin: 0 auto;
   }
   .input-item {
@@ -122,6 +124,7 @@ function AddToCartForm({ coffee }) {
   return (
     <FormStyles action='POST' onSubmit={submitToCart}>
       <fieldset>
+        <h3>choose grind and quantity to order</h3>
         <div className='input-item'>
           <label htmlFor='grind' className='input-item-label'>
             grind:

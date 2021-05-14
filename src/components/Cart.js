@@ -13,6 +13,18 @@ import MinusSvg from './Icons/MinusSvg';
 import PlusSvg from './Icons/PlusSvg';
 import compileCurrentStockAndPrice from '../utils/compileCurrentStockAndPriceListing';
 
+const ActionsDiv = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  a,
+  button {
+    padding: 0.25rem 0.5rem;
+    font-size: 14px;
+    margin: 0 8px;
+  }
+`;
+
 function Cart() {
   const {
     cartOpen,
@@ -48,9 +60,24 @@ function Cart() {
         <>
           <footer>
             <h3>Total: $ {orderTotal}</h3>
-            <Link role='link' onClick={closeCart} to='/pay'>
-              checkout
-            </Link>
+            <ActionsDiv>
+              <Link
+                className='action-primary'
+                type='button'
+                onClick={closeCart}
+                to='/'
+              >
+                keep shopping
+              </Link>
+              <Link
+                className='action-secondary'
+                role='link'
+                onClick={closeCart}
+                to='/pay'
+              >
+                checkout
+              </Link>
+            </ActionsDiv>
           </footer>
           <aside>free shipping for orders over $50.00</aside>
         </>
