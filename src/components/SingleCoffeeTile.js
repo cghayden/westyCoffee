@@ -67,10 +67,11 @@ const CoffeeStatus = styled.div`
 `;
 const DescriptionDiv = styled.div`
   flex-grow: 1;
-  display: grid;
+  display: flex;
   place-items: center;
   p {
     font-weight: 400;
+    font-size: 1.1em;
   }
 `;
 function SingleCoffeeTile({ coffee }) {

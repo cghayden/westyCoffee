@@ -129,7 +129,7 @@ const GlobalStyles = styled.createGlobalStyle`
     &.action-primary {
       background: var(--redFlame);
       color: white;
-      /* box-shadow: var(--dropShadow1); */
+      box-shadow: var(--dropShadow1);
 
       &:active {
         background: var(--redFlameFade);

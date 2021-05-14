@@ -67,7 +67,7 @@ const FormStyles = styled.form`
     margin-top: 5px;
     width: 80%;
     place-self: center;
-    padding: 4px 8px;
+    padding: 8px 16px;
   }
   .errorDisplay {
     height: 16px;
