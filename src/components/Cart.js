@@ -21,7 +21,7 @@ const ActionsDiv = styled.div`
   button {
     padding: 0.25rem 0.5rem;
     font-size: 14px;
-    margin: 0 8px;
+    margin: 8px;
   }
 `;
 
@@ -63,7 +63,7 @@ function Cart() {
             <ActionsDiv>
               <Link
                 className='action-primary'
-                type='button'
+                role='link'
                 onClick={closeCart}
                 to='/'
               >
