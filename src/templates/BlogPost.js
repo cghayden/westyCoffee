@@ -16,8 +16,8 @@ export const query = graphql`
       mainImage {
         asset {
           gatsbyImageData(
-            width: 400
-            placeholder: BLURRED
+            fit: FILL
+            placeholder: DOMINANT_COLOR
             formats: [AUTO, WEBP, AVIF]
           )
         }

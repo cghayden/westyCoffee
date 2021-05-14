@@ -1,7 +1,7 @@
 import { Link } from 'gatsby';
 import React from 'react';
 import { getBlogUrl } from '../utils/helpers';
-import { GatsbyImage, getImage } from 'gatsby-plugin-image';
+import { GatsbyImage } from 'gatsby-plugin-image';
 import dayjs from 'dayjs';
 import PortableText from './PortableText';
 import styled from 'styled-components';
@@ -37,20 +37,25 @@ const Date = styled.div`
     font-size: 0.9em;
   }
 `;
+const PreviewImageContainer = styled.div`
+  max-width: 200px;
+`;
+
 function BlogPostPreview(props) {
+  console.log('props', props);
   // console.log('BlogPostPreview props', props);
   const image = props.mainImage.asset.gatsbyImageData;
   return (
     <Link to={getBlogUrl(props.slug.current)}>
-      <div>
+      <PreviewImageContainer>
         {props.mainImage && props.mainImage.asset && (
           <GatsbyImage
-            layout='constrained'
+            // layout='constrained'
             image={image}
             alt={props.mainImage.alt}
           />
         )}
-      </div>
+      </PreviewImageContainer>
       <BlogPreviewText>
         <h2>{props.title}</h2>
         {props._rawExcerpt && (
