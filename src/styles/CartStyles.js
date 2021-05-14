@@ -32,7 +32,7 @@ const CartStyles = styled.div`
     border-top: solid 3px var(--black);
     text-align: right;
     margin-top: 1rem;
-    padding-right: 2rem;
+    padding-right: 0;
     color: green;
     align-items: center;
     p {
