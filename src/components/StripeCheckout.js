@@ -80,7 +80,6 @@ const StripeLogoDiv = styled.div`
   background-image: url(${Stripe_Blurple});
   background-size: contain;
 `;
-
 const CheckoutForm = ({
   shippingBoolean,
   setShippingBoolean,
@@ -100,7 +99,7 @@ const CheckoutForm = ({
     name: '',
   });
   const [shippingDetails, setShippingDetails] = useState({
-    deliveryMethod: '',
+    deliveryMethod: 'Pickup',
     pickupLocation: '',
     shippingName: '',
     addressLine1: '',
@@ -204,7 +203,7 @@ const CheckoutForm = ({
       phone: '',
     });
     setShippingDetails({
-      deliveryMethod: '',
+      deliveryMethod: 'Pickup',
       pickupLocation: '',
       addressLine1: '',
       addressLine2: '',
@@ -228,39 +227,20 @@ const CheckoutForm = ({
           <p>{error}</p>
         </ErrorStyle>
       )}
+      {/* <fieldset className='FormGroup'>
+        <legend>comments</legend>
+        <Field
+          label={'comments'}
+          id='customerComments'
+          type='textarea'
+          placeholder={'comments'}
+          value={inputs.customerComments}
+          onChange={handleChange}
+        />
+         </fieldset> */}
 
       <fieldset className='FormGroup display-table'>
         <div className='FormRow radioStack'>
-          <div className='radio-wrapper FormRowInput'>
-            <div className='radio__input'>
-              <RadioInput
-                className='input-radio'
-                type='radio'
-                active={shippingDetails.deliveryMethod === 'Shipping'}
-                checked={shippingDetails.deliveryMethod === 'Shipping'}
-                value='Shipping'
-                name='deliveryMethod'
-                id='checkout_id_delivery-shipping'
-                onChange={(e) => {
-                  setShippingBoolean(true);
-                  setShippingDetails({
-                    ...shippingDetails,
-                    deliveryMethod: e.target.value,
-                  });
-                }}
-              />
-            </div>
-            <RadioLabel
-              active={shippingDetails.deliveryMethod === 'Shipping'}
-              for='checkout_id_delivery-shipping'
-            >
-              <span class='radio__label'>
-                <ShippingTruckIcon w='18' h='18' />
-                $10 shipping
-              </span>
-              <span className='subLabel'>free on orders over $50</span>
-            </RadioLabel>
-          </div>
           <div className='radio-wrapper FormRowInput'>
             <div className='radio__input'>
               <RadioInput
@@ -284,11 +264,41 @@ const CheckoutForm = ({
               active={shippingDetails.deliveryMethod === 'Pickup'}
               for='checkout_id_delivery-pickup'
             >
-              <span class='radio__label'>
+              <span className='radio__label'>
                 <StoreFrontIcon />
                 free pickup
               </span>
               {/* <span>free</span> */}
+            </RadioLabel>
+          </div>
+          <div className='radio-wrapper FormRowInput'>
+            <div className='radio__input'>
+              <RadioInput
+                className='input-radio'
+                type='radio'
+                active={shippingDetails.deliveryMethod === 'Shipping'}
+                checked={shippingDetails.deliveryMethod === 'Shipping'}
+                value='Shipping'
+                name='deliveryMethod'
+                id='checkout_id_delivery-shipping'
+                onChange={(e) => {
+                  setShippingBoolean(true);
+                  setShippingDetails({
+                    ...shippingDetails,
+                    deliveryMethod: e.target.value,
+                  });
+                }}
+              />
+            </div>
+            <RadioLabel
+              active={shippingDetails.deliveryMethod === 'Shipping'}
+              for='checkout_id_delivery-shipping'
+            >
+              <span className='radio__label'>
+                <ShippingTruckIcon w='18' h='18' />
+                $10 shipping
+              </span>
+              <span className='subLabel'>free on orders over $50</span>
             </RadioLabel>
           </div>
         </div>
@@ -312,7 +322,7 @@ const CheckoutForm = ({
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <h3 className='form-heading'>ship to:</h3>
+                <legend className='form-heading'>ship to:</legend>
                 <fieldset className='FormGroup'>
                   <ShippingAddressInput
                     shippingDetails={shippingDetails}
@@ -329,7 +339,7 @@ const CheckoutForm = ({
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <h3 className='form-heading'>Pickup Location</h3>
+                <legend className='form-heading'>pickup location</legend>
                 <fieldset className='FormGroup'>
                   <PickupChoiceInput
                     shippingDetails={shippingDetails}
@@ -341,7 +351,7 @@ const CheckoutForm = ({
           </motion.div>
         )}
       </AnimatePresence>
-      <h3 className='form-heading'>payment / contact details</h3>
+      <legend className='form-heading'>payment / contact details</legend>
       <fieldset className='FormGroup'>
         <Field
           label={!billingDetails.name.length ? '' : 'name'}
@@ -564,7 +574,7 @@ function PickupChoiceInput({ shippingDetails, setShippingDetails }) {
             active={shippingDetails.pickupLocation === 'Daniels'}
             for='checkout_id_pickup-daniels'
           >
-            <div class='radio__label pickupAddress'>
+            <div className='radio__label pickupAddress'>
               <p className='pickup-locationName'>neighborly coffee</p>
               <p>36 lincoln rd.</p>
               <p>sharon, ma 02067</p>
@@ -595,8 +605,8 @@ function PickupChoiceInput({ shippingDetails, setShippingDetails }) {
             active={shippingDetails.pickupLocation === 'Edge'}
             for='checkout_id_pickup-edge'
           >
-            <div class='radio__label'>
-              <div class='radio__label pickupAddress'>
+            <div className='radio__label'>
+              <div className='radio__label pickupAddress'>
                 <p className='pickup-locationName'>edge studio</p>
                 <p>905 turnpike st,</p>
                 <p>suite. f</p>

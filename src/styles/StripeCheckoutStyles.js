@@ -147,6 +147,10 @@ const StripeCheckoutStyles = styled.div`
   .input-radio:checked {
     border-width: 7px;
   }
+  .input-radio:focus-visible {
+    outline: -webkit-focus-ring-color auto 1px;
+    outline: darkblue auto 1px;
+  }
   .FormRowLabel {
     width: 15%;
     min-width: 70px;

@@ -20,6 +20,7 @@ const CartContents = styled.div`
 
 const CommentsInput = styled.div`
   width: 90%;
+  max-width: 500px;
   margin: -16px auto 0;
   label {
     display: block;
@@ -91,9 +92,8 @@ function CheckoutPage_CartContents({ availableCoffee }) {
       {!!cartContents.length && !stockAlerts.length && (
         <>
           <CommentsInput className='input-item' id='customerComments'>
-            <label for='customerComments'>comments:</label>
+            <label htmlFor='customerComments'>order notes:</label>
             <textarea
-              placeholder='comments'
               id='customerComments'
               name='customerComments'
               rows='3'

@@ -7,7 +7,7 @@ function CheckBox({ name }) {
       <Checkbox_RadioInput>
         <input name={name} type='hidden' value='' />
         <input
-          class='input-checkbox'
+          className='input-checkbox'
           data-backup='buyer_accepts_marketing'
           type='checkbox'
           value=''
@@ -16,7 +16,7 @@ function CheckBox({ name }) {
           id='checkout_buyer_accepts_marketing'
         />
       </Checkbox_RadioInput>
-      <label class='checkbox__label' for='checkout_buyer_accepts_marketing'>
+      <label className='checkbox__label' for='checkout_buyer_accepts_marketing'>
         Keep me up to date on news and exclusive offers
       </label>
     </Checkbox_RadioWrapper>

@@ -8,15 +8,15 @@ const CoffeeTileStyles = styled.div`
   padding: 1rem 0.5rem 0.5rem;
   box-shadow: 1px 1px 4px 1px hsl(0deg 15% 30% / 14%);
   border: 10px solid var(--white);
-  box-sizing: content-box;
+  /* box-sizing: border-box; */
   border-radius: 4px;
   background: ${(props) =>
     props.singleOrigin ? 'var(--singleOriginGreen)' : 'var(--blendGreen)'};
   color: ${(props) =>
     props.singleOrigin ? 'var(--singleOriginText)' : 'var(--blendText)'};
   border-radius: 4px;
-  width: 300px;
-  height: 300px;
+  width: 310px;
+  height: 310px;
   /* padding: 16px 8px 8px; */
   margin-bottom: 4px;
   display: flex;
