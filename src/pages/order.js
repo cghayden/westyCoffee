@@ -6,7 +6,16 @@ import CartPageStyles from '../styles/CartPageStyles';
 import formatMoney from '../utils/formatMoney';
 
 const OrderPageStyles = styled(CartPageStyles)`
+  h1,
+  h2 {
+    font-size: 1.5em;
+    font-weight: 400;
+  }
+  h2 {
+    font-size: 1.25em;
+  }
   p {
+    margin: 5px 0;
     font-size: 14px;
   }
   display: block;
@@ -43,12 +52,10 @@ export default function orderPage({ location }) {
     <CheckoutPageWrapper>
       <SEO title={'Order Summary'} />
       <main>
-        <h1 className='whiteText'>Your Order</h1>
         <OrderPageStyles className='contentBox'>
-          <p>Thank You for your business!</p>
-          <p>A summary of your order is below.</p>
+          <h1>Thank You For Your Order!</h1>
           <p>
-            We will text and/or email you when your order
+            We'll contact you when your order
             {shippingDetails.deliveryMethod === 'Pickup'
               ? ' is ready for pickup'
               : ' ships'}
