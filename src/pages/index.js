@@ -21,6 +21,7 @@ const HomePageTextStyles = styled.div`
 
 // *** STATICALLY BUILT PAGE
 export default function homePage({ data }) {
+  console.log('data', data);
   const pageHeading = data ? data.homePageText.heading : '';
   const text = data ? data.homePageText._rawContent : [];
   return (

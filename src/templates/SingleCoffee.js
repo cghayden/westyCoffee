@@ -93,7 +93,9 @@ const CoffeeDetails = styled.dl`
     }
   }
 `;
-
+const ImageDiv = styled.div`
+  max-width: 400px;
+`;
 export default function SingleCoffeePage({ data: { coffee } }) {
   console.log('coffee', coffee);
   const image = coffee.image?.asset.gatsbyImageData;
@@ -109,9 +111,9 @@ export default function SingleCoffeePage({ data: { coffee } }) {
             <h2>{coffee.name}</h2>
             {coffee.flavorProfile && <p>{coffee.flavorProfile}</p>}
             {image && (
-              <div>
+              <ImageDiv>
                 <GatsbyImage image={image} alt={image.alt} />
-              </div>
+              </ImageDiv>
             )}
             {/* <ShortDescriptionDiv>
               {coffee.description && <p>{coffee.description}</p>}

@@ -37,6 +37,15 @@ export const query = graphql`
           state
           zipCode
           location
+          mainImage {
+            asset {
+              gatsbyImageData(
+                fit: FILL
+                formats: AUTO
+                placeholder: DOMINANT_COLOR
+              )
+            }
+          }
         }
       }
     }

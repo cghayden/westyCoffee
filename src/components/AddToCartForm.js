@@ -103,7 +103,7 @@ function AddToCartForm({ coffee }) {
     const poundsToAdd =
       inputs.size === 'half pound' ? quantity * 0.5 : quantity;
     if (!inputs.grind) {
-      setError('Please Choose A Grind');
+      setError('Whole Bean or Ground?');
       return;
     }
     if (totalCartPounds[coffee.name] + poundsToAdd > coffee.stock) {
@@ -124,29 +124,30 @@ function AddToCartForm({ coffee }) {
   return (
     <FormStyles action='POST' onSubmit={submitToCart}>
       <fieldset>
-        <h3>choose grind and quantity to order</h3>
+        {/* <h3>choose grind and quantity to order</h3> */}
         <div className='input-item'>
-          <label htmlFor='grind' className='input-item-label'>
-            grind:
-          </label>
-          <select
-            style={{ maxWidth: '200px' }}
-            required
-            id='grind'
-            name='grind'
-            value={inputs.grind}
-            onChange={(e) => {
-              setError();
-              handleChange(e);
-            }}
-            defaultValue='Select ...'
-          >
-            <option value='Select ...' default disabled>
-              Select ...
-            </option>
-            <option value='whole bean'>Whole Bean</option>
-            <option value='ground'>Ground</option>
-          </select>
+          <label className='input-item-label'>quantity:</label>
+          <QuantitySelector>
+            <button
+              type='button'
+              disabled={quantity === 1}
+              onClick={() => setQuantity((q) => (q -= 1))}
+            >
+              <MinusSvg w={'18'} h={'18'} />
+            </button>
+            <p>{quantity}</p>
+            <button
+              type='button'
+              onClick={() =>
+                setQuantity((q) => {
+                  //if q <= in stock, add 1
+                  return (q += 1);
+                })
+              }
+            >
+              <PlusSvg w={'18'} h={'18'} />
+            </button>
+          </QuantitySelector>
         </div>
         <div className='input-item'>
           <p className='input-item-label'>size:</p>
@@ -178,29 +179,29 @@ function AddToCartForm({ coffee }) {
             </label>
           </div>
         </div>
+
         <div className='input-item'>
-          <label className='input-item-label'>quantity:</label>
-          <QuantitySelector>
-            <button
-              type='button'
-              disabled={quantity === 1}
-              onClick={() => setQuantity((q) => (q -= 1))}
-            >
-              <MinusSvg w={'18'} h={'18'} />
-            </button>
-            <p>{quantity}</p>
-            <button
-              type='button'
-              onClick={() =>
-                setQuantity((q) => {
-                  //if q <= in stock, add 1
-                  return (q += 1);
-                })
-              }
-            >
-              <PlusSvg w={'18'} h={'18'} />
-            </button>
-          </QuantitySelector>
+          <label htmlFor='grind' className='input-item-label'>
+            grind:
+          </label>
+          <select
+            style={{ maxWidth: '200px' }}
+            required
+            id='grind'
+            name='grind'
+            value={inputs.grind}
+            onChange={(e) => {
+              setError();
+              handleChange(e);
+            }}
+            defaultValue='Select ...'
+          >
+            <option value='Select ...' default disabled>
+              Select ...
+            </option>
+            <option value='whole bean'>Whole Bean</option>
+            <option value='ground'>Ground</option>
+          </select>
         </div>
         {/* <div className='input-item' id='comments'>
           <label className='visuallyHidden' for='comments'>

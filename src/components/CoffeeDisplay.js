@@ -4,11 +4,9 @@ import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee';
 import SingleCoffeeTile from './SingleCoffeeTile';
 
 const CoffeeDisplayStyles = styled.div`
-  display: grid;
-  grid-gap: 3rem;
-  grid-template-columns: repeat(auto-fill, 315px);
-  place-content: center;
-  place-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
 
 function CoffeeDisplay({ allCoffee }) {

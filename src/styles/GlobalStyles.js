@@ -41,8 +41,16 @@ const GlobalStyles = styled.createGlobalStyle`
     box-sizing: border-box;
   }
   html {
-    scrollbar-width: thin;
+    /* scrollbar-width: thin; */
+    /* scrollbar-color: yellow; */
     height: -webkit-fill-available;
+  }
+  body::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  body::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 6px;
   }
   #gatsby-focus-wrapper {
     /* background-color: var(--white); */
