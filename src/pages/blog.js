@@ -5,6 +5,8 @@ import {
   filterOutDocsWithoutSlugs,
   filterOutDocsPublishedInTheFuture,
 } from '../utils/helpers';
+import Layout from '../components/Layout';
+
 import SEO from '../components/SEO';
 import GraphQLErrorList from '../components/GraphqlErrorList';
 import BlogPreviewList from '../components/BlogPreviewList';
@@ -20,11 +22,13 @@ export default function blogPage({ data, errors }) {
         .filter(filterOutDocsPublishedInTheFuture)
     : [];
   return (
-    <>
+    <Layout>
       <SEO title={'Blog'} />
-      {/* <h1>Blog</h1> */}
-      {postNodes && <BlogPreviewList nodes={postNodes} />}
-    </>
+      <main>
+        {/* <h1>Blog</h1> */}
+        {postNodes && <BlogPreviewList nodes={postNodes} />}
+      </main>
+    </Layout>
   );
 }
 

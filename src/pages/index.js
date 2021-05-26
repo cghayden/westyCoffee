@@ -4,6 +4,7 @@ import SEO from '../components/SEO';
 import styled from 'styled-components';
 import CoffeeDisplay from '../components/CoffeeDisplay';
 import PortableText from '../components/PortableText';
+import Layout from '../components/Layout';
 
 const HomeMainStyle = styled.main`
   text-align: center;
@@ -25,7 +26,7 @@ export default function homePage({ data }) {
   const pageHeading = data ? data.homePageText.heading : '';
   const text = data ? data.homePageText._rawContent : [];
   return (
-    <>
+    <Layout>
       <SEO title={'neighborly coffee'} />
       <HomeMainStyle>
         <h1 className='pageHeading'>{pageHeading}</h1>
@@ -34,7 +35,7 @@ export default function homePage({ data }) {
         </HomePageTextStyles>
         <CoffeeDisplay allCoffee={data.coffees.nodes} />
       </HomeMainStyle>
-    </>
+    </Layout>
   );
 }
 export const query = graphql`
@@ -63,40 +64,3 @@ export const query = graphql`
     }
   }
 `;
-
-// *** DYNAMIC DATA PAGE QUERIED FROM SANITY
-// export default function HomePage() {
-//   const { featuredCoffee, homePageLead } = useLatestHomePageData();
-//   const { addToCart } = useCart();
-//   return (
-//     <>
-//       <SEO title={'Neighborly Coffee'} />
-//       <HomeMainStyles>
-//         <h2>Our Roasts of the Week</h2>
-//         <HomePageTextStyles>
-//           {homePageLead?.contentRaw.map((entry) => (
-//             <p key={entry._ref}>{entry.children[0].text}</p>
-//           ))}
-//         </HomePageTextStyles>
-//         <CoffeeDisplay>
-//           {featuredCoffee?.map((coffee) => (
-//             <div>
-//               <CoffeeCard key={coffee._id} coffee={coffee} />
-//               <button
-//                 onClick={() =>
-//                   addToCart({
-//                     quantity: 1,
-//                     coffee: coffee.name,
-//                     grind: 'whole',
-//                   })
-//                 }
-//               >
-//                 Order Now!
-//               </button>
-//             </div>
-//           ))}
-//         </CoffeeDisplay>
-//       </HomeMainStyles>
-//     </>
-//   );
-// }

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import InstagramSvg from '../components/Icons/InstagramSvg';
+import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 
 const Address = styled.div`
@@ -20,7 +21,7 @@ const Contact = styled.p`
 
 export default function contactPage() {
   return (
-    <>
+    <Layout>
       <SEO title={'Contact'} />
       <main>
         {/* <h1>neighborly coffee</h1> */}
@@ -44,6 +45,6 @@ export default function contactPage() {
           </Address>
         </div>
       </main>
-    </>
+    </Layout>
   );
 }

@@ -7,6 +7,7 @@ import SEO from '../components/SEO';
 // import SEO from "../components/seo";
 // import Layout from "../containers/layout";
 import { toPlainText } from '../utils/helpers';
+import Layout from '../components/Layout';
 
 export const query = graphql`
   query BlogPostTemplateQuery($id: String!) {
@@ -36,7 +37,7 @@ const BlogPostTemplate = (props) => {
   const { data, errors } = props;
   const post = data && data.post;
   return (
-    <div>
+    <Layout>
       {/* {errors && <SEO title='GraphQL Error' />} */}
       {post && (
         <SEO
@@ -53,7 +54,7 @@ const BlogPostTemplate = (props) => {
       )}
 
       {post && <BlogPostComponent {...post} />}
-    </div>
+    </Layout>
   );
 };
 

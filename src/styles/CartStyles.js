@@ -1,17 +1,17 @@
 import styled from 'styled-components';
 
 const CartStyles = styled.div`
-  font-family: monospace;
+  font-family: 'Hind Siliguri', sans-serif;
   font-size: 1rem;
   padding: 20px;
   position: relative;
   background: white;
-  color: var(--raisinBlack);
+  color: var(--black);
   position: fixed;
   height: 100%;
   top: 0;
   right: 0;
-  width: 90%;
+  width: 94%;
   max-width: 650px;
   min-width: 310px;
   bottom: 0;
@@ -23,15 +23,19 @@ const CartStyles = styled.div`
   flex-direction: column;
   ${(props) => props.open && `transform: translateX(0);`};
   header {
-    border-bottom: 3px solid var(--black);
-    margin-bottom: 1rem;
+    border-bottom: 2px solid black;
+    margin-bottom: 0.75rem;
     padding-bottom: 1rem;
     display: flex;
+    color: inherit;
+    h3 {
+      color: black;
+    }
   }
   footer {
-    border-top: solid 3px var(--black);
+    border-top: solid 2px var(--black);
     text-align: right;
-    margin-top: 1rem;
+    margin-top: 0.75rem;
     padding-right: 0;
     color: green;
     align-items: center;
@@ -50,6 +54,7 @@ const CartStyles = styled.div`
     }
   }
   aside {
+    font-size: 14px;
     padding-top: 2rem;
     width: 60%;
     margin: 0 auto;

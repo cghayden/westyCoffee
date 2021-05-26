@@ -9,7 +9,9 @@ import Cart from './Cart';
 
 const HeaderStyles = styled.header`
   display: flex;
-  color: var(--white);
+  color: ${(props) => (props.black ? 'black' : 'white')};
+  background: ${(props) => (props.black ? 'var(--white)' : 'transparent')};
+  /* color: var(--white); */
   align-items: center;
   padding: 1rem;
   /* width: 100%; */
@@ -33,11 +35,11 @@ const LogoStyle = styled.p`
 const ButtonsDiv = styled.div`
   margin-left: auto;
 `;
-function Header() {
+function Header({ black }) {
   const [showMobileNav, toggleShowMobileNav] = useState(false);
 
   return (
-    <HeaderStyles>
+    <HeaderStyles black={black}>
       <LogoStyle>
         <Link to='/'>neighborly coffee</Link>
       </LogoStyle>

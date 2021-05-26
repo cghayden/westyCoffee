@@ -4,6 +4,7 @@ import { mapEdgesToNodes } from '../utils/helpers';
 import SEO from '../components/SEO';
 import EventList from '../components/EventList';
 import EventRequestText from '../components/EventRequestText';
+import Layout from '../components/Layout';
 export default function eventsPage({ data, errors }) {
   // console.log('data', data);
   if (errors) {
@@ -11,14 +12,14 @@ export default function eventsPage({ data, errors }) {
   }
   const eventNodes = (data || {}).events ? mapEdgesToNodes(data.events) : [];
   return (
-    <>
+    <Layout>
       <SEO title={'Events'} />
       <main>
         <h1 className='alignCenter whiteText'>events</h1>
         {data?.contentQuery && <EventRequestText node={data.contentQuery} />}
         {eventNodes && <EventList nodes={eventNodes} />}
       </main>
-    </>
+    </Layout>
   );
 }
 

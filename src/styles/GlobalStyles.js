@@ -81,6 +81,7 @@ const GlobalStyles = styled.createGlobalStyle`
     width: 95%;
     min-width: 318px;
     margin: 0 auto 2rem auto;
+    padding: 1rem 0;
     /* padding: 1rem 1rem 2rem 1rem; */
     /* background: var(--white); */
     border-radius: 4px;
@@ -92,8 +93,8 @@ const GlobalStyles = styled.createGlobalStyle`
     h4,
     h5,
     h6 {
-      margin: 0;
-      margin-bottom: 1rem;
+      margin: 1rem 0;
+      /* margin-bottom: 1rem; */
     }
   }
   p {

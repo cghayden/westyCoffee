@@ -5,6 +5,7 @@ import SEO from '../components/SEO';
 import AddToCartForm from '../components/AddToCartForm';
 import { GatsbyImage } from 'gatsby-plugin-image';
 import PortableText from '../components/PortableText';
+import Layout from '../components/Layout';
 
 const CoffeeHeader = styled.div`
   display: flex;
@@ -102,7 +103,7 @@ export default function SingleCoffeePage({ data: { coffee } }) {
   const text = coffee ? coffee._rawDescriptionLong : [];
 
   return (
-    <>
+    <Layout>
       <SEO title={coffee.name} />
       <main>
         {/* <Img fluid={coffee.image.asset.fluid} /> */}
@@ -184,7 +185,7 @@ export default function SingleCoffeePage({ data: { coffee } }) {
           </CoffeeBody>
         </div>
       </main>
-    </>
+    </Layout>
   );
 }
 
