@@ -69,6 +69,7 @@ const DescriptionDiv = styled.div`
   flex-grow: 1;
   display: flex;
   place-items: center;
+  justify-content: center;
   p {
     font-weight: 400;
     font-size: 1.1em;
