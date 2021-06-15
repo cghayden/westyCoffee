@@ -16,7 +16,7 @@ const GlobalStyles = styled.createGlobalStyle`
     --darkGray: hsla(132, 5%, 38%, 1);
     --singleOriginGreen: hsl(146, 13%, 90%); /* #e2e9e5 */
     --singleOriginText: hsl(145, 10%, 20%);
-    --blendGreen: hsl(145, 10%, 63%);
+    --blendGreen: hsl(145, 10%, 70%);
     --blendText: hsl(145, 10%, 20%);
     --navPanelGreen: hsla(120, 25%, 95%, 1);
     --green: hsla(132, 32%, 60%, 0.8);

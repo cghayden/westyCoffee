@@ -2,6 +2,8 @@ import { Link } from 'gatsby';
 import React from 'react';
 import styled from 'styled-components';
 import dayjs from 'dayjs';
+import CoffeeStock from './CoffeeStock';
+import useCurrentStock from '../utils/useCurrentStock';
 
 const CoffeeTileStyles = styled.div`
   font-size: 17px;
@@ -12,8 +14,9 @@ const CoffeeTileStyles = styled.div`
   border-radius: 4px;
   background: ${(props) =>
     props.singleOrigin ? 'var(--singleOriginGreen)' : 'var(--blendGreen)'};
-  color: ${(props) =>
-    props.singleOrigin ? 'var(--singleOriginText)' : 'var(--blendText)'};
+  /* color: ${(props) =>
+    props.singleOrigin ? 'var(--singleOriginText)' : 'var(--blendText)'}; */
+  color: var(--blendText);
   border-radius: 4px;
   width: 310px;
   height: 310px;
@@ -24,7 +27,9 @@ const CoffeeTileStyles = styled.div`
 
   header {
     font-weight: 400;
-    color: ${(props) => (props.singleOrigin ? 'darkgreen' : 'var(--white)')};
+    /* color: ${(props) =>
+      props.singleOrigin ? 'darkgreen' : 'var(--white)'}; */
+    /* color: var(--blendText); */
     width: 100%;
     font-size: 1.5rem;
     margin-bottom: auto;
@@ -50,21 +55,21 @@ const CoffeeDetails = styled.div`
     font-size: 1em;
   }
 `;
-const CoffeeStatus = styled.div`
-  /* background: ${(props) =>
-    props.singleOrigin ? 'var(--blendGreen)' : 'var(--singleOriginGreen)'};
-  color: ${(props) =>
-    props.singleOrigin ? 'var(--white)' : 'var(--singleOriginText)'}; */
-  padding: 8px 0;
-  border-radius: 5px;
-  width: 100%;
-  margin: 0.5rem auto;
-  display: grid;
-  place-items: center;
-  p {
-    margin: 0;
-  }
-`;
+// const CoffeeStatus = styled.div`
+//   /* background: ${(props) =>
+//     props.singleOrigin ? 'var(--blendGreen)' : 'var(--singleOriginGreen)'};
+//   color: ${(props) =>
+//     props.singleOrigin ? 'var(--white)' : 'var(--singleOriginText)'}; */
+//   padding: 8px 0;
+//   border-radius: 5px;
+//   width: 100%;
+//   margin: 0.5rem auto;
+//   display: grid;
+//   place-items: center;
+//   p {
+//     margin: 0;
+//   }
+// `;
 const DescriptionDiv = styled.div`
   flex-grow: 1;
   display: flex;
@@ -75,8 +80,18 @@ const DescriptionDiv = styled.div`
     font-size: 1.1em;
   }
 `;
+
+const CoffeeStatus = styled.div`
+  min-height: 25px;
+  min-width: 100%;
+  display: grid;
+  place-items: center;
+`;
+
 function SingleCoffeeTile({ coffee }) {
+  console.log('coffee', coffee);
   const cost = coffee.price / 100;
+  const { stock } = useCurrentStock(coffee._id);
 
   return (
     <Link to={`/coffee/${coffee.slug.current}`}>
@@ -96,7 +111,9 @@ function SingleCoffeeTile({ coffee }) {
           {/* {coffee.region && <p>{coffee.region}</p>} */}
           {/* {coffee.grade && <p>{coffee.grade}</p>} */}
         </CoffeeDetails>
-        <div>
+
+        <CoffeeStatus>{stock && <CoffeeStock stock={stock} />}</CoffeeStatus>
+        {/* <div>
           {coffee.stock > 0 ? (
             <CoffeeStatus singleOrigin={coffee.singleOrigin}>
               <p>
@@ -107,7 +124,7 @@ function SingleCoffeeTile({ coffee }) {
             <p>Out of Stock</p>
           )}
           <p className='price'>$ {cost} / lb.</p>
-        </div>
+        </div> */}
       </CoffeeTileStyles>
     </Link>
   );
