@@ -97,13 +97,17 @@ const CoffeeDetails = styled.dl`
 const ImageDiv = styled.div`
   max-width: 400px;
 `;
-export default function SingleCoffeePage({ data: { coffee } }) {
-  console.log('coffee', coffee);
-  const image = coffee.image?.asset.gatsbyImageData;
-  const text = coffee ? coffee._rawDescriptionLong : [];
+export default function SingleCoffeePage({ data }) {
+  console.log('data', data);
+  const coffee = data?.coffee;
+  const image = data.coffee.image?.asset.gatsbyImageData;
+  const text = data.coffee ? data.coffee._rawDescriptionLong : [];
+  const bg = data.siteSettings.backgroundImage
+    ? `url(${data.siteSettings.backgroundImage.asset.gatsbyImageData.images.fallback.src})`
+    : data.siteSettings.backgroundColor.hex;
 
   return (
-    <Layout>
+    <Layout bg={bg}>
       <SEO title={coffee.name} />
       <main>
         {/* <Img fluid={coffee.image.asset.fluid} /> */}
@@ -217,6 +221,16 @@ export const query = graphql`
       elevation
       process
       stock
+    }
+    siteSettings: sanitySiteSettings(_id: { eq: "siteSettings" }) {
+      backgroundImage {
+        asset {
+          gatsbyImageData(fit: FILL, formats: AUTO, placeholder: DOMINANT_COLOR)
+        }
+      }
+      backgroundColor {
+        hex
+      }
     }
   }
 `;

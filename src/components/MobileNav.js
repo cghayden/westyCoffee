@@ -9,8 +9,6 @@ const MobileNavContainer = styled.div`
   color: var(--raisinBlack);
   box-shadow: var(--dropShadow3);
   padding: 1rem;
-  /* display: grid;
-  grid-template-columns: 1fr; */
   width: 75vw;
   max-width: 400px;
   position: fixed;
@@ -58,7 +56,7 @@ export default function MobileNav({ showMobileNav, toggleShowMobileNav }) {
       <MobileNavStyles>
         <ul>
           <li>
-            <Link onClick={() => toggleShowMobileNav(false)} to='/'>
+            <Link onClick={() => toggleShowMobileNav(false)} to='/coffee'>
               coffee
             </Link>
           </li>
@@ -72,9 +70,6 @@ export default function MobileNav({ showMobileNav, toggleShowMobileNav }) {
               blog
             </Link>
           </li>
-          {/* <li>
-            <Link  onClick={() => toggleShowMobileNav(false)} to='/subscriptions'>subscriptions</Link>
-          </li> */}
           <li>
             <Link onClick={() => toggleShowMobileNav(false)} to='/about'>
               about

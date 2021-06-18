@@ -3,20 +3,39 @@ import { graphql } from 'gatsby';
 import { mapEdgesToNodes } from '../utils/helpers';
 import SEO from '../components/SEO';
 import EventList from '../components/EventList';
-import EventRequestText from '../components/EventRequestText';
 import Layout from '../components/Layout';
+import styled from 'styled-components';
+import PortableText from '../components/PortableText';
+
+const EventRequestTextStyles = styled.div`
+  margin-left: auto;
+  margin-right: auto;
+  color: var(--white);
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: center;
+`;
+
 export default function eventsPage({ data, errors }) {
-  // console.log('data', data);
+  const pageHeading = data ? data.pageContent.heading : '';
+  const topText = data?.pageContent._rawTopText;
+  const bg = data.siteSettings.backgroundImage
+    ? `url(${data.siteSettings.backgroundImage.asset.gatsbyImageData.images.fallback.src})`
+    : data.siteSettings.backgroundColor.hex;
   if (errors) {
     return <GraphQLErrorList errors={errors} />;
   }
   const eventNodes = (data || {}).events ? mapEdgesToNodes(data.events) : [];
   return (
-    <Layout>
+    <Layout bg={bg}>
       <SEO title={'Events'} />
       <main>
-        <h1 className='alignCenter whiteText'>events</h1>
-        {data?.contentQuery && <EventRequestText node={data.contentQuery} />}
+        <h1 className='alignCenter whiteText'>{pageHeading}</h1>
+        {topText && (
+          <EventRequestTextStyles>
+            <PortableText blocks={topText} />
+          </EventRequestTextStyles>
+        )}
         {eventNodes && <EventList nodes={eventNodes} />}
       </main>
     </Layout>
@@ -41,19 +60,30 @@ export const query = graphql`
           mainImage {
             asset {
               gatsbyImageData(
-                fit: FILL
+                fit: CROP
                 formats: AUTO
                 placeholder: DOMINANT_COLOR
               )
             }
+            alt
           }
         }
       }
     }
-    contentQuery: sanityTextBlock(name: { eq: "Event Page Content" }) {
-      id
+    pageContent: sanityEventsPage(_id: { eq: "eventsPage" }) {
       heading
-      _rawContent
+      _rawTopText(resolveReferences: { maxDepth: 10 })
+      _rawBottomText(resolveReferences: { maxDepth: 10 })
+    }
+    siteSettings: sanitySiteSettings(_id: { eq: "siteSettings" }) {
+      backgroundImage {
+        asset {
+          gatsbyImageData(fit: FILL, formats: AUTO, placeholder: DOMINANT_COLOR)
+        }
+      }
+      backgroundColor {
+        hex
+      }
     }
   }
 `;

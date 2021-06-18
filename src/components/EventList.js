@@ -40,7 +40,6 @@ export default function EventList(props) {
 }
 
 const ImageDiv = styled.div`
-  width: 80%;
   min-width: 290px;
   margin-bottom: 1rem;
 `;

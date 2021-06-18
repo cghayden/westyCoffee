@@ -25,7 +25,7 @@ export default function Nav() {
     <NavStyles className='hideOnMobile'>
       <ul>
         <li>
-          <Link to='/'>coffee</Link>
+          <Link to='/coffee'>coffee</Link>
         </li>
         <li>
           <Link to='/events'>events</Link>

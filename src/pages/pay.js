@@ -1,4 +1,5 @@
 import React from 'react';
+import { graphql } from 'gatsby';
 import styled from 'styled-components';
 import CheckoutPage_CartContents from '../components/CheckoutPage_CartContents';
 import SEO from '../components/SEO';
@@ -10,7 +11,7 @@ const CheckoutPageWrapper = styled.div`
   font-family: monospace;
 `;
 
-function CheckoutPage() {
+export default function CheckoutPage({ data, errors }) {
   const { cartContents } = useCart();
   const { availableCoffee } = useCurrentAvailableCoffee();
   if (!availableCoffee) {
@@ -25,9 +26,11 @@ function CheckoutPage() {
       </main>
     );
   }
-
+  const bg = data.siteSettings.backgroundImage
+    ? `url(${data.siteSettings.backgroundImage.asset.gatsbyImageData.images.fallback.src})`
+    : data.siteSettings.backgroundColor.hex;
   return (
-    <Layout>
+    <Layout bg={bg}>
       <CheckoutPageWrapper>
         <SEO title='Checkout' />
         <main>
@@ -37,4 +40,18 @@ function CheckoutPage() {
     </Layout>
   );
 }
-export default CheckoutPage;
+
+export const query = graphql`
+  query CheckoutPageQuery {
+    siteSettings: sanitySiteSettings(_id: { eq: "siteSettings" }) {
+      backgroundImage {
+        asset {
+          gatsbyImageData(fit: FILL, formats: AUTO, placeholder: DOMINANT_COLOR)
+        }
+      }
+      backgroundColor {
+        hex
+      }
+    }
+  }
+`;

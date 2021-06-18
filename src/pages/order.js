@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { graphql } from 'gatsby';
 import styled from 'styled-components';
 import OrderListItem from '../components/OrderListItem';
 import SEO from '../components/SEO';
@@ -35,11 +36,15 @@ const CheckoutPageWrapper = styled.div`
   font-family: monospace;
   padding: 0 1rem;
 `;
-export default function orderPage({ location }) {
-  // console.log('location', location.state);
+export default function orderPage({ data, errors, location }) {
   const [orderItems, setOrderItems] = useState([]);
   const [charge, setCharge] = useState([]);
   const [shippingDetails, setShippingDetails] = useState({});
+
+  const bg = data.siteSettings.backgroundImage
+    ? `url(${data.siteSettings.backgroundImage.asset.gatsbyImageData.images.fallback.src})`
+    : data.siteSettings.backgroundColor.hex;
+
   useEffect(() => {
     if (location?.state) {
       setOrderItems(location.state.orderItems);
@@ -47,10 +52,9 @@ export default function orderPage({ location }) {
       setShippingDetails(location.state.shippingDetails);
     } else return;
   }, []);
-  // const payment = location.state.orderRes.charge
 
   return (
-    <Layout>
+    <Layout bg={bg}>
       <CheckoutPageWrapper>
         <SEO title={'Order Summary'} />
         <main>
@@ -101,6 +105,21 @@ export default function orderPage({ location }) {
     </Layout>
   );
 }
+
+export const query = graphql`
+  query OrderPageQuery {
+    siteSettings: sanitySiteSettings(_id: { eq: "siteSettings" }) {
+      backgroundImage {
+        asset {
+          gatsbyImageData(fit: FILL, formats: AUTO, placeholder: DOMINANT_COLOR)
+        }
+      }
+      backgroundColor {
+        hex
+      }
+    }
+  }
+`;
 
 const DeliveryMethodDiv = styled.div`
   h4 {
