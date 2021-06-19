@@ -96,13 +96,14 @@ const TransitionText = styled.div`
 export default function landingPage({ data }) {
   console.log('data', data);
   const img1 =
-    data?.content.bgImage1?.asset.gatsbyImageData.images.fallback.src;
+    data?.content.bgImage1?.asset?.gatsbyImageData.images.fallback.src;
+  const coffeeBgColor = data.content.coffeeBackgroundColor?.hex || '#366349';
   const coffeeBg = data.content.bgImage2.asset
     ? `url(${data.content.bgImage2.asset.gatsbyImageData.images.fallback.src})`
-    : data.content.coffeeBackgroundColor.hex;
+    : coffeeBgColor;
   const img3 =
     data?.content.bgImage3?.asset.gatsbyImageData.images.fallback.src;
-  const bgColor = data.content.bottomBackgroundColor?.hex || '#fff';
+  const bgColor = data.content.bottomBackgroundColor?.hex || '#366349';
   const bottomBg = data?.content.bgImage4?.asset
     ? `url(${data.content.bgImage4.asset.gatsbyImageData.images.fallback.src})`
     : bgColor;

@@ -8,14 +8,11 @@ import Layout from '../components/Layout';
 const AboutContentStyles = styled.div``;
 
 export default function aboutPage({ data }) {
-  console.log('data', data);
   const pageHeading = data?.pageContent.heading;
   const text = data?.pageContent._rawText;
-  const bg = data.siteSettings.backgroundImage
-    ? `url(${data.siteSettings.backgroundImage.asset.gatsbyImageData.images.fallback.src})`
-    : data.siteSettings.backgroundColor.hex;
+
   return (
-    <Layout bg={bg}>
+    <Layout>
       <SEO title={'about'} />
       <main>
         <h1 className='pageHeading whiteText'>{pageHeading}</h1>
@@ -32,16 +29,6 @@ export const query = graphql`
     pageContent: sanityAboutPage(_id: { eq: "aboutPage" }) {
       heading
       _rawText(resolveReferences: { maxDepth: 10 })
-    }
-    siteSettings: sanitySiteSettings(_id: { eq: "siteSettings" }) {
-      backgroundImage {
-        asset {
-          gatsbyImageData(fit: FILL, formats: AUTO, placeholder: DOMINANT_COLOR)
-        }
-      }
-      backgroundColor {
-        hex
-      }
     }
   }
 `;

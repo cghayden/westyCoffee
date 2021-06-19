@@ -89,7 +89,6 @@ const CoffeeStatus = styled.div`
 `;
 
 function SingleCoffeeTile({ coffee }) {
-  console.log('coffee', coffee);
   const cost = coffee.price / 100;
   const { stock } = useCurrentStock(coffee._id);
 

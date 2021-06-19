@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql } from 'gatsby';
+// import { graphql } from 'gatsby';
 import styled from 'styled-components';
 import GraphQLErrorList from '../components/GraphqlErrorList';
 import InstagramSvg from '../components/Icons/InstagramSvg';
@@ -22,14 +22,11 @@ const Contact = styled.p`
 `;
 
 export default function contactPage({ data, errors }) {
-  const bg = data.siteSettings.backgroundImage
-    ? `url(${data.siteSettings.backgroundImage.asset.gatsbyImageData.images.fallback.src})`
-    : data.siteSettings.backgroundColor.hex;
   if (errors) {
     return <GraphQLErrorList errors={errors} />;
   }
   return (
-    <Layout bg={bg}>
+    <Layout>
       <SEO title={'Contact'} />
       <main>
         <div className='contentBox'>
@@ -56,17 +53,11 @@ export default function contactPage({ data, errors }) {
   );
 }
 
-export const query = graphql`
-  query ContactPageQuery {
-    siteSettings: sanitySiteSettings(_id: { eq: "siteSettings" }) {
-      backgroundImage {
-        asset {
-          gatsbyImageData(fit: FILL, formats: AUTO, placeholder: DOMINANT_COLOR)
-        }
-      }
-      backgroundColor {
-        hex
-      }
-    }
-  }
-`;
+// export const query = graphql`
+//   query ContactPageQuery {
+//     pageContent: sanityContactPage(_id: { eq: "contactPage" }) {
+//       heading
+//       _rawText(resolveReferences: { maxDepth: 10 })
+//     }
+//   }
+// `;

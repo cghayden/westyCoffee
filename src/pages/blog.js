@@ -12,10 +12,6 @@ import GraphQLErrorList from '../components/GraphqlErrorList';
 import BlogPreviewList from '../components/BlogPreviewList';
 
 export default function blogPage({ data, errors }) {
-  // console.log('data', data);
-  const bg = data.siteSettings.backgroundImage
-    ? `url(${data.siteSettings.backgroundImage.asset.gatsbyImageData.images.fallback.src})`
-    : data.siteSettings.backgroundColor.hex;
   if (errors) {
     return <GraphQLErrorList errors={errors} />;
   }
@@ -25,12 +21,9 @@ export default function blogPage({ data, errors }) {
         .filter(filterOutDocsPublishedInTheFuture)
     : [];
   return (
-    <Layout bg={bg}>
+    <Layout>
       <SEO title={'Blog'} />
-      <main>
-        {/* <h1>Blog</h1> */}
-        {postNodes && <BlogPreviewList nodes={postNodes} />}
-      </main>
+      <main>{postNodes && <BlogPreviewList nodes={postNodes} />}</main>
     </Layout>
   );
 }
@@ -63,16 +56,6 @@ export const query = graphql`
             current
           }
         }
-      }
-    }
-    siteSettings: sanitySiteSettings(_id: { eq: "siteSettings" }) {
-      backgroundImage {
-        asset {
-          gatsbyImageData(fit: FILL, formats: AUTO, placeholder: DOMINANT_COLOR)
-        }
-      }
-      backgroundColor {
-        hex
       }
     }
   }

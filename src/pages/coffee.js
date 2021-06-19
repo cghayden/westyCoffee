@@ -22,14 +22,11 @@ const HomePageTextStyles = styled.div`
 
 // *** STATICALLY BUILT PAGE
 export default function homePage({ data }) {
-  console.log('data', data);
   const pageHeading = data ? data.pageContent.heading : '';
   const text = data ? data.pageContent._rawTopText : [];
-  const bg = data.siteSettings.backgroundImage
-    ? `url(${data.siteSettings.backgroundImage.asset.gatsbyImageData.images.fallback.src})`
-    : data.siteSettings.backgroundColor.hex;
+
   return (
-    <Layout bg={bg}>
+    <Layout>
       <SEO title={'playground coffee'} />
       <HomeMainStyle>
         <h1 className='pageHeading'>{pageHeading}</h1>
@@ -63,16 +60,6 @@ export const query = graphql`
     pageContent: sanityCoffeePage(_id: { eq: "coffeePage" }) {
       heading
       _rawTopText(resolveReferences: { maxDepth: 10 })
-    }
-    siteSettings: sanitySiteSettings(_id: { eq: "siteSettings" }) {
-      backgroundImage {
-        asset {
-          gatsbyImageData(fit: FILL, formats: AUTO, placeholder: DOMINANT_COLOR)
-        }
-      }
-      backgroundColor {
-        hex
-      }
     }
   }
 `;

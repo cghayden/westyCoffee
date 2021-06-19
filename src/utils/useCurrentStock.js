@@ -10,8 +10,6 @@ export default function useCurrentStock(_id) {
   // Use a side effect to fetch the data from the graphql endpoint
   useEffect(
     function () {
-      console.log('FETCHING STOCK');
-      console.log('_id', typeof _id);
       // when the component loads, fetch the data
       fetch(
         process.env.NODE_ENV === 'development'
@@ -36,7 +34,6 @@ export default function useCurrentStock(_id) {
       )
         .then((res) => res.json())
         .then((res) => {
-          console.log('stock res.json', res);
           // TODO: checl for errors
           // set the data to state
           setStock(res.data.Coffee.stock);

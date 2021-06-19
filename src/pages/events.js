@@ -19,15 +19,13 @@ const EventRequestTextStyles = styled.div`
 export default function eventsPage({ data, errors }) {
   const pageHeading = data ? data.pageContent.heading : '';
   const topText = data?.pageContent._rawTopText;
-  const bg = data.siteSettings.backgroundImage
-    ? `url(${data.siteSettings.backgroundImage.asset.gatsbyImageData.images.fallback.src})`
-    : data.siteSettings.backgroundColor.hex;
+
   if (errors) {
     return <GraphQLErrorList errors={errors} />;
   }
   const eventNodes = (data || {}).events ? mapEdgesToNodes(data.events) : [];
   return (
-    <Layout bg={bg}>
+    <Layout>
       <SEO title={'Events'} />
       <main>
         <h1 className='alignCenter whiteText'>{pageHeading}</h1>
