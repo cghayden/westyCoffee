@@ -188,17 +188,6 @@ export const query = graphql`
           )
         }
       }
-      mainImage {
-        asset {
-          gatsbyImageData(
-            fit: FILL
-            placeholder: DOMINANT_COLOR
-            formats: [AUTO, WEBP, AVIF]
-          )
-        }
-        alt
-        caption
-      }
       flavorProfile
       singleOrigin
       roastLevel
