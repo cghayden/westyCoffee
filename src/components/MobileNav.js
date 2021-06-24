@@ -5,7 +5,7 @@ import InstagramSvg from './Icons/InstagramSvg';
 import XSvg from './Icons/XSvg';
 
 const MobileNavContainer = styled.div`
-  background: var(--navPanelGreen);
+  background: whitesmoke;
   color: var(--raisinBlack);
   box-shadow: var(--dropShadow3);
   padding: 1rem;
