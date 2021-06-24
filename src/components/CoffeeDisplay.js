@@ -4,6 +4,8 @@ import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee';
 import SingleCoffeeTile from './SingleCoffeeTile';
 
 const CoffeeDisplayStyles = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
