@@ -98,12 +98,9 @@ export default function SingleCoffeePage({ data }) {
             {coffee.flavorProfile && <p>{coffee.flavorProfile}</p>}
             {image && (
               <ImageDiv>
-                <GatsbyImage image={image} alt={image.alt} />
+                <GatsbyImage image={image} alt={`image of ${coffee.name}`} />
               </ImageDiv>
             )}
-            {/* <ShortDescriptionDiv>
-              {coffee.description && <p>{coffee.description}</p>}
-            </ShortDescriptionDiv> */}
           </CoffeeHeader>
           <CoffeeBody>
             <LongDescription>
@@ -190,6 +187,17 @@ export const query = graphql`
             formats: [AUTO, WEBP, AVIF]
           )
         }
+      }
+      mainImage {
+        asset {
+          gatsbyImageData(
+            fit: FILL
+            placeholder: DOMINANT_COLOR
+            formats: [AUTO, WEBP, AVIF]
+          )
+        }
+        alt
+        caption
       }
       flavorProfile
       singleOrigin

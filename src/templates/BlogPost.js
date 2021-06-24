@@ -18,7 +18,6 @@ export const query = graphql`
             placeholder: DOMINANT_COLOR
             formats: [AUTO, WEBP, AVIF]
           )
-          altText
         }
         alt
         caption
