@@ -16,8 +16,9 @@ const GlobalStyles = styled.createGlobalStyle`
     --darkGray: hsla(132, 5%, 38%, 1);
     --singleOriginGreen: hsl(146, 13%, 90%); /* #e2e9e5 */
     --singleOriginText: hsl(145, 10%, 20%);
-    --blendGreen: hsl(145, 10%, 63%);
+    --blendGreen: hsl(145, 10%, 70%);
     --blendText: hsl(145, 10%, 20%);
+    --darkGreen: hsl(145, 30%, 30%)
     --navPanelGreen: hsla(120, 25%, 95%, 1);
     --green: hsla(132, 32%, 60%, 0.8);
     --lightGray: hsla(129, 20%, 93%, 1);
@@ -81,6 +82,7 @@ const GlobalStyles = styled.createGlobalStyle`
     width: 95%;
     min-width: 318px;
     margin: 0 auto 2rem auto;
+    padding: 1rem 0;
     /* padding: 1rem 1rem 2rem 1rem; */
     /* background: var(--white); */
     border-radius: 4px;
@@ -92,8 +94,8 @@ const GlobalStyles = styled.createGlobalStyle`
     h4,
     h5,
     h6 {
-      margin: 0;
-      margin-bottom: 1rem;
+      margin: 1rem 0;
+      /* margin-bottom: 1rem; */
     }
   }
   p {

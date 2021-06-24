@@ -5,12 +5,12 @@ import SEO from '../components/SEO';
 import AddToCartForm from '../components/AddToCartForm';
 import { GatsbyImage } from 'gatsby-plugin-image';
 import PortableText from '../components/PortableText';
+import Layout from '../components/Layout';
 
 const CoffeeHeader = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* color: var(--white); */
   margin-bottom: 1rem;
   h1,
   h2 {
@@ -20,11 +20,6 @@ const CoffeeHeader = styled.div`
   p {
     font-style: italic;
   }
-`;
-const ShortDescriptionDiv = styled.div`
-  max-width: 85%;
-  margin: 0 auto;
-  text-align: center;
 `;
 
 const CoffeeBody = styled.div`
@@ -54,21 +49,15 @@ const DeetsAndForm = styled.div`
   justify-content: center;
 `;
 const CoffeeDetails = styled.dl`
-  /* margin: 0 auto 20px auto; */
   width: 300px;
   padding-right: 20px;
-  /* display: grid; */
-  /* grid-template-columns: max-content auto; */
-  /* align-items: baseline; */
   dt {
-    /* text-transform: uppercase; */
     padding: 0.5rem 0;
     justify-self: left;
     font-size: 18px;
     margin-right: 14px;
   }
   dd {
-    /* margin-left: 2rem; */
     color: darkgreen;
     font-weight: bold;
     justify-self: left;
@@ -87,22 +76,19 @@ const CoffeeDetails = styled.dl`
         color: darkgreen;
         font-size: 1.1rem;
       }
-      &:nth-of-type(2) {
-        /* color: red; */
-      }
     }
   }
 `;
 const ImageDiv = styled.div`
   max-width: 400px;
 `;
-export default function SingleCoffeePage({ data: { coffee } }) {
-  console.log('coffee', coffee);
-  const image = coffee.image?.asset.gatsbyImageData;
-  const text = coffee ? coffee._rawDescriptionLong : [];
+export default function SingleCoffeePage({ data }) {
+  const coffee = data?.coffee;
+  const image = data.coffee.image?.asset.gatsbyImageData;
+  const text = data.coffee ? data.coffee._rawDescriptionLong : [];
 
   return (
-    <>
+    <Layout>
       <SEO title={coffee.name} />
       <main>
         {/* <Img fluid={coffee.image.asset.fluid} /> */}
@@ -112,12 +98,9 @@ export default function SingleCoffeePage({ data: { coffee } }) {
             {coffee.flavorProfile && <p>{coffee.flavorProfile}</p>}
             {image && (
               <ImageDiv>
-                <GatsbyImage image={image} alt={image.alt} />
+                <GatsbyImage image={image} alt={`image of ${coffee.name}`} />
               </ImageDiv>
             )}
-            {/* <ShortDescriptionDiv>
-              {coffee.description && <p>{coffee.description}</p>}
-            </ShortDescriptionDiv> */}
           </CoffeeHeader>
           <CoffeeBody>
             <LongDescription>
@@ -184,7 +167,7 @@ export default function SingleCoffeePage({ data: { coffee } }) {
           </CoffeeBody>
         </div>
       </main>
-    </>
+    </Layout>
   );
 }
 

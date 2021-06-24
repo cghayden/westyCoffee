@@ -4,18 +4,11 @@ const { default: Stripe } = require('stripe');
 const { nanoid } = require('nanoid');
 const sanityClient = require('@sanity/client');
 const SanityOrders = sanityClient({
-  projectId: '2u11zhhx',
-  dataset: 'orders',
-  apiVersion: '2021-05-03', // use current UTC date - see "specifying API version"!
-  token: process.env.GATSBY_SANITY_ORDERS_API, // or leave blank for unauthenticated usage
-  useCdn: false, // `false` if you want to ensure fresh data
-});
-const SanityContent = sanityClient({
   projectId: 'yi1dikna',
   dataset: 'production',
   apiVersion: '2021-05-03', // use current UTC date - see "specifying API version"!
-  token: process.env.GATSBY_SANITY_MUTATION_API, // or leave blank for unauthenticated usage
-  useCdn: false, // `false` if you want to ensure fresh data
+  token: process.env.GATSBY_SANITY_MUTATION_API,
+  useCdn: true, // `false` if you want to ensure fresh data
 });
 
 function formatMoney(amount = 0) {
@@ -80,11 +73,13 @@ async function writeOrderToSanity({
     shippingState,
     shippingZip,
     customerComments,
+    shipped: false,
   };
   await SanityOrders.create(doc)
     .then((res) => {
       console.log(
-        'order written to sanity'
+        'order written to sanity',
+        res
         // `Order was created in Sanity, document ID is ${res._id}, write response is ${res}`
       );
     })

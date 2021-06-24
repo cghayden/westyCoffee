@@ -1,12 +1,10 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-// import Container from "../components/container";
 import GraphQLErrorList from '../components/GraphqlErrorList';
 import BlogPostComponent from '../components/BlogPostComponent';
 import SEO from '../components/SEO';
-// import SEO from "../components/seo";
-// import Layout from "../containers/layout";
 import { toPlainText } from '../utils/helpers';
+import Layout from '../components/Layout';
 
 export const query = graphql`
   query BlogPostTemplateQuery($id: String!) {
@@ -21,6 +19,8 @@ export const query = graphql`
             formats: [AUTO, WEBP, AVIF]
           )
         }
+        alt
+        caption
       }
       title
       slug {
@@ -35,14 +35,13 @@ export const query = graphql`
 const BlogPostTemplate = (props) => {
   const { data, errors } = props;
   const post = data && data.post;
+
   return (
-    <div>
-      {/* {errors && <SEO title='GraphQL Error' />} */}
+    <Layout>
       {post && (
         <SEO
           title={post.title || 'Untitled'}
           description={toPlainText(post._rawExcerpt)}
-          // image={post.mainImage}
         />
       )}
 
@@ -53,7 +52,7 @@ const BlogPostTemplate = (props) => {
       )}
 
       {post && <BlogPostComponent {...post} />}
-    </div>
+    </Layout>
   );
 };
 

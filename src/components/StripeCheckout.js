@@ -262,7 +262,7 @@ const CheckoutForm = ({
             </div>
             <RadioLabel
               active={shippingDetails.deliveryMethod === 'Pickup'}
-              for='checkout_id_delivery-pickup'
+              htmlFor='checkout_id_delivery-pickup'
             >
               <span className='radio__label'>
                 <StoreFrontIcon />
@@ -292,7 +292,7 @@ const CheckoutForm = ({
             </div>
             <RadioLabel
               active={shippingDetails.deliveryMethod === 'Shipping'}
-              for='checkout_id_delivery-shipping'
+              htmlFor='checkout_id_delivery-shipping'
             >
               <span className='radio__label'>
                 <ShippingTruckIcon w='18' h='18' />
@@ -572,7 +572,7 @@ function PickupChoiceInput({ shippingDetails, setShippingDetails }) {
           </div>
           <RadioLabel
             active={shippingDetails.pickupLocation === 'Daniels'}
-            for='checkout_id_pickup-daniels'
+            htmlFor='checkout_id_pickup-daniels'
           >
             <div className='radio__label pickupAddress'>
               <p className='pickup-locationName'>neighborly coffee</p>
@@ -603,7 +603,7 @@ function PickupChoiceInput({ shippingDetails, setShippingDetails }) {
           </div>
           <RadioLabel
             active={shippingDetails.pickupLocation === 'Edge'}
-            for='checkout_id_pickup-edge'
+            htmlFor='checkout_id_pickup-edge'
           >
             <div className='radio__label'>
               <div className='radio__label pickupAddress'>

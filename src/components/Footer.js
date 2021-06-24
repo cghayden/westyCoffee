@@ -3,12 +3,6 @@ import styled from 'styled-components';
 import '@fontsource/raleway';
 import InstagramSvg from './Icons/InstagramSvg';
 const FooterStyle = styled.footer`
-  /* background: linear-gradient(
-    to top,
-    white 70%,
-    hsla(0, 100%, 100%, 0.6) 95%,
-    transparent
-  ); */
   background: var(--white);
   font-family: 'Raleway';
   margin-top: auto;

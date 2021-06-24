@@ -103,6 +103,12 @@ const CartItemLi = styled.li`
     font-weight: bold;
     grid-column: 1/-1;
     justify-self: left;
+    font-size: 17px;
+    color: var(--raisinBlack);
+  }
+  p {
+    font-size: 14px;
+    color: var(--black);
   }
   .grind {
     /* margin: 0.5rem; */

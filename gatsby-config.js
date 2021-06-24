@@ -15,7 +15,8 @@ export default {
       resolve: 'gatsby-source-sanity',
       options: {
         projectId: 'yi1dikna',
-        dataset: 'production',
+        dataset: process.env.NODE_ENV === 'development' ? 'dev' : 'production',
+        // dataset: 'production',
         watchMode: true,
         token: process.env.SANITY_TOKEN,
       },

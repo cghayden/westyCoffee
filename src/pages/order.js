@@ -4,6 +4,7 @@ import OrderListItem from '../components/OrderListItem';
 import SEO from '../components/SEO';
 import CartPageStyles from '../styles/CartPageStyles';
 import formatMoney from '../utils/formatMoney';
+import Layout from '../components/Layout';
 
 const OrderPageStyles = styled(CartPageStyles)`
   h1,
@@ -35,10 +36,10 @@ const CheckoutPageWrapper = styled.div`
   padding: 0 1rem;
 `;
 export default function orderPage({ location }) {
-  // console.log('location', location.state);
   const [orderItems, setOrderItems] = useState([]);
   const [charge, setCharge] = useState([]);
   const [shippingDetails, setShippingDetails] = useState({});
+
   useEffect(() => {
     if (location?.state) {
       setOrderItems(location.state.orderItems);
@@ -46,58 +47,57 @@ export default function orderPage({ location }) {
       setShippingDetails(location.state.shippingDetails);
     } else return;
   }, []);
-  // const payment = location.state.orderRes.charge
 
   return (
-    <CheckoutPageWrapper>
-      <SEO title={'Order Summary'} />
-      <main>
-        <OrderPageStyles className='contentBox'>
-          <h1>Thank You For Your Order!</h1>
-          <p>
-            We'll contact you when your order
-            {shippingDetails.deliveryMethod === 'Pickup'
-              ? ' is ready for pickup'
-              : ' ships'}
-          </p>
-          <p>Check your email for a receipt of your order</p>
-          <ul>
-            {orderItems.map((orderItem, i) => (
-              <OrderListItem item={orderItem} key={`${orderItem.name}-`} />
-            ))}
-          </ul>
-
-          <div className='paymentDetails'>
-            {shippingDetails.deliveryMethod === 'Shipping' && (
-              <p
-                style={{
-                  textAlign: 'right',
-                  color: 'darkgreen',
-                  fontSize: '1rem',
-                }}
-              >
-                Shipping: {charge.amount < 5000 ? '$10.00' : '$0.00'}
-              </p>
-            )}
-            <p>Total Amount Charged: ${formatMoney(charge.amount)}</p>
-          </div>
-
-          <DeliveryMethodDiv>
-            {shippingDetails.deliveryMethod === 'Pickup' ? (
-              <>
-                <h4>picking up at</h4>
-                <PickupDetailsReview shippingDetails={shippingDetails} />
-              </>
-            ) : (
-              <>
-                <h4>shipping to:</h4>
-                <ShippingDetailsReview shippingDetails={shippingDetails} />
-              </>
-            )}
-          </DeliveryMethodDiv>
-        </OrderPageStyles>
-      </main>
-    </CheckoutPageWrapper>
+    <Layout>
+      <CheckoutPageWrapper>
+        <SEO title={'Order Summary'} />
+        <main>
+          <OrderPageStyles className='contentBox'>
+            <h1>Thank You For Your Order!</h1>
+            <p>
+              We'll contact you when your order
+              {shippingDetails.deliveryMethod === 'Pickup'
+                ? ' is ready for pickup'
+                : ' ships'}
+            </p>
+            <p>Check your email for a receipt of your order</p>
+            <ul>
+              {orderItems.map((orderItem, i) => (
+                <OrderListItem item={orderItem} key={`${orderItem.name}-`} />
+              ))}
+            </ul>
+            <div className='paymentDetails'>
+              {shippingDetails.deliveryMethod === 'Shipping' && (
+                <p
+                  style={{
+                    textAlign: 'right',
+                    color: 'darkgreen',
+                    fontSize: '1rem',
+                  }}
+                >
+                  Shipping: {charge.amount < 5000 ? '$10.00' : '$0.00'}
+                </p>
+              )}
+              <p>Total Amount Charged: ${formatMoney(charge.amount)}</p>
+            </div>
+            <DeliveryMethodDiv>
+              {shippingDetails.deliveryMethod === 'Pickup' ? (
+                <>
+                  <h4>picking up at</h4>
+                  <PickupDetailsReview shippingDetails={shippingDetails} />
+                </>
+              ) : (
+                <>
+                  <h4>shipping to:</h4>
+                  <ShippingDetailsReview shippingDetails={shippingDetails} />
+                </>
+              )}
+            </DeliveryMethodDiv>
+          </OrderPageStyles>
+        </main>
+      </CheckoutPageWrapper>
+    </Layout>
   );
 }
 

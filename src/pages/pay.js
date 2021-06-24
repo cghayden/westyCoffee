@@ -4,12 +4,9 @@ import CheckoutPage_CartContents from '../components/CheckoutPage_CartContents';
 import SEO from '../components/SEO';
 import { useCart } from '../components/CartContext';
 import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee';
+import Layout from '../components/Layout';
 
-const CheckoutPageWrapper = styled.div`
-  font-family: monospace;
-`;
-
-function CheckoutPage() {
+export default function CheckoutPage() {
   const { cartContents } = useCart();
   const { availableCoffee } = useCurrentAvailableCoffee();
   if (!availableCoffee) {
@@ -17,21 +14,24 @@ function CheckoutPage() {
   }
   if (!cartContents.length) {
     return (
-      <main>
-        <div className='contentBox'>
-          <p>Your cart is empty!</p>
-        </div>
-      </main>
+      <Layout>
+        <main>
+          <div className='contentBox'>
+            <p>Your cart is empty!</p>
+          </div>
+        </main>
+      </Layout>
     );
   }
 
   return (
-    <CheckoutPageWrapper>
-      <SEO title='Checkout' />
-      <main>
-        <CheckoutPage_CartContents availableCoffee={availableCoffee} />
-      </main>
-    </CheckoutPageWrapper>
+    <Layout>
+      <div>
+        <SEO title='Checkout' />
+        <main>
+          <CheckoutPage_CartContents availableCoffee={availableCoffee} />
+        </main>
+      </div>
+    </Layout>
   );
 }
-export default CheckoutPage;

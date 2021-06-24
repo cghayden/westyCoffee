@@ -1,6 +1,9 @@
 import React from 'react';
+// import { graphql } from 'gatsby';
 import styled from 'styled-components';
+import GraphQLErrorList from '../components/GraphqlErrorList';
 import InstagramSvg from '../components/Icons/InstagramSvg';
+import Layout from '../components/Layout';
 import SEO from '../components/SEO';
 
 const Address = styled.div`
@@ -18,12 +21,14 @@ const Contact = styled.p`
   }
 `;
 
-export default function contactPage() {
+export default function contactPage({ data, errors }) {
+  if (errors) {
+    return <GraphQLErrorList errors={errors} />;
+  }
   return (
-    <>
+    <Layout>
       <SEO title={'Contact'} />
       <main>
-        {/* <h1>neighborly coffee</h1> */}
         <div className='contentBox'>
           <Address className='address'>
             <p>neighborly coffee</p>
@@ -44,6 +49,15 @@ export default function contactPage() {
           </Address>
         </div>
       </main>
-    </>
+    </Layout>
   );
 }
+
+// export const query = graphql`
+//   query ContactPageQuery {
+//     pageContent: sanityContactPage(_id: { eq: "contactPage" }) {
+//       heading
+//       _rawText(resolveReferences: { maxDepth: 10 })
+//     }
+//   }
+// `;
