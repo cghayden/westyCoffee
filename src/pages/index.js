@@ -106,7 +106,7 @@ export default function landingPage({ data }) {
   const bgColor = data.content.bottomBackgroundColor?.hex || '#366349';
   const bottomBg = data?.content.bgImage4?.asset
     ? `url(${data.content.bgImage4.asset.gatsbyImageData.images.fallback.src})`
-    : bgColor;
+    : null;
   const overlayPortableText1 = data?.content._rawOverlayText1;
   const coffeeHeading = data.content.coffeeSectionHeading;
   const coffeeText = data.content._rawCoffeeText;
@@ -166,14 +166,18 @@ export default function landingPage({ data }) {
           </TransitionText>
         )}
 
-        <div
-          className='bgImg4'
-          style={{ minHeight: '100%', background: bottomBg }}
-        >
-          <FooterOverlay>
-            <Footer />
-          </FooterOverlay>
-        </div>
+        {bottomBg ? (
+          <div
+            className='bgImg4'
+            style={{ minHeight: '100%', background: bottomBg }}
+          >
+            <FooterOverlay>
+              <Footer />
+            </FooterOverlay>
+          </div>
+        ) : (
+          <Footer />
+        )}
       </HomeWrapper>
     </>
   );
