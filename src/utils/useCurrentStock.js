@@ -14,7 +14,7 @@ export default function useCurrentStock(_id) {
       fetch(
         process.env.NODE_ENV === 'development'
           ? process.env.GATSBY_SANITY_DEV_GRAPHQL_ENDPOINT
-          : process.env.GATSBY_SANITY_MUTATION_API,
+          : process.env.GATSBY_SANITY_GRAPHQL_ENDPOINT,
         {
           method: 'POST',
           headers: {
