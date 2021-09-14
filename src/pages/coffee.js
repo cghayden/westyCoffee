@@ -27,7 +27,7 @@ export default function homePage({ data }) {
 
   return (
     <Layout>
-      <SEO title={'playground coffee'} />
+      <SEO title={'neighborly coffee'} />
       <HomeMainStyle>
         <h1 className='pageHeading'>{pageHeading}</h1>
         <HomePageTextStyles>
