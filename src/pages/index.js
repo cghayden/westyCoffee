@@ -93,7 +93,7 @@ const TransitionText = styled.div`
   text-align: center;
 `;
 
-export default function landingPage({ data }) {
+export default function LandingPage({ data }) {
   const img1 =
     data?.content.bgImage1?.asset?.gatsbyImageData.images.fallback.src;
   const coffeeBgColor = data.content.coffeeBackgroundColor?.hex || '#366349';

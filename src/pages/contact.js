@@ -21,7 +21,7 @@ const Contact = styled.p`
   }
 `;
 
-export default function contactPage({ data, errors }) {
+export default function ContactPage({ data, errors }) {
   if (errors) {
     return <GraphQLErrorList errors={errors} />;
   }

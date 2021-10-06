@@ -21,7 +21,7 @@ const HomePageTextStyles = styled.div`
 `;
 
 // *** STATICALLY BUILT PAGE
-export default function homePage({ data }) {
+export default function CoffeePage({ data }) {
   const pageHeading = data ? data.pageContent.heading : '';
   const text = data ? data.pageContent._rawTopText : [];
 
