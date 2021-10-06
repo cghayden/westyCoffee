@@ -92,9 +92,7 @@ const initialInputValues = { size: 'one pound' };
 
 function AddToCartForm({ coffee }) {
   const { addToCart, totalCartPounds, openCart } = useCart();
-  const { inputs, handleChange, resetForm, clearForm } = useForm(
-    initialInputValues
-  );
+  const { inputs, handleChange } = useForm(initialInputValues);
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState();
 
@@ -116,7 +114,6 @@ function AddToCartForm({ coffee }) {
       grind: inputs.grind,
       unitPrice: inputs.size === 'half pound' ? coffee.price / 2 : coffee.price,
       size: inputs.size,
-      // comments: inputs.comments,
       _ref: coffee._id,
     });
     openCart();
@@ -124,7 +121,6 @@ function AddToCartForm({ coffee }) {
   return (
     <FormStyles action='POST' onSubmit={submitToCart}>
       <fieldset>
-        {/* <h3>choose grind and quantity to order</h3> */}
         <div className='input-item'>
           <label className='input-item-label'>quantity:</label>
           <QuantitySelector>
@@ -140,7 +136,6 @@ function AddToCartForm({ coffee }) {
               type='button'
               onClick={() =>
                 setQuantity((q) => {
-                  //if q <= in stock, add 1
                   return (q += 1);
                 })
               }
