@@ -25,10 +25,12 @@ export default function SEO({ children, location, description, title }) {
       <meta name='description' content={site.siteMetadata.description} />
       {/* Open Graph */}
       {location && <meta property='og:url' content={location.href} />}
+      <link rel='alternate icon' href='/favicon.ico' type='image/x-icon' />
+
       {/* <meta property='og:image' content={image || '/logo.svg'} /> */}
       <meta property='og:title' content={title} key='ogtitle' />
       <meta
-        propery='og:site_name'
+        property='og:site_name'
         content={site.siteMetadata.title}
         key='ogsitename'
       />

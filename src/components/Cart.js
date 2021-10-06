@@ -26,13 +26,8 @@ const ActionsDiv = styled.div`
 `;
 
 function Cart() {
-  const {
-    cartOpen,
-    closeCart,
-    cartContents,
-    orderTotal,
-    totalCartPounds,
-  } = useCart();
+  const { cartOpen, closeCart, cartContents, orderTotal, totalCartPounds } =
+    useCart();
 
   const { availableCoffee } = useCurrentAvailableCoffee();
   const currentStockAndPrice = compileCurrentStockAndPrice(availableCoffee);
@@ -110,9 +105,7 @@ const CartItemLi = styled.li`
     font-size: 14px;
     color: var(--black);
   }
-  .grind {
-    /* margin: 0.5rem; */
-  }
+
   .price {
     place-items: center;
     display: grid;

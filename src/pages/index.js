@@ -34,11 +34,11 @@ const HomeWrapper = styled.div`
   .bgImg3,
   .bgImg4 {
     position: relative;
-    /* background-attachment: fixed; */
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    /* -webkit-background-size: contain; */
+    /* disabled parallax because of issues on mobile */
+    /* background-attachment: fixed; */
   }
 `;
 const TextOverlay = styled.div`
@@ -94,7 +94,6 @@ const TransitionText = styled.div`
 `;
 
 export default function landingPage({ data }) {
-  console.log('data', data);
   const img1 =
     data?.content.bgImage1?.asset?.gatsbyImageData.images.fallback.src;
   const coffeeBgColor = data.content.coffeeBackgroundColor?.hex || '#366349';
@@ -103,7 +102,6 @@ export default function landingPage({ data }) {
     : coffeeBgColor;
   const img3 =
     data?.content.bgImage3?.asset.gatsbyImageData.images.fallback.src;
-  const bgColor = data.content.bottomBackgroundColor?.hex || '#366349';
   const bottomBg = data?.content.bgImage4?.asset
     ? `url(${data.content.bgImage4.asset.gatsbyImageData.images.fallback.src})`
     : null;
