@@ -3,7 +3,6 @@ import formatMoney from '../utils/formatMoney';
 import LineItemLi from '../styles/LineItemLi';
 
 export default function OrderListItem({ item }) {
-  //TODO - move the useCart call up to Cart
   if (!item) return null;
   const totalCost = formatMoney(item.quantity * item.unitPrice);
   return (

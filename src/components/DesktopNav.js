@@ -14,9 +14,6 @@ const NavStyles = styled.nav`
     &:hover {
       color: dark green;
     }
-    /* &[aria-current='page'] {
-      color: var(--red);
-    } */
   }
 `;
 

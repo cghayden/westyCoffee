@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee';
 import SingleCoffeeTile from './SingleCoffeeTile';
 
 const CoffeeDisplayStyles = styled.div`
@@ -15,7 +14,7 @@ function CoffeeDisplay({ allCoffee }) {
   return (
     <CoffeeDisplayStyles>
       {allCoffee.map((coffee) => (
-        <SingleCoffeeTile ffeeTile key={coffee._id} coffee={coffee} />
+        <SingleCoffeeTile key={coffee._id} coffee={coffee} />
       ))}
     </CoffeeDisplayStyles>
   );

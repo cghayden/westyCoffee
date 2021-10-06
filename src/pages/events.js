@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import PortableText from '../components/PortableText';
 import GraphQLErrorList from '../components/GraphqlErrorList';
 
-const EventRequestTextStyles = styled.div`
+const EventTextStyles = styled.div`
   margin-left: auto;
   margin-right: auto;
   color: var(--white);
@@ -40,9 +40,9 @@ export default function EventsPage({ data, errors }) {
       <main>
         <h1 className='alignCenter whiteText'>{pageHeading}</h1>
         {topText && (
-          <EventRequestTextStyles>
+          <EventTextStyles>
             <PortableText blocks={topText} />
-          </EventRequestTextStyles>
+          </EventTextStyles>
         )}
         {eventNodes && <EventList nodes={eventNodes} />}
       </main>

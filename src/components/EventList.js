@@ -4,13 +4,10 @@ import styled from 'styled-components';
 import PortableText from './PortableText';
 import { GatsbyImage } from 'gatsby-plugin-image';
 
-// import * as styles from "./blog-post-preview-list.module.css";
-
 const EventListUlStyles = styled.ul`
   display: grid;
   grid-gap: 20px;
   margin: 0 auto;
-  /* width: 95%; */
   h2 {
     font-size: 1.3rem;
     margin: 0.5rem 0;
@@ -24,11 +21,7 @@ const Date = styled.div`
   }
 `;
 
-const EventInfoStyles = styled.div``;
 export default function EventList(props) {
-  console.log('props', props);
-
-  //   console.log('events props', props.nodes);
   return (
     <div>
       <EventListUlStyles>
@@ -58,12 +51,11 @@ const TextWrapper = styled.div`
 `;
 
 function EventListing({ eventData }) {
-  console.log('eventData', eventData);
   const image = eventData.mainImage?.asset.gatsbyImageData;
   return (
     <li className='contentBox' key={eventData.id}>
       <h2>{eventData.title}</h2>
-      <EventInfoStyles>
+      <div>
         <Date>{dayjs(eventData.date).format('MMMM DD, YYYY')}</Date>
         <ImageAndContentWrapper>
           {image && (
@@ -75,7 +67,7 @@ function EventListing({ eventData }) {
             <PortableText blocks={eventData._rawDescription} />
           </TextWrapper>
         </ImageAndContentWrapper>
-      </EventInfoStyles>
+      </div>
     </li>
   );
 }

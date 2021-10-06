@@ -44,19 +44,14 @@ function CheckoutPage_CartContents({ availableCoffee }) {
     totalCartPounds,
     rawShippingCost,
     rawOrderTotal,
-    // grandTotal,
   } = useCart();
-  const { inputs, handleChange, resetForm, clearForm } = useForm(initialValues);
+  const { inputs, handleChange } = useForm(initialValues);
   const formattedShippingCost = formatMoney(rawShippingCost);
   const currentStockAndPrice = compileCurrentStockAndPrice(availableCoffee);
   const stockAlerts = checkStock(currentStockAndPrice, totalCartPounds);
   const grandTotal = shippingBoolean
     ? formatMoney(rawOrderTotal + rawShippingCost)
     : formatMoney(rawOrderTotal);
-
-  // console.log('orderTotal', orderTotal);
-  // console.log('rawShippingCost', rawShippingCost);
-  // console.log('grandTotal', grandTotal);
 
   return (
     <CartPageStyles className='contentBox'>
@@ -223,9 +218,6 @@ function CartItem({ cartItem, removeFromCart, addToCart }) {
       <p className='grind'>{`${cartItem.grind}, ${cartItem.size} bag`}</p>
       <p className='details'>
         <span>{`${cartItem.quantity}`}</span>
-        {/* <span>
-          {cartItem.quantity > 1 ? 's' : ''}
-        </span> */}
         <span>&times; </span>
         <span>{`${formatMoney(cartItem.unitPrice)} ea.`} </span>
         <span>= </span>

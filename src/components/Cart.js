@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import CartStyles from '../styles/CartStyles';
 import { useCart } from './CartContext';
-import CloseButton from './CloseButton';
 import TrashIcon from './Icons/TrashIcon';
 import formatMoney from '../utils/formatMoney';
 import { Link } from 'gatsby';
@@ -23,6 +22,12 @@ const ActionsDiv = styled.div`
     font-size: 14px;
     margin: 8px;
   }
+`;
+const CloseButton = styled.button`
+  color: black;
+  font-size: 2rem;
+  border: 0;
+  margin-left: auto;
 `;
 
 function Cart() {
@@ -182,6 +187,7 @@ function CartItem({ cartItem }) {
           className='btn-icon trashButton'
           onClick={() => {
             if (
+              // eslint-disable-next-line no-restricted-globals
               confirm(
                 `Would you like to remove all ${cartItem.size}, ${cartItem.grind}, ${cartItem.name} form your cart?`
               )
