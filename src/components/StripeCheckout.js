@@ -112,6 +112,9 @@ const CheckoutForm = ({
   const { orderTotal, processOrder, emptyCart, setShipping } = useCart();
 
   async function adjustSanityStock(orderItems) {
+    if (process.env.NODE_ENV === 'development') {
+      return;
+    }
     const adjustQuantityMutations = orderItems.map((orderItem) => ({
       patch: {
         id: orderItem._ref,
@@ -180,7 +183,6 @@ const CheckoutForm = ({
         setProcessing(false);
         setPaymentMethod(null);
       } else {
-        // console.log('order successful', parsedResponse);
         //update stock
         adjustSanityStock(parsedResponse.orderItems);
         //route to order summary page
@@ -227,18 +229,6 @@ const CheckoutForm = ({
           <p>{error}</p>
         </ErrorStyle>
       )}
-      {/* <fieldset className='FormGroup'>
-        <legend>comments</legend>
-        <Field
-          label={'comments'}
-          id='customerComments'
-          type='textarea'
-          placeholder={'comments'}
-          value={inputs.customerComments}
-          onChange={handleChange}
-        />
-         </fieldset> */}
-
       <fieldset className='FormGroup display-table'>
         <div className='FormRow radioStack'>
           <div className='radio-wrapper FormRowInput'>
@@ -437,7 +427,11 @@ const CheckoutForm = ({
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
-const stripePromise = loadStripe(process.env.GATSBY_STRIPE_PUBLISHABLE_KEY);
+const stripePromise = loadStripe(
+  process.env.NODE_ENV === 'production'
+    ? process.env.GATSBY_STRIPE_PUBLISHABLE_KEY
+    : process.env.GATSBY_STRIPE_TEST_PUBLISHABLE_KEY
+);
 
 export default function StripeCheckout({
   shippingBoolean,
@@ -537,7 +531,6 @@ function ShippingAddressInput({ shippingDetails, setShippingDetails }) {
         label={!shippingDetails.zip.length ? '' : 'zip'}
         id='zipCode'
         type='text'
-        placeholder='00000'
         placeholder={!shippingDetails.zip.length ? 'zip' : null}
         autoComplete='postal-code'
         value={shippingDetails.zip}
@@ -674,11 +667,4 @@ const CARD_OPTIONS = {
       //   color: '#ffc7ee',
     },
   },
-};
-const ELEMENTS_OPTIONS = {
-  fonts: [
-    {
-      cssSrc: 'https://fonts.googleapis.com/css?family=Roboto',
-    },
-  ],
 };

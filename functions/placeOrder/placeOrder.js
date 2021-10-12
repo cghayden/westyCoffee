@@ -1,29 +1,15 @@
-// const nodemailer = require('nodemailer');
 const { default: Stripe } = require('stripe');
-// const formatMoney = require('../../src/utils/formatMoney');
 const { nanoid } = require('nanoid');
 const sanityClient = require('@sanity/client');
+
+//default NODE_ENV in netlify functions === 'development', so to avoid writing orders to production db, ***must set NODE_ENV manually in netlify UI,*** and check here to write the order to the proper dataset
 const SanityOrders = sanityClient({
   projectId: 'yi1dikna',
-  dataset: 'production',
-  apiVersion: '2021-05-03', // use current UTC date - see "specifying API version"!
+  dataset: process.env.NODE_ENV === 'production' ? 'production' : 'dev',
+  apiVersion: '2021-05-03',
   token: process.env.GATSBY_SANITY_MUTATION_API,
-  useCdn: true, // `false` if you want to ensure fresh data
+  useCdn: false,
 });
-
-function formatMoney(amount = 0) {
-  const options = {
-    style: 'decimal',
-    // currency: 'USD',
-    minimumFractionDigits: 2,
-  };
-  // check if its a clean dollar amount
-  // if (amount % 100 === 0) {
-  //   options.minimumFractionDigits = 0;
-  // }
-  const formatter = Intl.NumberFormat('en-US', options);
-  return formatter.format(amount / 100);
-}
 
 async function writeOrderToSanity({
   name,
@@ -77,11 +63,7 @@ async function writeOrderToSanity({
   };
   await SanityOrders.create(doc)
     .then((res) => {
-      console.log(
-        'order written to sanity',
-        res
-        // `Order was created in Sanity, document ID is ${res._id}, write response is ${res}`
-      );
+      console.log('order written to sanity', res);
     })
     .catch((err) => {
       console.error('error writing order to Sanity:', err);
@@ -89,13 +71,16 @@ async function writeOrderToSanity({
     });
 }
 
-const stripe = new Stripe(process.env.GATSBY_STRIPE_SECRET_KEY, {
-  apiVersion: '2020-08-27',
-});
+const stripe = new Stripe(
+  process.env.NODE_ENV === 'production'
+    ? process.env.GATSBY_STRIPE_SECRET_KEY
+    : process.env.GATSBY_STRIPE_TEST_SECRET_KEY,
+  {
+    apiVersion: '2020-08-27',
+  }
+);
 exports.handler = async (event, context) => {
-  // wait(5000) - simulate loading state
   const body = JSON.parse(event.body);
-  // console.log(body);
   // Check if honeypot field is filled out
   if (body.mapleSyrup) {
     return {
@@ -149,7 +134,6 @@ exports.handler = async (event, context) => {
       ${shippingString}`;
   }
   const stripeDescription = createStripeDescription(body.order, body);
-  // console.log('stripeDescription', stripeDescription);
 
   let charge;
   try {
@@ -214,47 +198,3 @@ exports.handler = async (event, context) => {
     }),
   };
 };
-
-// const transporter = nodemailer.createTransport({
-//   host: process.env.ETHEREAL_MAIL_HOST,
-//   port: 587,
-//   auth: {
-//     user: process.env.ETHEREAL_MAIL_USER,
-//     pass: process.env.ETHEREAL_MAIL_PASS,
-//   },
-// });
-// const mailRes = await transporter.sendMail({
-//   from: ' Neighborly Coffee <neighborly@example.com>',
-//   to: `${body.name} <${body.email}>, orders@neighborlycoffee.com`,
-//   subject: 'Your Order!',
-//   html: generateOrderEmail({
-//     order: body.order,
-//     total: body.total,
-//     // receiptUrl: charge.charges.data[0].receipt_url,
-//   }),
-// });
-
-// function generateOrderEmail({ order, total, receiptUrl }) {
-//   return `<div
-//       <h2>Your Recent Order from Neighborly Coffee</h2>
-//       <ul>
-//       ${order
-//         .map((item) => {
-//           const unitPrice = formatMoney(item.unitPrice);
-//           const itemTotal = formatMoney(item.quantity * item.unitPrice);
-//           return `<li>
-//           <p><strong>${item.size} bag of ${item.grind} ${item.name}</strong></p>
-//             <p>${item.quantity} @ ${unitPrice} ea. = ${itemTotal}</p></li>`;
-//         })
-//         .join('')}
-//       </ul>
-//       <p>Your total is <strong>${formatMoney(total)}</strong> due at pickup</p>
-//       <a href="${receiptUrl}" target="_blank" rel="noreferrer noopener">View this transaction Receipt</a>
-//       <p>Thank You for your business!</p>
-//       <style>
-//           ul {
-//             list-style: none;
-//           }
-//       </style>
-//     </div>`;
-// }
