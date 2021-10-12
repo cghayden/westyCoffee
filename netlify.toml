@@ -1,6 +1,2 @@
 [build]
   functions = "functions/"
-
-[context.deploy-preview.environment]
-  ACCESS_TOKEN = "not so secret"
-  NODE_ENV = "development"
