@@ -5,7 +5,7 @@ const sanityClient = require('@sanity/client');
 //default NODE_ENV in netlify functions === 'development', so to avoid writing orders to production db, ***must set NODE_ENV manually in netlify UI,*** and check here to write the order to the proper dataset
 const SanityOrders = sanityClient({
   projectId: 'yi1dikna',
-  dataset: process.env.NODE_ENV === 'production' ? 'production' : 'dev',
+  dataset: 'production',
   apiVersion: '2021-05-03',
   token: process.env.GATSBY_SANITY_MUTATION_API,
   useCdn: false,
@@ -71,14 +71,9 @@ async function writeOrderToSanity({
     });
 }
 
-const stripe = new Stripe(
-  process.env.NODE_ENV === 'production'
-    ? process.env.GATSBY_STRIPE_SECRET_KEY
-    : process.env.GATSBY_STRIPE_TEST_SECRET_KEY,
-  {
-    apiVersion: '2020-08-27',
-  }
-);
+const stripe = new Stripe(process.env.GATSBY_STRIPE_SECRET_KEY, {
+  apiVersion: '2020-08-27',
+});
 exports.handler = async (event, context) => {
   const body = JSON.parse(event.body);
   // Check if honeypot field is filled out
