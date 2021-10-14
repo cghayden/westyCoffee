@@ -1,6 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-import CheckoutPage_CartContents from '../components/CheckoutPage_CartContents';
+import Checkout from '../components/Checkout';
 import SEO from '../components/SEO';
 import { useCart } from '../components/CartContext';
 import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee';
@@ -29,7 +28,7 @@ export default function CheckoutPage() {
       <div>
         <SEO title='Checkout' />
         <main>
-          <CheckoutPage_CartContents availableCoffee={availableCoffee} />
+          <Checkout availableCoffee={availableCoffee} />
         </main>
       </div>
     </Layout>

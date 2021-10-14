@@ -1,13 +1,12 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 
-const gql = String.raw
+const gql = String.raw;
 
 export default function useCurrentAvailableCoffee() {
-  const [availableCoffee, setAvailableCoffee] = useState([])
+  const [availableCoffee, setAvailableCoffee] = useState([]);
 
   useEffect(function () {
-    console.log('FETCHING CURRENT COFFEE AVAILABILITY ')
-    // when the component loads, fetch the data
+    // console.log('FETCHING CURRENT COFFEE AVAILABILITY ')
     fetch(process.env.GATSBY_SANITY_GRAPHQL_ENDPOINT, {
       method: 'POST',
       headers: {
@@ -29,15 +28,15 @@ export default function useCurrentAvailableCoffee() {
       .then((res) => res.json())
       .then((res) => {
         // set the data to state
-        setAvailableCoffee(res.data.allCoffee)
+        setAvailableCoffee(res.data.allCoffee);
       })
       // checkfor errors
       .catch((err) => {
-        console.log('SHOOOOOT')
-        console.log(err)
-      })
-  }, [])
+        console.log('SHOOOOOT');
+        console.log(err);
+      });
+  }, []);
   return {
     availableCoffee,
-  }
+  };
 }

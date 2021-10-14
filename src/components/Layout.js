@@ -55,7 +55,6 @@ export default function Layout({ children }) {
   const bgImg =
     data?.settings.edges[0].node.backgroundImage?.asset.gatsbyImageData.images
       .fallback.src;
-  console.log('layout bgImg', bgImg);
   const bgColor = data?.settings.edges[0].node.backgroundColor.hex || '#366349';
 
   const bg = bgImg ? `url(${bgImg})` : bgColor;

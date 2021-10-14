@@ -35,7 +35,7 @@ const initialValues = {
   customerComments: '',
 };
 
-function CheckoutPage_CartContents({ availableCoffee }) {
+function Checkout({ availableCoffee }) {
   const [shippingBoolean, setShippingBoolean] = useState(false);
   const {
     cartContents,
@@ -205,6 +205,7 @@ function CartItem({ cartItem, removeFromCart, addToCart }) {
           className='btn-icon trashButton'
           onClick={() => {
             if (
+              // eslint-disable-next-line no-restricted-globals
               confirm(
                 `Would you like to remove all ${cartItem.size}, ${cartItem.grind}, ${cartItem.name} form your cart?`
               )
@@ -227,4 +228,4 @@ function CartItem({ cartItem, removeFromCart, addToCart }) {
   );
 }
 
-export default CheckoutPage_CartContents;
+export default Checkout;
