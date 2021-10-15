@@ -69,6 +69,7 @@ const CoffeeStatus = styled.div`
 
 function SingleCoffeeTile({ coffee }) {
   const { stock } = useCurrentStock(coffee._id);
+  console.log('stock', stock);
 
   return (
     <Link to={`/coffee/${coffee.slug.current}`}>

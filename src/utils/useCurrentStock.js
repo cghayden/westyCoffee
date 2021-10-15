@@ -3,9 +3,7 @@ import { useState, useEffect } from 'react';
 const gql = String.raw;
 
 export default function useCurrentStock(_id) {
-  // hot slices
   const [stock, setStock] = useState();
-  // slicemasters
 
   // Use a side effect to fetch the data from the graphql endpoint
   useEffect(

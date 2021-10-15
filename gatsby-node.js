@@ -20,7 +20,7 @@ async function fetchCoffeeAndTurnIntoPages({ graphql, actions }) {
 
   const { data } = await graphql(`
     query {
-      coffees: allSanityCoffee {
+      coffees: allSanityCoffee(filter: { stock: { gt: 0 } }) {
         nodes {
           name
           slug {

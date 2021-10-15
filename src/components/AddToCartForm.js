@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import formatMoney from '../utils/formatMoney';
+import useCurrentStock from '../utils/useCurrentStock';
 import useForm from '../utils/useForm';
 import { useCart } from './CartContext';
 import MinusSvg from './Icons/MinusSvg';
@@ -91,6 +92,10 @@ const QuantitySelector = styled.div`
 const initialInputValues = { size: 'one pound' };
 
 function AddToCartForm({ coffee }) {
+  console.log('single coffee form', coffee);
+  const { stock } = useCurrentStock(coffee._id);
+  console.log('single coffee stock:', stock);
+
   const { addToCart, totalCartPounds, openCart } = useCart();
   const { inputs, handleChange } = useForm(initialInputValues);
   const [quantity, setQuantity] = useState(1);
@@ -134,6 +139,7 @@ function AddToCartForm({ coffee }) {
             <p>{quantity}</p>
             <button
               type='button'
+              disabled={quantity === stock}
               onClick={() =>
                 setQuantity((q) => {
                   return (q += 1);
