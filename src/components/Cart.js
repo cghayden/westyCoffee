@@ -6,7 +6,6 @@ import { Link } from 'gatsby';
 import useAllAvailableCoffee from '../utils/useAllAvailableCoffee';
 import checkStock from '../utils/checkStock';
 import CartAlerts from './CartAlerts';
-import compileCurrentStockAndPrice from '../utils/compileCurrentStockAndPriceListing';
 import CartItem from './CartItem';
 
 const ActionsDiv = styled.div`
@@ -30,12 +29,9 @@ const CloseButton = styled.button`
 function Cart() {
   const { cartOpen, closeCart, cartContents, orderTotal, totalCartPounds } =
     useCart();
-  const { availableCoffee } = useAllAvailableCoffee();
-  // console.log('availableCoffee', availableCoffee);
-  // console.log('availableCoffee', availableCoffee);
-  const currentStockAndPrice = compileCurrentStockAndPrice(availableCoffee);
-  console.log('currentStockAndPrice', currentStockAndPrice);
-  const stockAlerts = checkStock(currentStockAndPrice, totalCartPounds);
+  const { allStockAndPrice } = useAllAvailableCoffee();
+
+  const stockAlerts = checkStock(allStockAndPrice, totalCartPounds);
 
   return (
     <CartStyles open={cartOpen}>
@@ -56,6 +52,7 @@ function Cart() {
       </ul>
       {stockAlerts.length > 0 && <CartAlerts alerts={stockAlerts} />}
       {!!cartContents.length && !stockAlerts.length && (
+        //StockAlert Component OR keep shopping/checkout
         <>
           <footer>
             <h3>Total: $ {orderTotal}</h3>

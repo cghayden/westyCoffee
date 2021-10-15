@@ -6,9 +6,9 @@ import CartPageStyles from '../styles/CartPageStyles';
 import useForm from '../utils/useForm';
 import StripeCheckout from './StripeCheckout';
 import CartAlerts from './CartAlerts';
-import compileCurrentStockAndPrice from '../utils/compileCurrentStockAndPriceListing';
 import checkStock from '../utils/checkStock';
 import CartItem from './CartItem';
+import useAllAvailableCoffee from '../utils/useAllAvailableCoffee';
 
 const CartContents = styled.div`
   width: 100%;
@@ -33,14 +33,14 @@ const initialValues = {
   customerComments: '',
 };
 
-function Checkout({ availableCoffee }) {
+function Checkout() {
   const [shippingBoolean, setShippingBoolean] = useState(false);
   const { cartContents, totalCartPounds, rawShippingCost, rawOrderTotal } =
     useCart();
+  const { allStockAndPrice } = useAllAvailableCoffee();
   const { inputs, handleChange } = useForm(initialValues);
   const formattedShippingCost = formatMoney(rawShippingCost);
-  const currentStockAndPrice = compileCurrentStockAndPrice(availableCoffee);
-  const stockAlerts = checkStock(currentStockAndPrice, totalCartPounds);
+  const stockAlerts = checkStock(allStockAndPrice, totalCartPounds);
   const grandTotal = shippingBoolean
     ? formatMoney(rawOrderTotal + rawShippingCost)
     : formatMoney(rawOrderTotal);
@@ -70,7 +70,7 @@ function Checkout({ availableCoffee }) {
         </footer>
         {stockAlerts.length > 0 && <CartAlerts alerts={stockAlerts} />}
       </CartContents>
-
+      {/* // Stock Alert OR Checkout flow  // */}
       {!!cartContents.length && !stockAlerts.length && (
         <>
           <CommentsInput className='input-item' id='customerComments'>

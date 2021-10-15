@@ -2,15 +2,10 @@ import React from 'react';
 import Checkout from '../components/Checkout';
 import SEO from '../components/SEO';
 import { useCart } from '../components/CartContext';
-import useAllAvailableCoffee from '../utils/useAllAvailableCoffee';
 import Layout from '../components/Layout';
 
 export default function CheckoutPage() {
   const { cartContents } = useCart();
-  const { availableCoffee } = useAllAvailableCoffee();
-  if (!availableCoffee) {
-    return <p>Loading...</p>;
-  }
   if (!cartContents.length) {
     return (
       <Layout>
@@ -28,7 +23,7 @@ export default function CheckoutPage() {
       <div>
         <SEO title='Checkout' />
         <main>
-          <Checkout availableCoffee={availableCoffee} />
+          <Checkout />
         </main>
       </div>
     </Layout>

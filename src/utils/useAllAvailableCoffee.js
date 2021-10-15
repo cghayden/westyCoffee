@@ -3,7 +3,18 @@ import { useState, useEffect } from 'react';
 const gql = String.raw;
 
 export default function useAllAvailableCoffee() {
-  const [availableCoffee, setAvailableCoffee] = useState([]);
+  const [allStockAndPrice, setAllStockAndPrice] = useState({});
+
+  function compileCurrentStockAndPrice(availableCoffee) {
+    const currentStockAndPrice = {};
+    availableCoffee.forEach((coffee) => {
+      currentStockAndPrice[coffee.name] = {
+        stock: coffee.stock,
+        price: coffee.price,
+      };
+    });
+    setAllStockAndPrice(currentStockAndPrice);
+  }
 
   useEffect(function () {
     // console.log('FETCHING CURRENT COFFEE AVAILABILITY ')
@@ -32,8 +43,8 @@ export default function useAllAvailableCoffee() {
     )
       .then((res) => res.json())
       .then((res) => {
-        // set the data to state
-        setAvailableCoffee(res.data.allCoffee);
+        // shape the data and set to state
+        compileCurrentStockAndPrice(res.data.allCoffee);
       })
       // checkfor errors
       .catch((err) => {
@@ -42,6 +53,6 @@ export default function useAllAvailableCoffee() {
       });
   }, []);
   return {
-    availableCoffee,
+    allStockAndPrice,
   };
 }
