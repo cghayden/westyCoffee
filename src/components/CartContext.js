@@ -23,10 +23,6 @@ function CartStateProvider({ children }) {
     setCartOpen(true);
   }
 
-  function toggleShipping() {
-    setShipping((shipping) => !shipping);
-  }
-
   function sortCart(a, b) {
     const itemA = a.name.toUpperCase();
     const itemB = b.name.toUpperCase();
@@ -39,11 +35,11 @@ function CartStateProvider({ children }) {
     return comparison;
   }
 
-  function addToCart({ quantity, name, grind, unitPrice, size, _ref }) {
+  function addToCart({ quantity, name, grind, unitPrice, size, _ref, _id }) {
     if (!cartContents.length) {
       setCartContents((cartContents) => [
         ...cartContents,
-        { quantity, name, grind, unitPrice, size, _ref },
+        { quantity, name, grind, unitPrice, size, _ref, _id },
       ]);
       return;
     }
@@ -60,7 +56,7 @@ function CartStateProvider({ children }) {
       setCartContents((cartContents) =>
         [
           ...cartContents,
-          { quantity, name, grind, unitPrice, size, _ref },
+          { quantity, name, grind, unitPrice, size, _ref, _id },
         ].sort(sortCart)
       );
       return;
@@ -101,7 +97,6 @@ function CartStateProvider({ children }) {
   const rawOrderTotal = calcOrderTotal(cartContents);
   const orderTotal = formatMoney(calcOrderTotal(cartContents));
   const rawShippingCost = rawOrderTotal < 5000 ? 1000 : 0;
-  // const grandTotal = formatMoney(rawShippingCost + rawOrderTotal);
   const totalCartPounds = calcTotalPoundsInCart(cartContents);
 
   const gql = String.raw;
@@ -113,7 +108,6 @@ function CartStateProvider({ children }) {
     customerComments,
     botBait
   ) {
-    // const result={error:false}
     //1. set prices on each order item and calculate order total
     //(coffeePrices is from the checkout page dynamic query of all coffees and their prices, to guard against client changing the prices in the browser state before submitting order.)
 
@@ -178,7 +172,6 @@ function CartStateProvider({ children }) {
       shippingDetails.deliveryMethod === 'Shipping'
         ? costWithShipping(cartCopy)
         : calcOrderTotal(cartCopy);
-    console.log('verified grandTotal ', grandTotal);
 
     const body = {
       order: cartCopy,
@@ -227,8 +220,6 @@ function CartStateProvider({ children }) {
         shipping,
         setShipping,
         rawShippingCost,
-        // grandTotal,
-        rawOrderTotal,
       }}
     >
       {children}

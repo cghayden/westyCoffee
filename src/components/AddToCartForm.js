@@ -120,6 +120,7 @@ function AddToCartForm({ coffee }) {
       unitPrice: inputs.size === 'half pound' ? coffee.price / 2 : coffee.price,
       size: inputs.size,
       _ref: coffee._id,
+      _id: coffee._id,
     });
     openCart();
   }
