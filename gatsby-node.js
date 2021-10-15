@@ -16,7 +16,7 @@ exports.createSchemaCustomization = ({ actions, schema }) => {
   ]);
 };
 async function fetchCoffeeAndTurnIntoPages({ graphql, actions }) {
-  const coffeeTemplate = path.resolve('./src/templates/SingleCoffee.js');
+  const singleCoffeePage = path.resolve('./src/templates/SingleCoffeePage.js');
 
   const { data } = await graphql(`
     query {
@@ -32,15 +32,15 @@ async function fetchCoffeeAndTurnIntoPages({ graphql, actions }) {
   `);
   data.coffees.nodes.forEach((coffee) => {
     actions.createPage({
-      // What is the URL for this new page??
       path: `coffee/${coffee.slug.current}`,
-      component: coffeeTemplate,
+      component: singleCoffeePage,
       context: {
         slug: coffee.slug.current,
       },
     });
   });
 }
+
 async function createBlogPostPages({ graphql, actions }) {
   const blogTemplate = path.resolve('./src/templates/BlogPost.js');
   const result = await graphql(`

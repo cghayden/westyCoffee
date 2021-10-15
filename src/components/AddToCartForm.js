@@ -92,11 +92,11 @@ const QuantitySelector = styled.div`
 const initialInputValues = { size: 'one pound' };
 
 function AddToCartForm({ coffee }) {
-  console.log('single coffee form', coffee);
   const { stock } = useCurrentStock(coffee._id);
   console.log('single coffee stock:', stock);
 
   const { addToCart, totalCartPounds, openCart } = useCart();
+  console.log('totalCartPounds', totalCartPounds);
   const { inputs, handleChange } = useForm(initialInputValues);
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState();
@@ -204,19 +204,6 @@ function AddToCartForm({ coffee }) {
             <option value='ground'>Ground</option>
           </select>
         </div>
-        {/* <div className='input-item' id='comments'>
-          <label className='visuallyHidden' for='comments'>
-            comments:
-          </label>
-          <textarea
-            placeholder='comments'
-            id='comments'
-            name='comments'
-            rows='3'
-            cols='26'
-            onChange={handleChange}
-          ></textarea>
-        </div> */}
         <div className='errorDisplay'>
           {error && <p className='errorMessage'>{error}</p>}
         </div>
