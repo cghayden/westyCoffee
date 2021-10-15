@@ -65,7 +65,7 @@ function Checkout({ availableCoffee }) {
               cartItem={cartItem}
               removeFromCart={removeFromCart}
               addToCart={addToCart}
-              key={`-${cartItem.name}`}
+              key={`${i}-${cartItem.name}`}
             />
           ))}
         </ul>

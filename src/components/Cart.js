@@ -33,8 +33,8 @@ const CloseButton = styled.button`
 function Cart() {
   const { cartOpen, closeCart, cartContents, orderTotal, totalCartPounds } =
     useCart();
-
   const { availableCoffee } = useCurrentAvailableCoffee();
+  console.log('availableCoffee', availableCoffee);
   const currentStockAndPrice = compileCurrentStockAndPrice(availableCoffee);
   const stockAlerts = checkStock(currentStockAndPrice, totalCartPounds);
 
@@ -138,7 +138,7 @@ const QuantitySelector = styled.div`
   }
 `;
 function CartItem({ cartItem }) {
-  //TODO - move the useCart call up to Cart
+  console.log('cartItem', cartItem);
   const { removeFromCart, addToCart } = useCart();
   if (!cartItem) return null;
   const totalCost = formatMoney(cartItem.quantity * cartItem.unitPrice);
