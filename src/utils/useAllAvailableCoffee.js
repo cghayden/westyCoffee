@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 const gql = String.raw;
 
-export default function useCurrentAvailableCoffee() {
+export default function useAllAvailableCoffee() {
   const [availableCoffee, setAvailableCoffee] = useState([]);
 
   useEffect(function () {

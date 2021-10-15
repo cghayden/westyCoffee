@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import CartStyles from '../styles/CartStyles';
 import { useCart } from './CartContext';
 import { Link } from 'gatsby';
-import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee';
+import useAllAvailableCoffee from '../utils/useAllAvailableCoffee';
 import checkStock from '../utils/checkStock';
 import CartAlerts from './CartAlerts';
 import compileCurrentStockAndPrice from '../utils/compileCurrentStockAndPriceListing';
@@ -30,9 +30,11 @@ const CloseButton = styled.button`
 function Cart() {
   const { cartOpen, closeCart, cartContents, orderTotal, totalCartPounds } =
     useCart();
-  const { availableCoffee } = useCurrentAvailableCoffee();
+  const { availableCoffee } = useAllAvailableCoffee();
+  // console.log('availableCoffee', availableCoffee);
   // console.log('availableCoffee', availableCoffee);
   const currentStockAndPrice = compileCurrentStockAndPrice(availableCoffee);
+  console.log('currentStockAndPrice', currentStockAndPrice);
   const stockAlerts = checkStock(currentStockAndPrice, totalCartPounds);
 
   return (

@@ -2,12 +2,12 @@ import React from 'react';
 import Checkout from '../components/Checkout';
 import SEO from '../components/SEO';
 import { useCart } from '../components/CartContext';
-import useCurrentAvailableCoffee from '../utils/useCurrentAvailableCoffee';
+import useAllAvailableCoffee from '../utils/useAllAvailableCoffee';
 import Layout from '../components/Layout';
 
 export default function CheckoutPage() {
   const { cartContents } = useCart();
-  const { availableCoffee } = useCurrentAvailableCoffee();
+  const { availableCoffee } = useAllAvailableCoffee();
   if (!availableCoffee) {
     return <p>Loading...</p>;
   }
