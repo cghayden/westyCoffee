@@ -93,10 +93,10 @@ const initialInputValues = { size: 'one pound' };
 
 function AddToCartForm({ coffee }) {
   const { stock } = useCurrentStock(coffee._id);
-  console.log('single coffee stock:', stock);
+  // console.log('single coffee stock:', stock);
 
   const { addToCart, totalCartPounds, openCart } = useCart();
-  console.log('totalCartPounds', totalCartPounds);
+  // console.log('totalCartPounds', totalCartPounds);
   const { inputs, handleChange } = useForm(initialInputValues);
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState();

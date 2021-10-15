@@ -52,7 +52,6 @@ function CartStateProvider({ children }) {
     );
     //item of same size, grind and type IS NOT in the cart already
     if (matchingCartItemIndex === -1) {
-      // const cartCopy=[...cartContents]
       setCartContents((cartContents) =>
         [
           ...cartContents,
@@ -65,14 +64,9 @@ function CartStateProvider({ children }) {
     if (matchingCartItemIndex > -1) {
       //make a copy of cart,
       const cartCopy = [...cartContents];
-      //take out matching item,
-      const existingCartItem = cartCopy.splice(matchingCartItemIndex, 1);
-      //add / (TODO : subtract) to it,
-      existingCartItem[0].quantity = existingCartItem[0].quantity + quantity;
-      // put back in
-      cartCopy.push(existingCartItem[0]);
-      cartCopy.sort(sortCart);
-      //set To State
+      // add the desired quantity (+1 or -1)
+      cartCopy[matchingCartItemIndex].quantity += quantity;
+      // set to state
       setCartContents(cartCopy);
       return;
     }
