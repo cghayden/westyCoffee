@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 
 dotenv.config({ path: '.env' });
 
-export default {
+const settings = {
   siteMetadata: {
     title: 'Neighborly Coffee',
     siteUrl: 'https://www.neighborlycoffee.com',
@@ -16,7 +16,6 @@ export default {
       options: {
         projectId: 'yi1dikna',
         dataset: process.env.NODE_ENV === 'development' ? 'dev' : 'production',
-        // dataset: 'production',
         watchMode: true,
         token: process.env.SANITY_TOKEN,
       },
@@ -26,13 +25,7 @@ export default {
     'gatsby-plugin-image',
     'gatsby-plugin-sharp',
     'gatsby-transformer-sharp',
-    // {
-    //   resolve: 'gatsby-source-filesystem',
-    //   options: {
-    //     name: 'images',
-    //     path: './src/images/',
-    //   },
-    //   __ref: 'images',
-    // },
   ],
 };
+
+export default settings;

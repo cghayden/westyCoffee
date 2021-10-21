@@ -21,13 +21,13 @@ const HomePageTextStyles = styled.div`
 `;
 
 // *** STATICALLY BUILT PAGE
-export default function homePage({ data }) {
+export default function CoffeePage({ data }) {
   const pageHeading = data ? data.pageContent.heading : '';
   const text = data ? data.pageContent._rawTopText : [];
 
   return (
     <Layout>
-      <SEO title={'playground coffee'} />
+      <SEO title={'neighborly coffee'} />
       <HomeMainStyle>
         <h1 className='pageHeading'>{pageHeading}</h1>
         <HomePageTextStyles>

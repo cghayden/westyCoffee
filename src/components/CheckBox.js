@@ -3,8 +3,8 @@ import styled from 'styled-components';
 
 function CheckBox({ name }) {
   return (
-    <Checkbox_RadioWrapper>
-      <Checkbox_RadioInput>
+    <CheckboxRadioWrapper>
+      <CheckboxRadioInput>
         <input name={name} type='hidden' value='' />
         <input
           className='input-checkbox'
@@ -15,17 +15,17 @@ function CheckBox({ name }) {
           name={name}
           id='checkout_buyer_accepts_marketing'
         />
-      </Checkbox_RadioInput>
+      </CheckboxRadioInput>
       <label className='checkbox__label' for='checkout_buyer_accepts_marketing'>
         Keep me up to date on news and exclusive offers
       </label>
-    </Checkbox_RadioWrapper>
+    </CheckboxRadioWrapper>
   );
 }
 
 export default CheckBox;
 
-const Checkbox_RadioWrapper = styled.div`
+const CheckboxRadioWrapper = styled.div`
   display: table;
   width: 100%;
   margin-bottom: 1em;
@@ -33,7 +33,7 @@ const Checkbox_RadioWrapper = styled.div`
     margin-bottom: 0;
   }
 `;
-const Checkbox_RadioInput = styled.div`
+const CheckboxRadioInput = styled.div`
   input[type='hidden'] {
     display: none;
   }

@@ -6,10 +6,6 @@ import dayjs from 'dayjs';
 import PortableText from './PortableText';
 import styled from 'styled-components';
 
-// import { buildImageObj, cn, getBlogUrl } from "../lib/helpers";
-// import { imageUrlFor } from "../lib/image-url";
-// import * as styles from "./blog-post-preview.module.css";
-// import { responsiveTitle3 } from "./typography.module.css";
 const BlogPreviewText = styled.div`
   h2 {
     font-size: 1.1rem;
@@ -42,18 +38,12 @@ const PreviewImageContainer = styled.div`
 `;
 
 function BlogPostPreview(props) {
-  console.log('props', props);
-  // console.log('BlogPostPreview props', props);
   const image = props.mainImage.asset.gatsbyImageData;
   return (
     <Link to={getBlogUrl(props.slug.current)}>
       <PreviewImageContainer>
         {props.mainImage && props.mainImage.asset && (
-          <GatsbyImage
-            // layout='constrained'
-            image={image}
-            alt={props.mainImage.alt}
-          />
+          <GatsbyImage image={image} alt={props.mainImage.alt} />
         )}
       </PreviewImageContainer>
       <BlogPreviewText>
@@ -63,7 +53,6 @@ function BlogPostPreview(props) {
             <PortableText blocks={props._rawExcerpt} />
           </div>
         )}
-        {/* <div>{format(props.publishedAt, 'MMMM Do, YYYY')}</div> */}
         <Date>{dayjs(props.publishedAt).format('MMMM DD, YYYY')}</Date>
       </BlogPreviewText>
     </Link>

@@ -10,26 +10,19 @@ const CoffeeTileStyles = styled.div`
   padding: 1rem 0.5rem 0.5rem;
   box-shadow: 1px 1px 4px 1px hsl(0deg 15% 30% / 14%);
   border: 10px solid var(--white);
-  /* box-sizing: border-box; */
   border-radius: 4px;
   background: ${(props) =>
     props.singleOrigin ? 'var(--singleOriginGreen)' : 'var(--blendGreen)'};
-  /* color: ${(props) =>
-    props.singleOrigin ? 'var(--singleOriginText)' : 'var(--blendText)'}; */
   color: var(--blendText);
   border-radius: 4px;
   width: 310px;
   height: 310px;
-  /* padding: 16px 8px 8px; */
   margin-bottom: 4px;
   display: flex;
   flex-direction: column;
 
   header {
     font-weight: 400;
-    /* color: ${(props) =>
-      props.singleOrigin ? 'darkgreen' : 'var(--white)'}; */
-    /* color: var(--blendText); */
     width: 100%;
     font-size: 1.5rem;
     margin-bottom: auto;
@@ -55,21 +48,7 @@ const CoffeeDetails = styled.div`
     font-size: 1em;
   }
 `;
-// const CoffeeStatus = styled.div`
-//   /* background: ${(props) =>
-//     props.singleOrigin ? 'var(--blendGreen)' : 'var(--singleOriginGreen)'};
-//   color: ${(props) =>
-//     props.singleOrigin ? 'var(--white)' : 'var(--singleOriginText)'}; */
-//   padding: 8px 0;
-//   border-radius: 5px;
-//   width: 100%;
-//   margin: 0.5rem auto;
-//   display: grid;
-//   place-items: center;
-//   p {
-//     margin: 0;
-//   }
-// `;
+
 const DescriptionDiv = styled.div`
   flex-grow: 1;
   display: flex;
@@ -89,7 +68,6 @@ const CoffeeStatus = styled.div`
 `;
 
 function SingleCoffeeTile({ coffee }) {
-  const cost = coffee.price / 100;
   const { stock } = useCurrentStock(coffee._id);
 
   return (
@@ -112,18 +90,6 @@ function SingleCoffeeTile({ coffee }) {
         </CoffeeDetails>
 
         <CoffeeStatus>{stock && <CoffeeStock stock={stock} />}</CoffeeStatus>
-        {/* <div>
-          {coffee.stock > 0 ? (
-            <CoffeeStatus singleOrigin={coffee.singleOrigin}>
-              <p>
-                {`-  `}only {coffee.stock} lbs. left{`  -`}
-              </p>
-            </CoffeeStatus>
-          ) : (
-            <p>Out of Stock</p>
-          )}
-          <p className='price'>$ {cost} / lb.</p>
-        </div> */}
       </CoffeeTileStyles>
     </Link>
   );

@@ -11,10 +11,8 @@ const HeaderStyles = styled.header`
   display: flex;
   color: ${(props) => (props.black ? 'black' : 'white')};
   background: ${(props) => (props.black ? 'var(--white)' : 'transparent')};
-  /* color: var(--white); */
   align-items: center;
   padding: 1rem;
-  /* width: 100%; */
   p {
     margin: 0;
   }

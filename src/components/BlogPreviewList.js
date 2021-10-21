@@ -1,9 +1,6 @@
-import { Link } from 'gatsby';
 import React from 'react';
 import styled from 'styled-components';
 import BlogPostPreview from './BlogPostPreview';
-
-// import * as styles from "./blog-post-preview-list.module.css";
 
 const BlogPreviewUlStyles = styled.ul`
   display: grid;
@@ -12,7 +9,6 @@ const BlogPreviewUlStyles = styled.ul`
   width: 95%;
   max-width: 800px;
   li {
-    /* height: 30vh; */
     overflow: hidden;
   }
   a {
@@ -26,10 +22,8 @@ const BlogPreviewUlStyles = styled.ul`
 `;
 
 export default function BlogPreviewList(props) {
-  console.log('preview List Props', props);
   return (
     <div className='blogPreviewWrapper'>
-      {/* {props.title && <h2>{props.title}</h2>} */}
       <BlogPreviewUlStyles>
         {props.nodes &&
           props.nodes.map((node) => (
@@ -38,17 +32,6 @@ export default function BlogPreviewList(props) {
             </li>
           ))}
       </BlogPreviewUlStyles>
-      {props.browseMoreHref && (
-        <div className={styles.browseMoreNav}>
-          <Link to={props.browseMoreHref}>Browse more</Link>
-        </div>
-      )}
     </div>
   );
 }
-
-BlogPreviewList.defaultProps = {
-  title: '',
-  nodes: [],
-  browseMoreHref: '',
-};

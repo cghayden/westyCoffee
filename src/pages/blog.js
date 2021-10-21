@@ -11,7 +11,7 @@ import SEO from '../components/SEO';
 import GraphQLErrorList from '../components/GraphqlErrorList';
 import BlogPreviewList from '../components/BlogPreviewList';
 
-export default function blogPage({ data, errors }) {
+export default function BlogPage({ data, errors }) {
   if (errors) {
     return <GraphQLErrorList errors={errors} />;
   }

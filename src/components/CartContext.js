@@ -23,10 +23,6 @@ function CartStateProvider({ children }) {
     setCartOpen(true);
   }
 
-  function toggleShipping() {
-    setShipping((shipping) => !shipping);
-  }
-
   function sortCart(a, b) {
     const itemA = a.name.toUpperCase();
     const itemB = b.name.toUpperCase();
@@ -39,11 +35,11 @@ function CartStateProvider({ children }) {
     return comparison;
   }
 
-  function addToCart({ quantity, name, grind, unitPrice, size, _ref }) {
+  function addToCart({ quantity, name, grind, unitPrice, size, _ref, _id }) {
     if (!cartContents.length) {
       setCartContents((cartContents) => [
         ...cartContents,
-        { quantity, name, grind, unitPrice, size, _ref },
+        { quantity, name, grind, unitPrice, size, _ref, _id },
       ]);
       return;
     }
@@ -56,11 +52,10 @@ function CartStateProvider({ children }) {
     );
     //item of same size, grind and type IS NOT in the cart already
     if (matchingCartItemIndex === -1) {
-      // const cartCopy=[...cartContents]
       setCartContents((cartContents) =>
         [
           ...cartContents,
-          { quantity, name, grind, unitPrice, size, _ref },
+          { quantity, name, grind, unitPrice, size, _ref, _id },
         ].sort(sortCart)
       );
       return;
@@ -69,14 +64,9 @@ function CartStateProvider({ children }) {
     if (matchingCartItemIndex > -1) {
       //make a copy of cart,
       const cartCopy = [...cartContents];
-      //take out matching item,
-      const existingCartItem = cartCopy.splice(matchingCartItemIndex, 1);
-      //add / (TODO : subtract) to it,
-      existingCartItem[0].quantity = existingCartItem[0].quantity + quantity;
-      // put back in
-      cartCopy.push(existingCartItem[0]);
-      cartCopy.sort(sortCart);
-      //set To State
+      // add the desired quantity (+1 or -1)
+      cartCopy[matchingCartItemIndex].quantity += quantity;
+      // set to state
       setCartContents(cartCopy);
       return;
     }
@@ -101,7 +91,6 @@ function CartStateProvider({ children }) {
   const rawOrderTotal = calcOrderTotal(cartContents);
   const orderTotal = formatMoney(calcOrderTotal(cartContents));
   const rawShippingCost = rawOrderTotal < 5000 ? 1000 : 0;
-  // const grandTotal = formatMoney(rawShippingCost + rawOrderTotal);
   const totalCartPounds = calcTotalPoundsInCart(cartContents);
 
   const gql = String.raw;
@@ -113,7 +102,6 @@ function CartStateProvider({ children }) {
     customerComments,
     botBait
   ) {
-    // const result={error:false}
     //1. set prices on each order item and calculate order total
     //(coffeePrices is from the checkout page dynamic query of all coffees and their prices, to guard against client changing the prices in the browser state before submitting order.)
 
@@ -178,7 +166,6 @@ function CartStateProvider({ children }) {
       shippingDetails.deliveryMethod === 'Shipping'
         ? costWithShipping(cartCopy)
         : calcOrderTotal(cartCopy);
-    console.log('verified grandTotal ', grandTotal);
 
     const body = {
       order: cartCopy,
@@ -227,8 +214,6 @@ function CartStateProvider({ children }) {
         shipping,
         setShipping,
         rawShippingCost,
-        // grandTotal,
-        rawOrderTotal,
       }}
     >
       {children}

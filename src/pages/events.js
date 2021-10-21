@@ -6,8 +6,9 @@ import EventList from '../components/EventList';
 import Layout from '../components/Layout';
 import styled from 'styled-components';
 import PortableText from '../components/PortableText';
+import GraphQLErrorList from '../components/GraphqlErrorList';
 
-const EventRequestTextStyles = styled.div`
+const EventTextStyles = styled.div`
   margin-left: auto;
   margin-right: auto;
   color: var(--white);
@@ -16,12 +17,21 @@ const EventRequestTextStyles = styled.div`
   justify-content: center;
 `;
 
-export default function eventsPage({ data, errors }) {
+export default function EventsPage({ data, errors }) {
   const pageHeading = data ? data.pageContent.heading : '';
   const topText = data?.pageContent._rawTopText;
 
   if (errors) {
-    return <GraphQLErrorList errors={errors} />;
+    return (
+      <Layout>
+        <SEO title={'Events'} />
+        <main>
+          <div>
+            <GraphQLErrorList errors={errors} />
+          </div>
+        </main>
+      </Layout>
+    );
   }
   const eventNodes = (data || {}).events ? mapEdgesToNodes(data.events) : [];
   return (
@@ -30,9 +40,9 @@ export default function eventsPage({ data, errors }) {
       <main>
         <h1 className='alignCenter whiteText'>{pageHeading}</h1>
         {topText && (
-          <EventRequestTextStyles>
+          <EventTextStyles>
             <PortableText blocks={topText} />
-          </EventRequestTextStyles>
+          </EventTextStyles>
         )}
         {eventNodes && <EventList nodes={eventNodes} />}
       </main>

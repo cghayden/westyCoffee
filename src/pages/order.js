@@ -35,7 +35,7 @@ const CheckoutPageWrapper = styled.div`
   font-family: monospace;
   padding: 0 1rem;
 `;
-export default function orderPage({ location }) {
+export default function OrderPage({ location }) {
   const [orderItems, setOrderItems] = useState([]);
   const [charge, setCharge] = useState([]);
   const [shippingDetails, setShippingDetails] = useState({});
@@ -46,7 +46,7 @@ export default function orderPage({ location }) {
       setCharge(location.state.charge);
       setShippingDetails(location.state.shippingDetails);
     } else return;
-  }, []);
+  }, [location]);
 
   return (
     <Layout>

@@ -1,14 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export default function useForm(initial = {}) {
-  // create a state object for our inputs
   const [inputs, setInputs] = useState(initial);
-  const initialValues = Object.values(initial).join('');
-
-  useEffect(() => {
-    // This function runs when the things we are watching change
-    setInputs(initial);
-  }, [initialValues]);
 
   function handleChange(e) {
     let { value, name, type } = e.target;
@@ -19,7 +12,6 @@ export default function useForm(initial = {}) {
       [value] = e.target.files;
     }
     setInputs({
-      // copy the existing state
       ...inputs,
       [name]: value,
     });
@@ -29,8 +21,6 @@ export default function useForm(initial = {}) {
     setInputs(initial);
   }
 
-  // source: https://courses.wesbos.com/account/access/5bc08946d9a7d7279eef2f62/view/507222373 ::
-
   function clearForm() {
     const blankState = Object.fromEntries(
       Object.entries(inputs).map(([key, value]) => [key, ''])
@@ -38,7 +28,6 @@ export default function useForm(initial = {}) {
     setInputs(blankState);
   }
 
-  // return the things we want to surface from this custom hook
   return {
     inputs,
     handleChange,

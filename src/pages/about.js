@@ -7,7 +7,7 @@ import Layout from '../components/Layout';
 
 const AboutContentStyles = styled.div``;
 
-export default function aboutPage({ data }) {
+export default function AboutPage({ data }) {
   const pageHeading = data?.pageContent.heading;
   const text = data?.pageContent._rawText;
 

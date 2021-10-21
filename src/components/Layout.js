@@ -18,8 +18,6 @@ const LayoutWrapper = styled.div`
     top: 0;
     width: 100%;
     height: 100%;
-    /* background: ${(props) =>
-      props.bgImg ? `url(${props.bgImg})` : props.bgColor}; */
     background-repeat: round;
     background-size: cover;
   }
@@ -54,12 +52,9 @@ export default function Layout({ children }) {
     }
   `);
 
-  console.log('layout static query data', data);
-
   const bgImg =
     data?.settings.edges[0].node.backgroundImage?.asset.gatsbyImageData.images
       .fallback.src;
-  console.log('layout bgImg', bgImg);
   const bgColor = data?.settings.edges[0].node.backgroundColor.hex || '#366349';
 
   const bg = bgImg ? `url(${bgImg})` : bgColor;

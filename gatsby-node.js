@@ -1,5 +1,5 @@
 import path from 'path';
-const { isFuture } = require('date-fns');
+const { isFuture, parseISO } = require('date-fns');
 
 exports.createSchemaCustomization = ({ actions, schema }) => {
   actions.createTypes([
@@ -16,11 +16,11 @@ exports.createSchemaCustomization = ({ actions, schema }) => {
   ]);
 };
 async function fetchCoffeeAndTurnIntoPages({ graphql, actions }) {
-  const coffeeTemplate = path.resolve('./src/templates/SingleCoffee.js');
+  const singleCoffeePage = path.resolve('./src/templates/SingleCoffeePage.js');
 
   const { data } = await graphql(`
     query {
-      coffees: allSanityCoffee {
+      coffees: allSanityCoffee(filter: { stock: { gt: 0 } }) {
         nodes {
           name
           slug {
@@ -32,15 +32,15 @@ async function fetchCoffeeAndTurnIntoPages({ graphql, actions }) {
   `);
   data.coffees.nodes.forEach((coffee) => {
     actions.createPage({
-      // What is the URL for this new page??
       path: `coffee/${coffee.slug.current}`,
-      component: coffeeTemplate,
+      component: singleCoffeePage,
       context: {
         slug: coffee.slug.current,
       },
     });
   });
 }
+
 async function createBlogPostPages({ graphql, actions }) {
   const blogTemplate = path.resolve('./src/templates/BlogPost.js');
   const result = await graphql(`
@@ -65,7 +65,7 @@ async function createBlogPostPages({ graphql, actions }) {
 
   const postEdges = (result.data.allSanityPost || {}).edges || [];
   postEdges
-    .filter((edge) => !isFuture(edge.node.publishedAt))
+    .filter((edge) => !isFuture(parseISO(edge.node.publishedAt)))
     .forEach((edge) => {
       const { id, slug = {} } = edge.node;
       const path = `/blog/${slug.current}/`;

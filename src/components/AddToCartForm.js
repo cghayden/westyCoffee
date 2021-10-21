@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import formatMoney from '../utils/formatMoney';
+import useCurrentStock from '../utils/useCurrentStock';
 import useForm from '../utils/useForm';
 import { useCart } from './CartContext';
 import MinusSvg from './Icons/MinusSvg';
@@ -91,10 +92,12 @@ const QuantitySelector = styled.div`
 const initialInputValues = { size: 'one pound' };
 
 function AddToCartForm({ coffee }) {
+  const { stock } = useCurrentStock(coffee._id);
+  // console.log('single coffee stock:', stock);
+
   const { addToCart, totalCartPounds, openCart } = useCart();
-  const { inputs, handleChange, resetForm, clearForm } = useForm(
-    initialInputValues
-  );
+  // console.log('totalCartPounds', totalCartPounds);
+  const { inputs, handleChange } = useForm(initialInputValues);
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState();
 
@@ -116,15 +119,14 @@ function AddToCartForm({ coffee }) {
       grind: inputs.grind,
       unitPrice: inputs.size === 'half pound' ? coffee.price / 2 : coffee.price,
       size: inputs.size,
-      // comments: inputs.comments,
       _ref: coffee._id,
+      _id: coffee._id,
     });
     openCart();
   }
   return (
     <FormStyles action='POST' onSubmit={submitToCart}>
       <fieldset>
-        {/* <h3>choose grind and quantity to order</h3> */}
         <div className='input-item'>
           <label className='input-item-label'>quantity:</label>
           <QuantitySelector>
@@ -138,9 +140,9 @@ function AddToCartForm({ coffee }) {
             <p>{quantity}</p>
             <button
               type='button'
+              disabled={quantity === stock}
               onClick={() =>
                 setQuantity((q) => {
-                  //if q <= in stock, add 1
                   return (q += 1);
                 })
               }
@@ -203,19 +205,6 @@ function AddToCartForm({ coffee }) {
             <option value='ground'>Ground</option>
           </select>
         </div>
-        {/* <div className='input-item' id='comments'>
-          <label className='visuallyHidden' for='comments'>
-            comments:
-          </label>
-          <textarea
-            placeholder='comments'
-            id='comments'
-            name='comments'
-            rows='3'
-            cols='26'
-            onChange={handleChange}
-          ></textarea>
-        </div> */}
         <div className='errorDisplay'>
           {error && <p className='errorMessage'>{error}</p>}
         </div>

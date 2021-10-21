@@ -2,7 +2,6 @@ import React from 'react';
 import { GatsbyImage } from 'gatsby-plugin-image';
 import styled from 'styled-components';
 import PortableText from './PortableText';
-import ShareLinks from './ShareLinks';
 import dayjs from 'dayjs';
 
 const BlogHeader = styled.div`
@@ -50,7 +49,6 @@ function BlogPost(props) {
             <GatsbyImage image={image} alt={props.mainImage.alt} />
           </ImageDiv>
         )}
-        {/* <ShareLinks url={window.location.href} text={_rawExcerpt} /> */}
         <BlogBody className='contentBox'>
           {_rawBody && <PortableText blocks={_rawBody} />}
         </BlogBody>
