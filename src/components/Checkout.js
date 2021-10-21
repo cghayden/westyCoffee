@@ -68,7 +68,7 @@ function Checkout() {
             <p className='grandTotal'>Total: ${grandTotal}</p>
           )}
         </footer>
-        {stockAlerts.length > 0 && <CartAlerts alerts={stockAlerts} />}
+        <CartAlerts stockAlerts={stockAlerts} />
       </CartContents>
       {/* // Stock Alert OR Checkout flow  // */}
       {!!cartContents.length && !stockAlerts.length && (

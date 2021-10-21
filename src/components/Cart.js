@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import CartStyles from '../styles/CartStyles';
 import { useCart } from './CartContext';
@@ -27,11 +27,15 @@ const CloseButton = styled.button`
 `;
 
 function Cart() {
+  const [stockAlerts, setStockAlerts] = useState([]);
   const { cartOpen, closeCart, cartContents, orderTotal, totalCartPounds } =
     useCart();
+
   const { allStockAndPrice } = useAllAvailableCoffee();
 
-  const stockAlerts = checkStock(allStockAndPrice, totalCartPounds);
+  useEffect(() => {
+    setStockAlerts(checkStock(allStockAndPrice, totalCartPounds));
+  }, [allStockAndPrice, totalCartPounds]);
 
   return (
     <CartStyles open={cartOpen}>
@@ -50,7 +54,7 @@ function Cart() {
           <CartItem cartItem={cartItem} key={`${i}-${cartItem.name}`} />
         ))}
       </ul>
-      {stockAlerts.length > 0 && <CartAlerts alerts={stockAlerts} />}
+      <CartAlerts stockAlerts={stockAlerts} />
       {!!cartContents.length && !stockAlerts.length && (
         //StockAlert Component OR keep shopping/checkout
         <>
