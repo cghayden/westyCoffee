@@ -14,7 +14,7 @@ const settings = {
     {
       resolve: 'gatsby-source-sanity',
       options: {
-        projectId: 'yi1dikna',
+        projectId: process.env.GATSBY_SANITY_PROJECT_ID,
         dataset: process.env.NODE_ENV === 'development' ? 'dev' : 'production',
         watchMode: true,
         token: process.env.SANITY_TOKEN,

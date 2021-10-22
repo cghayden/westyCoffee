@@ -18,7 +18,6 @@ import ShippingTruckIcon from './Icons/ShippingTruckIcon';
 import StoreFrontIcon from './Icons/StoreFrontIcon';
 import { useCart } from './CartContext';
 import Stripe_Blurple from '../assets/images/Stripe_Blurple.png';
-import formatMoney from '../utils/formatMoney';
 
 const RadioLabel = styled.label`
   cursor: pointer;
@@ -40,9 +39,7 @@ const RadioInput = styled.input`
   appearance: none;
   border-radius: 50%;
 `;
-const PaymentDetailsHeading = styled.h2`
-  font-weight: normal;
-`;
+
 const ErrorStyle = styled.div`
   color: red;
   padding-bottom: red;
@@ -80,12 +77,7 @@ const StripeLogoDiv = styled.div`
   background-image: url(${Stripe_Blurple});
   background-size: contain;
 `;
-const CheckoutForm = ({
-  shippingBoolean,
-  setShippingBoolean,
-  grandTotal,
-  customerComments,
-}) => {
+const CheckoutForm = ({ setShippingBoolean, grandTotal, customerComments }) => {
   const stripe = useStripe();
   const elements = useElements();
   const [stripeError, setStripeError] = useState(null);
@@ -109,12 +101,14 @@ const CheckoutForm = ({
     zip: '',
   });
   const [botBait, setBotBait] = useState('');
-  const { orderTotal, processOrder, emptyCart, setShipping } = useCart();
+  const { processOrder, emptyCart } = useCart();
 
   async function adjustSanityStock(orderItems) {
-    if (process.env.NODE_ENV === 'development') {
-      return;
-    }
+    const sanityApi =
+      process.env.NODE_ENV === 'development'
+        ? `https://${process.env.GATSBY_SANITY_PROJECT_ID}.api.sanity.io/v1/data/mutate/dev`
+        : `https://${process.env.GATSBY_SANITY_PROJECT_ID}.api.sanity.io/v1/data/mutate/production`;
+
     const adjustQuantityMutations = orderItems.map((orderItem) => ({
       patch: {
         id: orderItem._ref,
@@ -126,19 +120,17 @@ const CheckoutForm = ({
         },
       },
     }));
-    await fetch(`https://yi1dikna.api.sanity.io/v1/data/mutate/production`, {
+    await fetch(sanityApi, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
         Authorization: `Bearer ${process.env.GATSBY_SANITY_MUTATION_API}`,
       },
       body: JSON.stringify({ mutations: adjustQuantityMutations }),
-    })
-      // .then((response) => console.log('MUTATION RESPONSE', response.json()))
-      .catch((error) => {
-        console.error('ERROR ADJUSTING PRODUCT STOCK', error);
-        // send error to neighborly that stock could not be adjusted
-      });
+    }).catch((error) => {
+      console.error('ERROR ADJUSTING PRODUCT STOCK', error);
+      // send error to neighborly that stock could not be adjusted
+    });
   }
 
   async function handleSubmit(event) {
@@ -166,18 +158,15 @@ const CheckoutForm = ({
       setError(error);
       return;
     } else {
-      // console.log('paymentMethod created', paymentMethod);
       const orderRes = await processOrder(
         billingDetails,
         shippingDetails,
         paymentMethod,
         customerComments,
-        botBait
+        botBait,
+        process.env.NODE_ENV
       );
       const parsedResponse = await orderRes.json();
-      console.log('parsedResponse', parsedResponse);
-      // console.log('checkout orderRes', orderRes);
-      // console.log('checkout orderRes status', orderRes.status);
       if (orderRes.status >= 400 && orderRes.status < 600) {
         setError(parsedResponse.error || 'there was an error');
         setProcessing(false);

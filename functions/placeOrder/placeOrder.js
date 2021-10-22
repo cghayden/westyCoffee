@@ -2,10 +2,16 @@ const { default: Stripe } = require('stripe');
 const { nanoid } = require('nanoid');
 const sanityClient = require('@sanity/client');
 
-//default NODE_ENV in netlify functions === 'development', so to avoid writing orders to production db, ***must set NODE_ENV manually in netlify UI,*** and check here to write the order to the proper dataset
-const SanityOrders = sanityClient({
-  projectId: 'yi1dikna',
+const Sanity = sanityClient({
+  projectId: process.env.GATSBY_SANITY_PROJECT_ID,
   dataset: 'production',
+  apiVersion: '2021-05-03',
+  token: process.env.GATSBY_SANITY_MUTATION_API,
+  useCdn: false,
+});
+const SanityDevelopment = sanityClient({
+  projectId: process.env.GATSBY_SANITY_PROJECT_ID,
+  dataset: 'dev',
   apiVersion: '2021-05-03',
   token: process.env.GATSBY_SANITY_MUTATION_API,
   useCdn: false,
@@ -28,6 +34,7 @@ async function writeOrderToSanity({
   shippingState,
   shippingZip,
   customerComments,
+  env,
 }) {
   const configuredOrderItems = orderItems.map((orderItem) => {
     return {
@@ -61,7 +68,18 @@ async function writeOrderToSanity({
     customerComments,
     shipped: false,
   };
-  await SanityOrders.create(doc)
+  if (env !== 'production') {
+    await SanityDevelopment.create(doc)
+      .then((res) => {
+        console.log('order written to sanity dev db', res);
+      })
+      .catch((err) => {
+        console.error('error writing order to Sanity:', err);
+        // notify neighborly of error writing to sanity orders
+      });
+    return;
+  }
+  await Sanity.create(doc)
     .then((res) => {
       console.log('order written to sanity', res);
     })
@@ -180,6 +198,7 @@ exports.handler = async (event, context) => {
     shippingState: body.shippingDetails.state,
     shippingZip: body.shippingDetails.zip,
     totalCartPounds: body.totalCartPounds,
+    env: body.env,
   });
 
   return {
