@@ -100,7 +100,8 @@ function CartStateProvider({ children }) {
     shippingDetails,
     paymentMethod,
     customerComments,
-    botBait
+    botBait,
+    env
   ) {
     //1. set prices on each order item and calculate order total
     //(coffeePrices is from the checkout page dynamic query of all coffees and their prices, to guard against client changing the prices in the browser state before submitting order.)
@@ -178,6 +179,7 @@ function CartStateProvider({ children }) {
       mapleSyrup: botBait,
       paymentMethod: paymentMethod.id,
       totalCartPounds,
+      env,
     };
     const res = await fetch(
       `${process.env.GATSBY_SERVERLESS_BASE}/placeOrder`,
