@@ -10,6 +10,9 @@ const LayoutWrapper = styled.div`
   flex: 1 0 auto;
   position: relative;
   min-height: 100vh;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
   &:before {
     content: ' ';
     display: block;
@@ -63,7 +66,7 @@ export default function Layout({ children }) {
   return (
     <>
       <GlobalStyles />
-      <LayoutWrapper style={{ background: bg }}>
+      <LayoutWrapper style={{ backgroundImage: bg }}>
         <div className='content'>
           <Header black={true} />
           {children}
