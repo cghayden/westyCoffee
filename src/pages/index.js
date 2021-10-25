@@ -136,7 +136,7 @@ export default function LandingPage({ data }) {
           className='bgImg'
           style={{
             minHeight: '400px',
-            background: coffeeBg,
+            backgroundImage: coffeeBg,
           }}
         >
           <h2 className='alignCenter pageHeading'>{coffeeHeading}</h2>
