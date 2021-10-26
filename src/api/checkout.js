@@ -1,6 +1,7 @@
+// import { GatsbyFunctionRequest, GatsbyFunctionResponse } from 'gatsby';
 const { default: Stripe } = require('stripe');
-const { nanoid } = require('nanoid');
 const sanityClient = require('@sanity/client');
+const { nanoid } = require('nanoid');
 
 const Sanity = sanityClient({
   projectId: process.env.GATSBY_SANITY_PROJECT_ID,
@@ -15,6 +16,9 @@ const SanityDevelopment = sanityClient({
   apiVersion: '2021-05-03',
   token: process.env.GATSBY_SANITY_MUTATION_API,
   useCdn: false,
+});
+const stripe = new Stripe(process.env.GATSBY_STRIPE_SECRET_KEY, {
+  apiVersion: '2020-08-27',
 });
 
 async function writeOrderToSanity({
@@ -81,53 +85,16 @@ async function writeOrderToSanity({
   }
   await Sanity.create(doc)
     .then((res) => {
-      console.log('order written to sanity', res);
+      console.log('order written to sanity:', res);
     })
     .catch((err) => {
       console.error('error writing order to Sanity:', err);
-      // notify neighborly of error writing to sanity orders
+      // notify client of error writing to sanity orders
     });
 }
 
-const stripe = new Stripe(process.env.GATSBY_STRIPE_SECRET_KEY, {
-  apiVersion: '2020-08-27',
-});
-
-exports.handler = async (event, context) => {
-  const body = JSON.parse(event.body);
-  // Check if honeypot field is filled out
-  if (body.mapleSyrup) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ message: 'robot detected, goodbye' }),
-    };
-  }
-
-  //Validation - make sure all fields are filled out and correct
-  const requiredFields = ['email', 'name', 'order'];
-  for (const field of requiredFields) {
-    if (!body[field]) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({
-          message: `Oops! You are missing the ${field} field`,
-        }),
-      };
-    }
-  }
-  // make sure customer actually has items in that order - do this in context func?
-  if (!body.order.length) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({
-        message: `The cart is empty!`,
-      }),
-    };
-  }
-  // TODO make sure items are in stock and of sufficient stock - done in processOrder in Cart Context
-  // x calculate and verify total price - INCOMING FROM CONTEXT processOrder
-
-  //create payment with stripe & charge(confirm) here
+export default async function checkout(req, res) {
+  console.log('req', req.body);
   function createStripeDescription(orderItems, body) {
     const orderDesc = orderItems.map(
       (orderItem) =>
@@ -147,69 +114,64 @@ exports.handler = async (event, context) => {
     return `${orderString};
       ${shippingString}`;
   }
-  const stripeDescription = createStripeDescription(body.order, body);
-
+  const stripeDescription = createStripeDescription(req.body.order, req.body);
   let charge;
   try {
     charge = await stripe.paymentIntents.create({
-      amount: body.total,
+      amount: req.body.total,
       currency: 'USD',
       confirm: true,
-      payment_method: body.paymentMethod,
+      payment_method: req.body.paymentMethod,
       description: stripeDescription,
-      receipt_email: body.email,
+      receipt_email: req.body.email,
       shipping: {
-        name: body.shippingDetails.shippingName,
+        name: req.body.shippingDetails.shippingName,
         address: {
-          line1: body.shippingDetails.addressLine1,
-          line2: body.shippingDetails.addressLine2,
-          city: body.shippingDetails.city,
-          state: body.shippingDetails.state,
-          postal_code: body.shippingDetails.zip,
+          line1: req.body.shippingDetails.addressLine1,
+          line2: req.body.shippingDetails.addressLine2,
+          city: req.body.shippingDetails.city,
+          state: req.body.shippingDetails.state,
+          postal_code: req.body.shippingDetails.zip,
         },
       },
     });
+    console.log('charge', charge);
   } catch (err) {
     console.error('CHARGE ERR', err);
-    return {
-      statusCode: err.statusCode || 418,
-      body: JSON.stringify({
-        error: err.message,
-        message:
-          err.message ||
-          `There was an error processing your payment.  You're card was not charged`,
-      }),
-    };
+    return res.status(err.statusCode || 418).json({
+      error: err.message,
+      message:
+        err.message ||
+        `There was an error processing your payment.  You're card was not charged`,
+    });
   }
-  await writeOrderToSanity({
-    name: body.name,
-    email: body.email,
-    phone: body.phone,
+  const sanityWrite = await writeOrderToSanity({
+    name: req.body.name,
+    email: req.body.email,
+    phone: req.body.phone,
     number: charge.created,
     total: charge.amount,
-    orderItems: body.order,
-    customerComments: body.customerComments,
+    orderItems: req.body.order,
+    customerComments: req.body.customerComments,
     stripe_id: charge.id,
-    deliveryMethod: body.shippingDetails.deliveryMethod,
-    pickupLocation: body.shippingDetails.pickupLocation,
-    shippingName: body.shippingDetails.shippingName,
-    shippingAddressLine1: body.shippingDetails.addressLine1,
-    shippingAddressLine2: body.shippingDetails.addressLine2,
-    shippingCity: body.shippingDetails.city,
-    shippingState: body.shippingDetails.state,
-    shippingZip: body.shippingDetails.zip,
-    totalCartPounds: body.totalCartPounds,
-    env: body.env,
-  });
+    deliveryMethod: req.body.shippingDetails.deliveryMethod,
+    pickupLocation: req.body.shippingDetails.pickupLocation,
+    shippingName: req.body.shippingDetails.shippingName,
+    shippingAddressLine1: req.body.shippingDetails.addressLine1,
+    shippingAddressLine2: req.body.shippingDetails.addressLine2,
+    shippingCity: req.body.shippingDetails.city,
+    shippingState: req.body.shippingDetails.state,
+    shippingZip: req.body.shippingDetails.zip,
+    totalCartPounds: req.body.totalCartPounds,
+    env: req.body.env,
+  }).catch((err) => console.log('err writing sanity order', err));
+  console.log('sanityWrite', sanityWrite);
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Order Successfully charged',
-      orderItems: body.order,
-      customerComments: body.customerComments,
-      charge,
-      shippingDetails: body.shippingDetails,
-    }),
-  };
-};
+  return res.status(200).json({
+    message: 'Order Successfully charged',
+    orderItems: req.body.order,
+    customerComments: req.body.customerComments,
+    charge,
+    shippingDetails: req.body.shippingDetails,
+  });
+}
