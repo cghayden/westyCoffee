@@ -7,6 +7,7 @@ import CoffeeDisplay from '../components/CoffeeDisplay';
 import GlobalStyles from '../styles/GlobalStyles';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Hero from '../components/HomeHero';
 
 const HomeWrapper = styled.div`
   height: 100vh;
@@ -43,8 +44,8 @@ const HomeWrapper = styled.div`
 `;
 const TextOverlay = styled.div`
   text-align: center;
-  color: #000;
   padding: 1rem 2rem;
+  color: #000;
   background: hsla(0, 0%, 0%, 0.55);
   h1,
   h2,
@@ -94,8 +95,8 @@ const TransitionText = styled.div`
 `;
 
 export default function LandingPage({ data }) {
-  const img1 =
-    data?.content.bgImage1?.asset?.gatsbyImageData.images.fallback.src;
+  const heroImg = data?.content.bgImage1?.asset?.gatsbyImageData;
+
   const coffeeBgColor = data.content.coffeeBackgroundColor?.hex || '#366349';
   const coffeeBg = data.content.bgImage2.asset
     ? `url(${data.content.bgImage2.asset.gatsbyImageData.images.fallback.src})`
@@ -117,7 +118,10 @@ export default function LandingPage({ data }) {
       <SEO title={'Home'} />
       <HomeWrapper>
         <Header black={true} />
-        {img1 && (
+        <div>
+          {heroImg && <Hero src={heroImg} textOverlay={overlayPortableText1} />}
+        </div>
+        {/* {img1 && (
           <>
             <div
               className='bgImg1'
@@ -131,6 +135,11 @@ export default function LandingPage({ data }) {
               <PortableText blocks={transitionText1} />
             </HomeText>
           </>
+        )} */}
+        {transitionText1 && (
+          <TransitionText>
+            <PortableText blocks={transitionText1} />
+          </TransitionText>
         )}
         <CoffeeContainer
           className='bgImg'
