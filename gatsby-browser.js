@@ -1,6 +1,6 @@
 // gatsby will use this component as a wrapper for every page
-const React = require('react');
-const { CartStateProvider } = require('./src/components/CartContext');
+import React from 'react';
+import CartStateProvider from './src/components/CartContext';
 // import Layout from './src/components/Layout';
 
 // can also import css files here
