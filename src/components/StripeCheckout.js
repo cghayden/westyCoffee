@@ -167,6 +167,7 @@ const CheckoutForm = ({ setShippingBoolean, grandTotal, customerComments }) => {
         process.env.NODE_ENV
       );
       const parsedResponse = await orderRes.json();
+      console.log('parsedResponse', parsedResponse);
       if (orderRes.status >= 400 && orderRes.status < 600) {
         setError(parsedResponse.error || 'there was an error');
         setProcessing(false);

@@ -181,18 +181,17 @@ function CartStateProvider({ children }) {
       totalCartPounds,
       env,
     };
-    const res = await fetch(
-      `${process.env.GATSBY_SERVERLESS_BASE}/placeOrder`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-      }
-    ).catch((err) =>
-      console.log('ERR in caught in place Order function in Context', err)
+    const res = await fetch(`api/checkout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    }).catch((err) =>
+      console.log('ERR in place Order function in Context', err)
     );
+    console.log('res in context', res);
+
     return res;
   }
 
