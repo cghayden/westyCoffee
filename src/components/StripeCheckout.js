@@ -104,10 +104,7 @@ const CheckoutForm = ({ setShippingBoolean, grandTotal, customerComments }) => {
   const { processOrder, emptyCart } = useCart();
 
   async function adjustSanityStock(orderItems) {
-    const sanityApi =
-      process.env.NODE_ENV === 'development'
-        ? `https://${process.env.GATSBY_SANITY_PROJECT_ID}.api.sanity.io/v1/data/mutate/dev`
-        : `https://${process.env.GATSBY_SANITY_PROJECT_ID}.api.sanity.io/v1/data/mutate/production`;
+    const sanityApi = `https://${process.env.GATSBY_SANITY_PROJECT_ID}.api.sanity.io/v1/data/mutate/production`;
 
     const adjustQuantityMutations = orderItems.map((orderItem) => ({
       patch: {

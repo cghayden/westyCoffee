@@ -9,17 +9,13 @@ export default function useCurrentStock(_id) {
   useEffect(
     function () {
       // when the component loads, fetch the data
-      fetch(
-        process.env.NODE_ENV === 'development'
-          ? process.env.GATSBY_SANITY_DEV_GRAPHQL_ENDPOINT
-          : process.env.GATSBY_SANITY_GRAPHQL_ENDPOINT,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            query: gql`
+      fetch(process.env.GATSBY_SANITY_GRAPHQL_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: gql`
               query {
                 Coffee(id: "${_id}") {
                   name
@@ -27,9 +23,8 @@ export default function useCurrentStock(_id) {
                 }
               }
             `,
-          }),
-        }
-      )
+        }),
+      })
         .then((res) => res.json())
         .then((res) => {
           // TODO: checl for errors
