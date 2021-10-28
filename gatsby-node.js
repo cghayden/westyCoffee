@@ -1,4 +1,4 @@
-import path from 'path';
+const path = require(`path`);
 const { isFuture, parseISO } = require('date-fns');
 
 exports.createSchemaCustomization = ({ actions, schema }) => {
@@ -78,11 +78,11 @@ async function createBlogPostPages({ graphql, actions }) {
     });
 }
 
-export async function createPages(params) {
+exports.createPages = async (params) => {
   // Create pages dynamically
   // Wait for all promises to be resolved before finishing this function
   await Promise.all([
     fetchCoffeeAndTurnIntoPages(params),
     createBlogPostPages(params),
   ]);
-}
+};

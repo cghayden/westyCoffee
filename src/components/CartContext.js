@@ -1,8 +1,8 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import formatMoney from '../utils/formatMoney';
 import calcOrderTotal from '../utils/calcOrderTotal';
 import calcTotalPoundsInCart from '../utils/calcTotalPoundsInCart';
-const CartContext = createContext();
+import CartContext from './CreateCartContext';
 const CartProvider = CartContext.Provider;
 
 function CartStateProvider({ children }) {
@@ -228,4 +228,5 @@ function useCart() {
   const all = useContext(CartContext);
   return all;
 }
-export { CartStateProvider, useCart };
+export { useCart };
+export default CartStateProvider;

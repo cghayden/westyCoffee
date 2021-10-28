@@ -1,14 +1,10 @@
-import dotenv from 'dotenv';
+require('dotenv').config({ path: '.env' });
 
-dotenv.config({ path: '.env' });
-
-const settings = {
+module.exports = {
   siteMetadata: {
-    title: 'Neighborly Coffee',
-    siteUrl: 'https://www.neighborlycoffee.com',
+    title: 'Westy Coffee',
+    siteUrl: 'https://westycoffeemain.gatsbyjs.io',
     description: `Local coffee small batch roaster`,
-    // twitter: '@handleHere',
-    instagram: 'https://www.instagram.com/neighborlycoffee',
   },
   plugins: [
     {
@@ -25,8 +21,6 @@ const settings = {
     'gatsby-plugin-image',
     'gatsby-plugin-sharp',
     'gatsby-transformer-sharp',
-    'gatsby-plugin-gatsby-cloud',
+    // 'gatsby-plugin-gatsby-cloud',
   ],
 };
-
-export default settings;
