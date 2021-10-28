@@ -12,7 +12,7 @@ module.exports = {
       options: {
         projectId: process.env.GATSBY_SANITY_PROJECT_ID,
         dataset: 'production',
-        watchMode: process.env.NODE_ENV === 'development' ? true : false,
+        watchMode: true,
         token: process.env.SANITY_TOKEN,
       },
     },

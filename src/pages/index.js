@@ -42,25 +42,7 @@ const HomeWrapper = styled.div`
     /* background-attachment: fixed; */
   }
 `;
-const TextOverlay = styled.div`
-  text-align: center;
-  padding: 1rem 2rem;
-  color: #000;
-  background: hsla(0, 0%, 0%, 0.55);
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-size: 30px;
-    color: #d5e5d5;
-  }
-  p {
-    color: #d5e5d5;
-    font-size: 20px;
-  }
-`;
+
 const FooterOverlay = styled.div`
   position: absolute;
   left: 0;
@@ -70,12 +52,7 @@ const FooterOverlay = styled.div`
   text-align: center;
   color: #000;
 `;
-const HomeText = styled.div`
-  color: #777;
-  background-color: white;
-  padding: 50px 80px;
-  text-align: justify;
-`;
+
 const CoffeeContainer = styled.div`
   padding: 2rem 0;
   h2 {
@@ -90,8 +67,13 @@ const CoffeeText = styled.div`
 const TransitionText = styled.div`
   color: #ddd;
   background-color: #282e34;
-  padding: 50px 80px;
+  padding: 5vh 5vh;
   text-align: center;
+  //Sanity wraps portable text with a div if there is more than one block in the content
+  > div {
+    max-width: 850px;
+    margin: 0 auto;
+  }
 `;
 
 export default function LandingPage({ data }) {
@@ -115,30 +97,16 @@ export default function LandingPage({ data }) {
   return (
     <>
       <GlobalStyles />
-      <SEO title={'Home'} />
+      <SEO title={'Westy Coffee'} />
       <HomeWrapper>
         <Header black={true} />
         <div>
           {heroImg && <Hero src={heroImg} textOverlay={overlayPortableText1} />}
         </div>
-        {/* {img1 && (
-          <>
-            <div
-              className='bgImg1'
-              style={{ minHeight: '100%', backgroundImage: `url(${img1})` }}
-            >
-              <TextOverlay>
-                <PortableText blocks={overlayPortableText1} />
-              </TextOverlay>
-            </div>
-            <HomeText>
-              <PortableText blocks={transitionText1} />
-            </HomeText>
-          </>
-        )} */}
         {transitionText1 && (
           <TransitionText>
             <PortableText blocks={transitionText1} />
+            <div>Test Div</div>
           </TransitionText>
         )}
         <CoffeeContainer

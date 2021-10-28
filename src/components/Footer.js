@@ -37,18 +37,20 @@ function Footer() {
   return (
     <FooterStyle>
       <Address>
-        <p>neighborly coffee</p>
-        <p>36 lincoln rd.</p>
-        <p>sharon, ma 02067</p>
+        <p>westy coffee</p>
+        <p>foxboro, ma</p>
+        <p>website by Corey Hayden</p>
+        <p>cghayden@gmail.com</p>
       </Address>
       <Contact>
-        <a className='phone' href='tel:617-894-5656'>
-          617-894-5656
+        <a className='phone' href='tel:123-456-7890'>
+          123-456-7890
         </a>
         <a
-          href='https://www.instagram.com/neighborlycoffee'
+          href='https://www.instagram.com'
           rel='noopener noreferrer'
           target='_blank'
+          aria-label='Link to Instagram'
         >
           <InstagramSvg w={24} h={24} />
         </a>
