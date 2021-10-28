@@ -18,29 +18,24 @@ export default function useAllAvailableCoffee() {
 
   useEffect(function () {
     // console.log('FETCHING CURRENT COFFEE AVAILABILITY ')
-    fetch(
-      process.env.NODE_ENV === 'development'
-        ? process.env.GATSBY_SANITY_DEV_GRAPHQL_ENDPOINT
-        : process.env.GATSBY_SANITY_GRAPHQL_ENDPOINT,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query: gql`
-            query {
-              allCoffee {
-                _id
-                name
-                price
-                stock
-              }
+    fetch(process.env.GATSBY_SANITY_GRAPHQL_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query: gql`
+          query {
+            allCoffee {
+              _id
+              name
+              price
+              stock
             }
-          `,
-        }),
-      }
-    )
+          }
+        `,
+      }),
+    })
       .then((res) => res.json())
       .then((res) => {
         // shape the data and set to state

@@ -45,6 +45,7 @@ function Header({ black }) {
         <button
           type='button'
           className='hide-gtLarge btn-icon'
+          aria-label='show navigation menu'
           onClick={() => {
             toggleShowMobileNav((showMobileNav) => !showMobileNav);
           }}

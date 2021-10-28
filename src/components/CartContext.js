@@ -107,28 +107,27 @@ function CartStateProvider({ children }) {
     //(coffeePrices is from the checkout page dynamic query of all coffees and their prices, to guard against client changing the prices in the browser state before submitting order.)
 
     //extract coffee name and price into array of sets of arrays [...[name, price]]
-    const sanityAPI =
-      process.env.NODE_ENV === 'development'
-        ? process.env.GATSBY_SANITY_DEV_GRAPHQL_ENDPOINT
-        : process.env.GATSBY_SANITY_GRAPHQL_ENDPOINT;
-    const sanityQuery = await fetch(sanityAPI, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        query: gql`
-          query {
-            allCoffee {
-              _id
-              name
-              price
-              stock
+    const sanityQuery = await fetch(
+      process.env.GATSBY_SANITY_GRAPHQL_ENDPOINT,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query: gql`
+            query {
+              allCoffee {
+                _id
+                name
+                price
+                stock
+              }
             }
-          }
-        `,
-      }),
-    })
+          `,
+        }),
+      }
+    )
       .then((res) => res.json())
       .catch((err) => {
         console.error('error fetching current price data', err);

@@ -10,13 +10,7 @@ const Sanity = sanityClient({
   token: process.env.GATSBY_SANITY_MUTATION_API,
   useCdn: false,
 });
-const SanityDevelopment = sanityClient({
-  projectId: process.env.GATSBY_SANITY_PROJECT_ID,
-  dataset: 'dev',
-  apiVersion: '2021-05-03',
-  token: process.env.GATSBY_SANITY_MUTATION_API,
-  useCdn: false,
-});
+
 const stripe = new Stripe(process.env.GATSBY_STRIPE_SECRET_KEY, {
   apiVersion: '2020-08-27',
 });
@@ -72,17 +66,6 @@ async function writeOrderToSanity({
     customerComments,
     shipped: false,
   };
-  if (env !== 'production') {
-    await SanityDevelopment.create(doc)
-      .then((res) => {
-        console.log('order written to sanity dev db', res);
-      })
-      .catch((err) => {
-        console.error('error writing order to Sanity:', err);
-        // notify neighborly of error writing to sanity orders
-      });
-    return;
-  }
   await Sanity.create(doc)
     .then((res) => {
       console.log('order written to sanity:', res);
