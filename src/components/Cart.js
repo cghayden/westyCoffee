@@ -43,7 +43,7 @@ function Cart() {
         <h3>Your Cart</h3>
         <CloseButton
           title='Close Cart'
-          aria-label='Close Your Cart Modal'
+          aria-label='Close Your Shopping Cart'
           onClick={closeCart}
         >
           &times;

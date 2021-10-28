@@ -19,6 +19,7 @@ export default function CartItem({ cartItem }) {
           <button
             type='button'
             title='Remove One From Cart'
+            aria-label={`remove one ${cartItem.grind} ${cartItem.name} from your cart`}
             disabled={cartItem.quantity === 1}
             onClick={() => {
               addToCart({
@@ -38,6 +39,7 @@ export default function CartItem({ cartItem }) {
           <button
             type='button'
             title='Add One To Cart'
+            aria-label={`add one ${cartItem.grind} ${cartItem.name} to your cart`}
             onClick={() => {
               addToCart({
                 quantity: 1,

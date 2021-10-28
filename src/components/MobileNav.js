@@ -49,6 +49,7 @@ export default function MobileNav({ showMobileNav, toggleShowMobileNav }) {
           type='button'
           className='btn-icon'
           onClick={() => toggleShowMobileNav(false)}
+          aria-label='close navigation'
         >
           <XSvg w={24} h={24} />
         </button>

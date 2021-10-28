@@ -25,7 +25,12 @@ const CartButtonStyle = styled.button`
 function CartButton() {
   const { openCart } = useCart();
   return (
-    <CartButtonStyle type='button' title='Your Cart' onClick={openCart}>
+    <CartButtonStyle
+      type='button'
+      title='Your Cart'
+      aria-label='open your shopping cart'
+      onClick={openCart}
+    >
       <CoffeeCupIcon w={32} h={32} />
       <CartCount />
     </CartButtonStyle>
