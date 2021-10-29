@@ -24,22 +24,30 @@ const HomeWrapper = styled.div`
     width: 100%;
     text-align: center;
   }
-  .bgImg1 {
-    display: grid;
-    place-items: center;
-  }
 
   .bgImg,
-  .bgImg1,
   .bgImg2,
   .bgImg3,
   .bgImg4 {
     position: relative;
+    background: no-repeat center cover;
+
+    /* disabled parallax because of issues on mobile */
+    /* background-attachment: fixed; */
+  }
+  .parallax {
+    background-color: pink;
+    display: grid;
+    place-content: center;
+
+    /* Set a specific height */
+    min-height: 800px;
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    /* disabled parallax because of issues on mobile */
-    /* background-attachment: fixed; */
   }
 `;
 
@@ -69,6 +77,10 @@ const TransitionText = styled.div`
   background-color: #282e34;
   padding: 5vh 5vh;
   text-align: center;
+  p {
+    max-width: 850px;
+    margin: 0 auto;
+  }
   //Sanity wraps portable text with a div if there is more than one block in the content
   > div {
     max-width: 850px;
@@ -77,17 +89,15 @@ const TransitionText = styled.div`
 `;
 
 export default function LandingPage({ data }) {
-  const heroImg = data?.content.bgImage1?.asset?.gatsbyImageData;
-
+  const img1 = data?.content.bgImage1?.asset?.gatsbyImageData;
   const coffeeBgColor = data.content.coffeeBackgroundColor?.hex || '#366349';
   const coffeeBg = data.content.bgImage2.asset
     ? `url(${data.content.bgImage2.asset.gatsbyImageData.images.fallback.src})`
     : coffeeBgColor;
-  const img3 =
-    data?.content.bgImage3?.asset.gatsbyImageData.images.fallback.src;
-  const bottomBg = data?.content.bgImage4?.asset
-    ? `url(${data.content.bgImage4.asset.gatsbyImageData.images.fallback.src})`
-    : null;
+  const img3 = data?.content.bgImage3?.asset.gatsbyImageData;
+  const bottomBg = data?.content?.bgImage4?.asset
+    ? data.content.bgImage4.asset.gatsbyImageData
+    : data.content.bottomBackgroundColor;
   const overlayPortableText1 = data?.content._rawOverlayText1;
   const coffeeHeading = data.content.coffeeSectionHeading;
   const coffeeText = data.content._rawCoffeeText;
@@ -97,23 +107,22 @@ export default function LandingPage({ data }) {
   return (
     <>
       <GlobalStyles />
-      <SEO title={'Westy Coffee'} />
+      <SEO title={'Home'} />
       <HomeWrapper>
         <Header black={true} />
         <div>
-          {heroImg && <Hero src={heroImg} textOverlay={overlayPortableText1} />}
+          {img1 && <Hero src={img1} textOverlay={overlayPortableText1} />}
         </div>
         {transitionText1 && (
           <TransitionText>
             <PortableText blocks={transitionText1} />
-            <div>Test Div</div>
           </TransitionText>
         )}
         <CoffeeContainer
           className='bgImg'
           style={{
             minHeight: '400px',
-            backgroundImage: coffeeBg,
+            background: coffeeBg,
           }}
         >
           <h2 className='alignCenter pageHeading'>{coffeeHeading}</h2>
@@ -129,30 +138,19 @@ export default function LandingPage({ data }) {
             <PortableText blocks={transitionText2} />
           </TransitionText>
         )}
-        {img3 && (
-          <div
-            className='bgImg'
-            style={{ minHeight: '350px', backgroundImage: `url(${img3})` }}
-          ></div>
-        )}
+        {img3 && <Hero src={img3}></Hero>}
         {transitionText3 && (
           <TransitionText>
             <PortableText blocks={transitionText3} />
           </TransitionText>
         )}
 
-        {bottomBg ? (
-          <div
-            className='bgImg4'
-            style={{ minHeight: '100%', background: bottomBg }}
-          >
-            <FooterOverlay>
-              <Footer />
-            </FooterOverlay>
-          </div>
-        ) : (
-          <Footer />
+        {bottomBg && (
+          // <div className='parallax'>
+          <Hero src={bottomBg} />
+          // </div>
         )}
+        <Footer />
       </HomeWrapper>
     </>
   );
