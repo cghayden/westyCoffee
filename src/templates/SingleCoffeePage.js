@@ -173,7 +173,7 @@ export default function SingleCoffeePage({ data }) {
 
 // This needs to be dynamic based on the slug passed in via context in gatsby-node.js
 export const query = graphql`
-  query($slug: String!) {
+  query ($slug: String!) {
     coffee: sanityCoffee(slug: { current: { eq: $slug } }) {
       _id
       name
@@ -183,7 +183,7 @@ export const query = graphql`
         asset {
           gatsbyImageData(
             width: 600
-            placeholder: BLURRED
+            placeholder: DOMINANT_COLOR
             formats: [AUTO, WEBP, AVIF]
           )
         }

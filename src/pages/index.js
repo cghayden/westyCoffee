@@ -24,43 +24,33 @@ const HomeWrapper = styled.div`
     width: 100%;
     text-align: center;
   }
-  .bgImg1 {
-    display: grid;
-    place-items: center;
-  }
 
   .bgImg,
-  .bgImg1,
   .bgImg2,
   .bgImg3,
   .bgImg4 {
     position: relative;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    background: no-repeat center cover;
+
     /* disabled parallax because of issues on mobile */
     /* background-attachment: fixed; */
   }
-`;
-const TextOverlay = styled.div`
-  text-align: center;
-  padding: 1rem 2rem;
-  color: #000;
-  background: hsla(0, 0%, 0%, 0.55);
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-size: 30px;
-    color: #d5e5d5;
-  }
-  p {
-    color: #d5e5d5;
-    font-size: 20px;
+  .parallax {
+    background-color: pink;
+    display: grid;
+    place-content: center;
+
+    /* Set a specific height */
+    min-height: 800px;
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 `;
+
 const FooterOverlay = styled.div`
   position: absolute;
   left: 0;
@@ -70,12 +60,7 @@ const FooterOverlay = styled.div`
   text-align: center;
   color: #000;
 `;
-const HomeText = styled.div`
-  color: #777;
-  background-color: white;
-  padding: 50px 80px;
-  text-align: justify;
-`;
+
 const CoffeeContainer = styled.div`
   padding: 2rem 0;
   h2 {
@@ -90,22 +75,29 @@ const CoffeeText = styled.div`
 const TransitionText = styled.div`
   color: #ddd;
   background-color: #282e34;
-  padding: 50px 80px;
+  padding: 5vh 5vh;
   text-align: center;
+  p {
+    max-width: 850px;
+    margin: 0 auto;
+  }
+  //Sanity wraps portable text with a div if there is more than one block in the content
+  > div {
+    max-width: 850px;
+    margin: 0 auto;
+  }
 `;
 
 export default function LandingPage({ data }) {
-  const heroImg = data?.content.bgImage1?.asset?.gatsbyImageData;
-
+  const img1 = data?.content.bgImage1?.asset?.gatsbyImageData;
   const coffeeBgColor = data.content.coffeeBackgroundColor?.hex || '#366349';
   const coffeeBg = data.content.bgImage2.asset
     ? `url(${data.content.bgImage2.asset.gatsbyImageData.images.fallback.src})`
     : coffeeBgColor;
-  const img3 =
-    data?.content.bgImage3?.asset.gatsbyImageData.images.fallback.src;
-  const bottomBg = data?.content.bgImage4?.asset
-    ? `url(${data.content.bgImage4.asset.gatsbyImageData.images.fallback.src})`
-    : null;
+  const img3 = data?.content.bgImage3?.asset.gatsbyImageData;
+  const bottomBg = data?.content?.bgImage4?.asset
+    ? data.content.bgImage4.asset.gatsbyImageData
+    : data.content.bottomBackgroundColor;
   const overlayPortableText1 = data?.content._rawOverlayText1;
   const coffeeHeading = data.content.coffeeSectionHeading;
   const coffeeText = data.content._rawCoffeeText;
@@ -119,23 +111,8 @@ export default function LandingPage({ data }) {
       <HomeWrapper>
         <Header black={true} />
         <div>
-          {heroImg && <Hero src={heroImg} textOverlay={overlayPortableText1} />}
+          {img1 && <Hero src={img1} textOverlay={overlayPortableText1} />}
         </div>
-        {/* {img1 && (
-          <>
-            <div
-              className='bgImg1'
-              style={{ minHeight: '100%', backgroundImage: `url(${img1})` }}
-            >
-              <TextOverlay>
-                <PortableText blocks={overlayPortableText1} />
-              </TextOverlay>
-            </div>
-            <HomeText>
-              <PortableText blocks={transitionText1} />
-            </HomeText>
-          </>
-        )} */}
         {transitionText1 && (
           <TransitionText>
             <PortableText blocks={transitionText1} />
@@ -145,7 +122,7 @@ export default function LandingPage({ data }) {
           className='bgImg'
           style={{
             minHeight: '400px',
-            backgroundImage: coffeeBg,
+            background: coffeeBg,
           }}
         >
           <h2 className='alignCenter pageHeading'>{coffeeHeading}</h2>
@@ -161,30 +138,19 @@ export default function LandingPage({ data }) {
             <PortableText blocks={transitionText2} />
           </TransitionText>
         )}
-        {img3 && (
-          <div
-            className='bgImg'
-            style={{ minHeight: '350px', backgroundImage: `url(${img3})` }}
-          ></div>
-        )}
+        {img3 && <Hero src={img3}></Hero>}
         {transitionText3 && (
           <TransitionText>
             <PortableText blocks={transitionText3} />
           </TransitionText>
         )}
 
-        {bottomBg ? (
-          <div
-            className='bgImg4'
-            style={{ minHeight: '100%', background: bottomBg }}
-          >
-            <FooterOverlay>
-              <Footer />
-            </FooterOverlay>
-          </div>
-        ) : (
-          <Footer />
+        {bottomBg && (
+          // <div className='parallax'>
+          <Hero src={bottomBg} />
+          // </div>
         )}
+        <Footer />
       </HomeWrapper>
     </>
   );
