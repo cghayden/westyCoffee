@@ -1,5 +1,7 @@
 import React from 'react';
 import { graphql } from 'gatsby';
+import { GatsbyImage } from 'gatsby-plugin-image';
+
 import SEO from '../components/SEO';
 import styled from 'styled-components';
 import PortableText from '../components/PortableText';
@@ -27,14 +29,14 @@ const HomeWrapper = styled.div`
 
   .bgImg,
   .bgImg2,
-  .bgImg3,
-  .bgImg4 {
+  .bgImg3 {
     position: relative;
     background: no-repeat center cover;
 
     /* disabled parallax because of issues on mobile */
     /* background-attachment: fixed; */
   }
+
   .parallax {
     background-color: pink;
     display: grid;
@@ -50,6 +52,8 @@ const HomeWrapper = styled.div`
     background-size: cover;
   }
 `;
+
+const SectionThree = styled.div``;
 
 const FooterOverlay = styled.div`
   position: absolute;
@@ -138,7 +142,7 @@ export default function LandingPage({ data }) {
             <PortableText blocks={transitionText2} />
           </TransitionText>
         )}
-        {img3 && <Hero src={img3}></Hero>}
+        <SectionThree>{img3 && <GatsbyImage image={img3} />}</SectionThree>
         {transitionText3 && (
           <TransitionText>
             <PortableText blocks={transitionText3} />
@@ -188,7 +192,12 @@ export const query = graphql`
       }
       bgImage3 {
         asset {
-          gatsbyImageData(fit: FILL, formats: AUTO, placeholder: DOMINANT_COLOR)
+          gatsbyImageData(
+            fit: FILL
+            width: 600
+            formats: AUTO
+            placeholder: DOMINANT_COLOR
+          )
         }
       }
       bgImage4 {

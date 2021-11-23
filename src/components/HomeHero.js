@@ -25,7 +25,7 @@ export default function Hero({ src, textOverlay }) {
         layout='fullWidth'
         style={{ gridArea: '1 / 1' }}
         // You can optionally force an aspect ratio for the generated image
-        // aspectRatio={3 / 1}
+        // aspectRatio={4 / 5}
         alt=''
         image={src}
         formats={['auto', 'webp', 'avif']}
